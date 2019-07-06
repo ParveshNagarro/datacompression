@@ -122,9 +122,9 @@ print("output content length (bits)" + str(len(encoded_contents)))
 print("writing output")
 
 print("Reading and the conversion is complete, it's time to write the file back.")
-enwiko: str = "../../data/tmp/enwik8o"
-print("The compressed version will be written to " + enwiko)
-f= open(enwiko, "w+b")
+enwik_output: str = "../../data/tmp/enwik8_compressed"
+print("The compressed version will be written to " + enwik_output)
+f= open(enwik_output, "w+b")
 
 print("writing out the contents to the output file")
 bytes_array = []
@@ -149,3 +149,8 @@ while len(encoded_contents) > 0:
 f.write(bytearray(bytes_array))
 print(bytes_array)
 f.close();
+
+
+with open("../../data/tmp/enwik8_dict", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(huffman_tree, f, pickle.HIGHEST_PROTOCOL)
