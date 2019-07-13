@@ -128,6 +128,7 @@ f= open(enwik_output, "w+b")
 
 print("writing out the contents to the output file")
 bytes_array = []
+cutoff = 0
 while len(encoded_contents) > 0:
     if len(encoded_contents) > 8:
         string_to_write = encoded_contents[:8]
@@ -135,7 +136,7 @@ while len(encoded_contents) > 0:
         print(int(string_to_write, 2))
         bytes_array.append(int(string_to_write, 2))
         print(hex(int(string_to_write, 2)))
-        print(chr(int(string_to_write, 2)))
+        print(string_to_write)
 
     else:
         string_to_write = encoded_contents
@@ -145,6 +146,8 @@ while len(encoded_contents) > 0:
         string_to_write = encoded_contents + ("0" * cutoff)
         print(int(string_to_write, 2))
         print(hex(int(string_to_write, 2)))
+        print(string_to_write)
+        print(cutoff)
 
 f.write(bytearray(bytes_array))
 print(bytes_array)
@@ -154,3 +157,7 @@ f.close();
 with open("../../data/tmp/enwik8_dict", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(huffman_tree, f, pickle.HIGHEST_PROTOCOL)
+
+with open("../../data/tmp/enwik8_cutoff", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(cutoff, f, pickle.HIGHEST_PROTOCOL)

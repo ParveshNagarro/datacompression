@@ -21,13 +21,31 @@ huffman_tree = []
 with open("../../data/tmp/enwik8_dict", 'rb') as f:
     huffman_tree = pickle.load(f)
 
+cutoff_in = 0
+
+with open("../../data/tmp/enwik8_cutoff", 'rb') as f:
+    cutoff_in = pickle.load(f)
+
 decoded_contents = ""
 with open("../../data/tmp/enwik8_compressed", "rb") as f:
     byte = f.read(1)
     while byte != b"":
         # Do stuff with byte.
-        decoded_contents = decoded_contents + "{0:b}".format(ord(byte))
+
+        byte_temp = byte
         byte = f.read(1)
+        print(hex(int.from_bytes(byte_temp, "big")))
+        print(byte_temp)
+        decoded_string = "{0:b}".format(ord(byte_temp))
+        cutoff = 8 - len(decoded_string)
+        if byte == b"":
+            cutoff = cutoff - cutoff_in
+        if cutoff < 0:
+            cutoff = 0
+        decoded_string = ("0" * cutoff) + decoded_string
+        decoded_contents = decoded_contents + decoded_string
+
+        print(decoded_string)
 
 print(decoded_contents)
 
