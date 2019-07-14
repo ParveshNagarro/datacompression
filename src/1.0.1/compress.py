@@ -66,12 +66,12 @@ print("Here goes nothing!!!")
 
 enwik: str = "../../data/tmp/enwik8"
 print("Reading the file " + enwik)
-f= open(enwik, "r", encoding="utf-8")
-print("The current approach is stupid, so reading the entire file into one string")
-contents = f.read()
-print("The contents of the file are " + contents)
-print(contents)
-f.close();
+
+with open(enwik, "r", encoding="utf-8") as f:
+    print("The current approach is stupid, so reading the entire file into one string")
+    contents = f.read()
+    print("The contents of the file are " + contents)
+    print(contents)
 
 print("Creating a frequency distribution dict of the data")
 nodes_dict = {}
@@ -124,34 +124,34 @@ print("writing output")
 print("Reading and the conversion is complete, it's time to write the file back.")
 enwik_output: str = "../../data/tmp/enwik8_compressed"
 print("The compressed version will be written to " + enwik_output)
-f= open(enwik_output, "w+b")
 
-print("writing out the contents to the output file")
-bytes_array = []
-cutoff = 0
-while len(encoded_contents) > 0:
-    if len(encoded_contents) > 8:
-        string_to_write = encoded_contents[:8]
-        encoded_contents = encoded_contents[8:]
-        print(int(string_to_write, 2))
-        bytes_array.append(int(string_to_write, 2))
-        print(hex(int(string_to_write, 2)))
-        print(string_to_write)
+with open(enwik_output, "w+b") as f:
 
-    else:
-        string_to_write = encoded_contents
-        encoded_contents = ""
-        cutoff = 8  - len(string_to_write)
-        bytes_array.append(int(string_to_write, 2))
-        string_to_write = encoded_contents + ("0" * cutoff)
-        print(int(string_to_write, 2))
-        print(hex(int(string_to_write, 2)))
-        print(string_to_write)
-        print(cutoff)
+    print("writing out the contents to the output file")
+    bytes_array = []
+    cutoff = 0
+    while len(encoded_contents) > 0:
+        if len(encoded_contents) > 8:
+            string_to_write = encoded_contents[:8]
+            encoded_contents = encoded_contents[8:]
+            print(int(string_to_write, 2))
+            bytes_array.append(int(string_to_write, 2))
+            print(hex(int(string_to_write, 2)))
+            print(string_to_write)
 
-f.write(bytearray(bytes_array))
-print(bytes_array)
-f.close();
+        else:
+            string_to_write = encoded_contents
+            encoded_contents = ""
+            cutoff = 8  - len(string_to_write)
+            bytes_array.append(int(string_to_write, 2))
+            string_to_write = encoded_contents + ("0" * cutoff)
+            print(int(string_to_write, 2))
+            print(hex(int(string_to_write, 2)))
+            print(string_to_write)
+            print(cutoff)
+
+    f.write(bytearray(bytes_array))
+    print(bytes_array)
 
 
 with open("../../data/tmp/enwik8_dict", 'wb') as f:
