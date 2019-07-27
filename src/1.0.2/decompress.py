@@ -30,28 +30,36 @@ with open("../../data/tmp/enwik8_cutoff", 'rb') as f:
 output_final = ""
 parent_node = huffman_tree[0]
 current_node = parent_node
+decoded_string = ""
 
+total_count = 100000000
+newCount = 0
 with open("../../data/tmp/enwik8_output", "w", encoding="utf-8") as f0:
     with open("../../data/tmp/enwik8_compressed", "rb") as f:
         byte = f.read(1)
         while byte != b"":
             # Do stuff with byte.
+            newCount = newCount + 1
+            #if newCount % 10000 == 0:
+            #    print("percentage of file read" + str((newCount * 100) / total_count))
 
             byte_temp = byte
             byte = f.read(1)
-            print(hex(int.from_bytes(byte_temp, "big")))
-            print(byte_temp)
+            #print(hex(int.from_bytes(byte_temp, "big")))
+            #print(byte_temp)
             decoded_string = "{0:b}".format(ord(byte_temp))
 
+            cutoff = 8 - len(decoded_string)
             if byte == b"":
-                cutoff = 8 - len(decoded_string)
                 cutoff = cutoff - cutoff_in
                 if cutoff < 0:
                     cutoff = 0
-                decoded_string = ("0" * cutoff) + decoded_string
-            print(decoded_string)
 
-            for character in decoded_string:
+            decoded_string = ("0" * cutoff) + decoded_string
+            #print(decoded_string)
+
+            tmp_decoding_string = decoded_string
+            for character in tmp_decoding_string:
                 if character == "1":
                     current_node = current_node.children[1]
                 else:
@@ -63,7 +71,7 @@ with open("../../data/tmp/enwik8_output", "w", encoding="utf-8") as f0:
                     if len(output_final) > 8:
                         tmp_output_final = output_final[:8]
                         output_final = output_final[8:]
-                        print(tmp_output_final)
+                        #print(tmp_output_final)
                         f0.write(tmp_output_final)
 
         if len(output_final) > 0:
