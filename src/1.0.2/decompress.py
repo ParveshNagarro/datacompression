@@ -40,8 +40,8 @@ with open("../../data/tmp/enwik8_output", "w", encoding="utf-8") as f0:
         while byte != b"":
             # Do stuff with byte.
             newCount = newCount + 1
-            #if newCount % 10000 == 0:
-            #    print("percentage of file read" + str((newCount * 100) / total_count))
+            if newCount % 10000 == 0:
+                print("percentage of file read" + str((newCount * 100) / total_count))
 
             byte_temp = byte
             byte = f.read(1)
