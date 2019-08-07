@@ -15,11 +15,38 @@ class Node:
         self.encoded_string = ""
 
 
-# the program starts here
+def encode_the_node(node):
+    print("The current node to encode is " + str(node.frequency) + "-" + node.character)
+    if node.children is not None and 0 < len(node.children):
+        print("Encoding the node " + str(node.frequency) + "-" + node.character)
+        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
+        node.children[0].encoded_string = node.encoded_string + "0"
+        encode_the_node(node.children[0])
+        if len(node.children) > 1:
+            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
+            node.children[1].encoded_string = node.encoded_string + "1"
+            encode_the_node(node.children[1])
+    else:
+        print("Nothing to encode in this node as there are either no children")
+
+
+huffman_tree_chars = []
+with open("../../data/tmp/enwik8_dict_chars", 'rb') as f:
+    huffman_tree_chars = pickle.load(f)
+
+huffman_tree_words = []
+with open("../../data/tmp/enwik8_dict_words", 'rb') as f:
+    huffman_tree_words = pickle.load(f)
 
 huffman_tree = []
-with open("../../data/tmp/enwik8_dict", 'rb') as f:
-    huffman_tree = pickle.load(f)
+
+root_node:Node = Node("root", 0)
+root_node.children.append(huffman_tree_chars[0])
+root_node.children.append(huffman_tree_words[0])
+
+huffman_tree.append(root_node)
+
+encode_the_node(huffman_tree[0])
 
 cutoff_in = 0
 cutoff = 0
@@ -45,8 +72,6 @@ with open("../../data/tmp/enwik8_output", "w", encoding="utf-8") as f0:
 
             byte_temp = byte
             byte = f.read(1)
-            #print(hex(int.from_bytes(byte_temp, "big")))
-            #print(byte_temp)
             decoded_string = "{0:b}".format(ord(byte_temp))
 
             cutoff = 8 - len(decoded_string)
@@ -56,7 +81,6 @@ with open("../../data/tmp/enwik8_output", "w", encoding="utf-8") as f0:
                     cutoff = 0
 
             decoded_string = ("0" * cutoff) + decoded_string
-            #print(decoded_string)
 
             tmp_decoding_string = decoded_string
             for character in tmp_decoding_string:
@@ -71,7 +95,6 @@ with open("../../data/tmp/enwik8_output", "w", encoding="utf-8") as f0:
                     if len(output_final) > 8:
                         tmp_output_final = output_final[:8]
                         output_final = output_final[8:]
-                        #print(tmp_output_final)
                         f0.write(tmp_output_final)
 
         if len(output_final) > 0:

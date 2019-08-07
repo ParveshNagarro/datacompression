@@ -64,17 +64,20 @@ def print_a_list(nodes_list_to_print):
 # the program starts here
 
 print("Here goes nothing!!!")
-
+total_number_of_lines = 1128024
 enwik: str = "../../data/tmp/enwik8"
 print("Reading the file " + enwik)
 
 count = 0
 word_nodes_dict = {}
+line_count = 0
 with open(enwik, "r", encoding="utf-8") as f:
     print("Creating a list of words... .")
     while True:
         line = f.readline()
         count = count + 1
+        line_count = line_count + 1
+        print("Creating the words dict - " + str((line_count * 100) / total_number_of_lines))
         if not line:
             print("End of file")
             break
@@ -95,7 +98,7 @@ print("total number of lines =  " + str(count))
 print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
 final_word_nodes_dict = {}
 for key, value in word_nodes_dict.items():
-    if value.frequency > 1:
+    if value.frequency >= 100:
         final_word_nodes_dict[key] = value
 
 print("Converting the final dict into a list of nodes")
@@ -123,11 +126,6 @@ print_a_list(word_huffman_tree)
 with open("../../data/tmp/enwik8_dict_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(word_huffman_tree, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../../data/tmp/enwik8_dict_as_words", 'w') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    for value in word_nodes_list:
-        f.write(value.character + " - " + str(value.frequency) + "\n")
 
 print("creating the characters huffman tree now")
 
@@ -190,4 +188,6 @@ print_a_list(huffman_tree)
 with open("../../data/tmp/enwik8_dict_chars", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(huffman_tree, f, pickle.HIGHEST_PROTOCOL)
+
+
 

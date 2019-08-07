@@ -74,12 +74,14 @@ enwik: str = "../../data/tmp/enwik8"
 count = 100000000
 
 newCount = 0
+total_number_of_lines = 1128024
 print("doing the compression")
 with open(enwik_output, "w+b") as fo:
     with open(enwik, "r", encoding="utf-8") as f:
         while True:
             c = f.readline()
-            print("Compressing line no. " + str(newCount))
+            if newCount % 100 == 0:
+                print("Compressing - " + str((newCount * 100) / total_number_of_lines))
             newCount = newCount + 1
             if not c:
                 print("End of file. writing whatever is left")
@@ -118,13 +120,13 @@ with open(enwik_output, "w+b") as fo:
                 if iter_index in line_words_pos_dict.keys():
                     encoded_contents = encoded_contents + line_words_pos_dict[iter_index].encoded_string
                     tmp_encoded_contents = tmp_encoded_contents + line_words_pos_dict[iter_index].encoded_string
-                    iter_index = iter_index + len(line_words_pos_dict[iter_index].encoded_string)
+                    iter_index = iter_index + len(line_words_pos_dict[iter_index].character)
                 else:
                     encoded_contents = encoded_contents + nodes_dict_chars[c[iter_index]].encoded_string
                     tmp_encoded_contents = tmp_encoded_contents + nodes_dict_chars[c[iter_index]].encoded_string
                     iter_index = iter_index + 1
 
-            encoded_contents = encoded_contents + nodes_dict_chars['\n'].encoded_string
+            #encoded_contents = encoded_contents + nodes_dict_chars['\n'].encoded_string
             tmp_encoded_contents = tmp_encoded_contents + nodes_dict_chars['\n'].encoded_string
             while len(encoded_contents) > 8:
                 bytes_array = []

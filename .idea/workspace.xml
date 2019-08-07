@@ -7,11 +7,16 @@
     <list default="true" id="61b0cdf7-2dfb-4f70-843e-757cdfbf8538" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/tmp/enwik8" beforeDir="false" afterPath="$PROJECT_DIR$/data/tmp/enwik8" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8__dict_analysis" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8__dict_analysis_primary_dict" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8__dict_analysis_primary_dict_updated" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_compressed" beforeDir="false" afterPath="$PROJECT_DIR$/data/tmp/enwik8_compressed" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_cutoff" beforeDir="false" afterPath="$PROJECT_DIR$/data/tmp/enwik8_cutoff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_dict" beforeDir="false" afterPath="$PROJECT_DIR$/data/tmp/enwik8_dict" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_output" beforeDir="false" afterPath="$PROJECT_DIR$/data/tmp/enwik8_output" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_cutoff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_dict" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tmp/enwik8_output" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/1.0.3/analysethedict.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/1.0.3/analysethedict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/1.0.3/compress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/1.0.3/compress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/1.0.3/decompress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/1.0.3/decompress.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/1.0.3/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/1.0.3/model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,10 +28,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/1.0.3/model.py">
+        <entry file="file://$PROJECT_DIR$/src/1.0.3/analysethedict.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="189" selection-start-line="189" selection-end-line="189" />
+            <state relative-caret-position="142">
+              <caret line="85" selection-start-line="85" selection-end-line="85" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -37,17 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/1.0.3/compress.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="120" column="96" selection-start-line="120" selection-start-column="96" selection-end-line="120" selection-end-column="96" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="359">
+              <caret line="122" column="92" selection-start-line="122" selection-start-column="92" selection-end-line="122" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -56,8 +52,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>content</find>
-      <find>contents</find>
       <find>creat</find>
       <find>Creating a frequency distribution dict of the data</find>
       <find>cutoff</find>
@@ -82,20 +76,32 @@
       <find>enc</find>
       <find>encode</find>
       <find>encode_t</find>
+      <find>len</find>
+      <find>word_no</find>
+      <find>word_nodes_l</find>
+      <find>append_</find>
+      <find>append_the_node</find>
+      <find>total</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode />
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/1.0.1/decompress.py" />
         <option value="$PROJECT_DIR$/src/1.0.1/compress.py" />
-        <option value="$PROJECT_DIR$/src/1.0.2/compress.py" />
         <option value="$PROJECT_DIR$/src/1.0.2/decompress.py" />
         <option value="$PROJECT_DIR$/src/1.0.2/analysethedict.py" />
+        <option value="$PROJECT_DIR$/src/1.0.3/decompress.py" />
+        <option value="$PROJECT_DIR$/src/1.0.3/model_temp.py" />
         <option value="$PROJECT_DIR$/src/1.0.3/model.py" />
+        <option value="$PROJECT_DIR$/src/1.0.3/analysethedict.py" />
+        <option value="$PROJECT_DIR$/src/1.0.2/compress.py" />
         <option value="$PROJECT_DIR$/src/1.0.3/compress.py" />
       </list>
     </option>
@@ -126,12 +132,6 @@
               <item name="datacompression" type="b2602c69:ProjectViewProjectNode" />
               <item name="datacompression" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="1.0.2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="datacompression" type="b2602c69:ProjectViewProjectNode" />
-              <item name="datacompression" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="1.0.3" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -147,6 +147,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\datacompression\src\1.0.3" />
       <recent name="D:\datacompression\src" />
     </key>
   </component>
@@ -163,6 +164,27 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.compress (2)">
+    <configuration name="analysethedict" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="datacompression" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/1.0.3" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/1.0.3/analysethedict.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="compress (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="datacompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -205,7 +227,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="decompress (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="decompress" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="datacompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -218,27 +240,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/1.0.2/decompress.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="decompress" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="datacompression" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/1.0.3" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/1.0.3/decompress.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -271,10 +272,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.compress (2)" />
+        <item itemvalue="Python.analysethedict" />
         <item itemvalue="Python.model" />
-        <item itemvalue="Python.compress" />
-        <item itemvalue="Python.decompress (1)" />
         <item itemvalue="Python.decompress" />
+        <item itemvalue="Python.compress" />
       </list>
     </recent_temporary>
   </component>
@@ -303,19 +304,27 @@
       <option name="project" value="LOCAL" />
       <updated>1563114322852</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="1.0.3 - implementation of dict containing words">
+      <created>1565163355344</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1565163355344</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24960254" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.42273533" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3339254" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.42273533" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.43872115" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -328,13 +337,13 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.24960254" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24960254" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.42273533" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.59680283" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.42273533" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.43872115" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -350,7 +359,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fixed a couple of isues regarding leading 0 bits and extra bits" />
     <MESSAGE value="Initial commit for version 1.0.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit for version 1.0.2" />
+    <MESSAGE value="1.0.3 - implementation of dict containing words" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.3 - implementation of dict containing words" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -406,24 +416,14 @@
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/1.0.3/model.py</url>
-          <line>189</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/1.0.3/model.py</url>
-          <line>163</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/1.0.3/model.py</url>
-          <line>169</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/1.0.3/compress.py</url>
-          <line>116</line>
+          <line>118</line>
           <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/1.0.3/decompress.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -436,6 +436,11 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>line_words_pos_dict[iter_index]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>c.index(&quot;she`&quot;)</expression-string>
         <language-id>Python</language-id>
@@ -490,41 +495,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/1.0.2/analysethedict.py">
+    <entry file="file://$PROJECT_DIR$/src/1.0.3/pickleex.py" />
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="97" selection-start-line="97" selection-end-line="97" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="172">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/1.0.3/pickleex.py" />
-    <entry file="file://$PROJECT_DIR$/src/1.0.3/analysethedict.py">
+    <entry file="file://$PROJECT_DIR$/src/1.0.3/model_temp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="112" selection-start-line="112" selection-end-line="114" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="189">
+          <caret line="115" column="70" selection-start-line="115" selection-start-column="70" selection-end-line="115" selection-end-column="70" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/1.0.3/decompress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
+        <state relative-caret-position="104">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/1.0.2/decompress.py">
+    <entry file="file://$PROJECT_DIR$/src/1.0.2/analysethedict.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="91">
+          <caret line="103" column="15" lean-forward="true" selection-start-line="103" selection-start-column="15" selection-end-line="103" selection-end-column="15" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -533,32 +532,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/1.0.2/compress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="102">
+          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/1.0.3/model.py">
+    <entry file="file://$PROJECT_DIR$/src/1.0.2/decompress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="189" selection-start-line="189" selection-end-line="189" />
+        <state relative-caret-position="195">
+          <caret line="76" column="33" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="33" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+    <entry file="file://$PROJECT_DIR$/src/1.0.3/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="189">
+          <caret line="138" column="30" lean-forward="true" selection-start-line="138" selection-start-column="8" selection-end-line="138" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/1.0.3/analysethedict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="85" selection-start-line="85" selection-end-line="85" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/1.0.3/compress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="120" column="96" selection-start-line="120" selection-start-column="96" selection-end-line="120" selection-end-column="96" />
+        <state relative-caret-position="359">
+          <caret line="122" column="92" selection-start-line="122" selection-start-column="92" selection-end-line="122" selection-end-column="92" />
         </state>
       </provider>
     </entry>
