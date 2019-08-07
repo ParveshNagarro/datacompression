@@ -1,6 +1,6 @@
 import io
 import pickle
-
+import re
 
 class Node:
     character: str
@@ -67,6 +67,70 @@ print("Here goes nothing!!!")
 
 enwik: str = "../../data/tmp/enwik8"
 print("Reading the file " + enwik)
+
+count = 0
+word_nodes_dict = {}
+with open(enwik, "r", encoding="utf-8") as f:
+    print("Creating a list of words... .")
+    while True:
+        line = f.readline()
+        count = count + 1
+        if not line:
+            print("End of file")
+            break
+
+        words = re.findall(r'\w+', line)
+
+        for word in words:
+            if word in word_nodes_dict:
+                node: Node = word_nodes_dict[word]
+                node.frequency = node.frequency + 1
+            else:
+                node = Node(word, 1)
+                word_nodes_dict[word] = node
+
+print("total number of lines =  " + str(count))
+
+
+print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
+final_word_nodes_dict = {}
+for key, value in word_nodes_dict.items():
+    if value.frequency > 1:
+        final_word_nodes_dict[key] = value
+
+print("Converting the final dict into a list of nodes")
+word_nodes_list = []
+for key, value in final_word_nodes_dict.items():
+    word_nodes_list.append(value)
+
+word_nodes_list.sort(key=lambda x: x.frequency, reverse=False)
+
+print("The entire contents after the sorting and node creations")
+print_a_list(word_nodes_list)
+
+word_huffman_tree = []
+for value in word_nodes_list:
+    word_huffman_tree.append(value)
+
+print("Iterating and merging the nodes until only one remains")
+while len(word_huffman_tree) > 1:
+    huffman_iteration(word_huffman_tree)
+print_a_list(word_huffman_tree)
+
+encode_the_node(word_huffman_tree[0])
+print_a_list(word_huffman_tree)
+
+with open("../../data/tmp/enwik8_dict_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(word_huffman_tree, f, pickle.HIGHEST_PROTOCOL)
+
+with open("../../data/tmp/enwik8_dict_as_words", 'w') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    for value in word_nodes_list:
+        f.write(value.character + " - " + str(value.frequency) + "\n")
+
+print("creating the characters huffman tree now")
+
 count = 0
 nodes_dict = {}
 with open(enwik, "r", encoding="utf-8") as f:
@@ -86,18 +150,33 @@ with open(enwik, "r", encoding="utf-8") as f:
             node = Node(letter, 1)
             nodes_dict[letter] = node
 
+print("total number of lines =  " + str(count))
+
+print("Subtracting the frequencies that are being used by the words  ")
+for key, value in final_word_nodes_dict.items():
+    word_string:str = key
+    word_freq:int = value.frequency
+    for letter_part_of_word in word_string:
+        nodes_dict[letter_part_of_word].frequency = nodes_dict[letter_part_of_word].frequency - word_freq
+
+
+print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
+final_nodes_dict = {}
+for key, value in nodes_dict.items():
+    if value.frequency > 0:
+        final_nodes_dict[key] = value
+
 print("Converting the dict into a list of nodes")
 nodes_list = []
-for key, value in nodes_dict.items():
+for key, value in final_nodes_dict.items():
     nodes_list.append(value)
 nodes_list.sort(key=lambda x: x.frequency, reverse=False)
 
 print("The entire contents after the sorting and node creations")
 print_a_list(nodes_list)
 
-print("Put'em all in a second list of nodes that will become a huffman eventually")
 huffman_tree = []
-for key, value in nodes_dict.items():
+for value in nodes_list:
     huffman_tree.append(value)
 
 print("Iterating and merging the nodes until only one remains")
@@ -106,8 +185,9 @@ while len(huffman_tree) > 1:
 print_a_list(huffman_tree)
 
 encode_the_node(huffman_tree[0])
-print_a_list(nodes_list)
+print_a_list(huffman_tree)
 
-with open("../../data/tmp/enwik8_dict", 'wb') as f:
+with open("../../data/tmp/enwik8_dict_chars", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(huffman_tree, f, pickle.HIGHEST_PROTOCOL)
+
