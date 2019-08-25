@@ -64,7 +64,7 @@ nodes_dict_chars = {}
 append_the_node(huffman_tree_chars[0], nodes_dict_chars)
 
 encoded_contents = ""
-tmp_encoded_contents = ""
+
 print("Reading the dicts is complete, it's time to write the file back.")
 enwik_output: str = "../../data/tmp/enwik8_compressed"
 print("The compressed version will be written to " + enwik_output)
@@ -119,15 +119,15 @@ with open(enwik_output, "w+b") as fo:
             while iter_index < len(c):
                 if iter_index in line_words_pos_dict.keys():
                     encoded_contents = encoded_contents + line_words_pos_dict[iter_index].encoded_string
-                    tmp_encoded_contents = tmp_encoded_contents + line_words_pos_dict[iter_index].encoded_string
+
                     iter_index = iter_index + len(line_words_pos_dict[iter_index].character)
                 else:
                     encoded_contents = encoded_contents + nodes_dict_chars[c[iter_index]].encoded_string
-                    tmp_encoded_contents = tmp_encoded_contents + nodes_dict_chars[c[iter_index]].encoded_string
+
                     iter_index = iter_index + 1
 
             #encoded_contents = encoded_contents + nodes_dict_chars['\n'].encoded_string
-            tmp_encoded_contents = tmp_encoded_contents + nodes_dict_chars['\n'].encoded_string
+
             while len(encoded_contents) > 8:
                 bytes_array = []
                 string_to_write = encoded_contents[:8]
@@ -139,5 +139,3 @@ print("cutoff" + str(cutoff))
 with open("../../data/tmp/enwik8_cutoff", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(cutoff, f, pickle.HIGHEST_PROTOCOL)
-
-print(tmp_encoded_contents)
