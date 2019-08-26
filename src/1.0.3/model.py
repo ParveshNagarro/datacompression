@@ -85,12 +85,13 @@ with open(enwik, "r", encoding="utf-8") as f:
         words = re.findall(r'\w+', line)
 
         for word in words:
-            if word in word_nodes_dict:
-                node: Node = word_nodes_dict[word]
-                node.frequency = node.frequency + 1
-            else:
-                node = Node(word, 1)
-                word_nodes_dict[word] = node
+            if len(word) > 1:
+                if word in word_nodes_dict:
+                    node: Node = word_nodes_dict[word]
+                    node.frequency = node.frequency + 1
+                else:
+                    node = Node(word, 1)
+                    word_nodes_dict[word] = node
 
 print("total number of lines =  " + str(count))
 
