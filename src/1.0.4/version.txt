@@ -1,0 +1,3 @@
+This version contains the implementation with pickle so that the dictionary writing and reading is easy
+pickleex.py is the testing file for pickle implementation,
+the main.py and decompress.py are udated to use picklt to read and write the dictionary.
