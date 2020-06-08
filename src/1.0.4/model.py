@@ -99,7 +99,7 @@ print("total number of lines =  " + str(count))
 print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
 final_word_nodes_dict = {}
 for key, value in word_nodes_dict.items():
-    if value.frequency >= 500:
+    if value.frequency >= 100:
         final_word_nodes_dict[key] = value
 
 print("Converting the final dict into a list of nodes")

@@ -68,49 +68,118 @@ total_number_of_lines = 1128024
 enwik: str = "../../data/tmp/enwik8"
 print("Reading the file " + enwik)
 
+my_string = ""
+str_to_compare  = ""
+
 count = 0
+length = 10
 word_nodes_dict = {}
-line_count = 0
-with open(enwik, "r", encoding="utf-8") as f:
-    print("Creating a list of words... .")
-    while True:
+charcters_read = 0
+
+
+with open("../../data/tmp/enwik8_dict_words", 'rb') as f1:
+    huffman_tree_words = pickle.load(f1)
+
+with open("../../data/tmp/enwik8_length", 'rb') as f2:
+    length = pickle.load(f2)
+
+with open("../../data/tmp/enwik8_characters_read", 'rb') as f3:
+    charcters_read = pickle.load(f3)
+
+
+
+
+for length in range(10,101):
+    # working for length 1
+
+    while len(my_string) < length;
         line = f.readline()
-        count = count + 1
-        line_count = line_count + 1
-        print("Creating the words dict - " + str((line_count * 100) / total_number_of_lines))
-        if not line:
-            print("End of file")
-            break
 
-        words = re.findall(r'\w+', line)
+    length = length + 1
 
-        for word in words:
-            if word in word_nodes_dict:
-                node: Node = word_nodes_dict[word]
-                node.frequency = node.frequency + 1
+    while True:
+        with open(enwik, "r", encoding="utf-8") as f:
+
+            print("Creating a list of words.....")
+            while len(my_string) < length:
+                line = f.readline(1)
+                my_string = my_string + line
+
+            while len(my_string) < charcters_read:
+                line = f.readline(1)
+                str_to_compare = str_to_compare + line
+                str_to_compare = str_to_compare[1:]
+            my_string = my_string[-length:]
+
+            charcters_read = charcters_read + 1
+
+            if my_string in word_nodes_dict:
+                continue;
             else:
-                node = Node(word, 1)
-                word_nodes_dict[word] = node
+                node = Node(my_string, 1)
+                word_nodes_dict[my_string] = node
 
-print("total number of lines =  " + str(count))
+            str_to_compare = my_string
+            while True:
+                line = f.readline(1)
+                count = count + 1
+
+                if count % 10000 == 0:
+                    print("Creating the words dict - " + str((count * 100) / 101128023))
+                if not line:
+                    print("End of file")
+                    break
+
+                str_to_compare = str_to_compare + line
+                str_to_compare = str_to_compare[1:]
+
+                if my_string == str_to_compare:
+                    if my_string in word_nodes_dict:
+                        node: Node = word_nodes_dict[my_string]
+                        node.frequency = node.frequency + 1
+
+            print("total number of lines =  " + str(count))
 
 
-print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
-final_word_nodes_dict = {}
-for key, value in word_nodes_dict.items():
-    if value.frequency > 1:
-        final_word_nodes_dict[key] = value
+            print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
+            final_word_nodes_dict = {}
+            for key, value in word_nodes_dict.items():
+                if value.frequency > 1:
+                    final_word_nodes_dict[key] = value
+
+            print("Converting the final dict into a list of nodes")
+            word_nodes_list = []
+            for key, value in final_word_nodes_dict.items():
+                word_nodes_list.append(value)
+
+            word_nodes_list.sort(key=lambda x: x.frequency, reverse=False)
+
+            print("The entire contents after the sorting and node creations")
+            print_a_list(word_nodes_list)
+
+            word_huffman_tree = []
+            for value in word_nodes_list:
+                word_huffman_tree.append(value)
+
+            print("Iterating and merging the nodes until only one remains")
+            while len(word_huffman_tree) > 1:
+                huffman_iteration(word_huffman_tree)
+            print_a_list(word_huffman_tree)
+
+            encode_the_node(word_huffman_tree[0])
+            print_a_list(word_huffman_tree)
+
+            with open("../../data/tmp/enwik8_dict_words", 'wb') as f4:
+                # Pickle the 'data' dictionary using the highest protocol available.
+                pickle.dump(word_nodes_dict, f4, pickle.HIGHEST_PROTOCOL)
+
+            with open("../../data/tmp/enwik8_length", 'wb') as f5:
+                # Pickle the 'data' dictionary using the highest protocol available.
+                pickle.dump(length, f5, pickle.HIGHEST_PROTOCOL)
+
+            with open("../../data/tmp/enwik8_characters_read", 'wb') as f6:
+                # Pickle the 'data' dictionary using the highest protocol available.
+                pickle.dump(charcters_read, f6, pickle.HIGHEST_PROTOCOL)
 
 
-print("Converting the final dict into a list of nodes")
-word_nodes_list = []
-for key, value in final_word_nodes_dict.items():
-    word_nodes_list.append(value)
-
-word_nodes_list.sort(key=lambda x: x.frequency, reverse=False)
-
-
-with open("../../data/tmp/analysis/enwik8_dict__words", 'w', encoding="utf-8") as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    for value in word_nodes_list:
-        f.write(value.character + " - " + str(value.frequency) + "\n")
+    charcters_read = 0

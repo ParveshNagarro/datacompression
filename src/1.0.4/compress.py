@@ -95,8 +95,9 @@ with open(enwik_output, "w+b") as fo:
                         string_to_write = encoded_contents
                         encoded_contents = ""
                         cutoff = 8 - len(string_to_write)
-                        bytes_array.append(int(string_to_write, 2))
                         string_to_write = encoded_contents + ("0" * cutoff)
+                        bytes_array.append(int(string_to_write, 2))
+
 
                 fo.write(bytearray(bytes_array))
 

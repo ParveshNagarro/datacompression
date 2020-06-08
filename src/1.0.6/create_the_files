@@ -1,0 +1,25 @@
+import io
+import pickle
+import re
+
+
+length = 10
+word_nodes_dict = []
+charcters_read = 0
+final_model_root = {}
+first_char = ""
+
+with open("../../data/tmp/enwik8_dict_words", 'wb') as f1:
+    pickle.dump(word_nodes_dict, f1, pickle.HIGHEST_PROTOCOL)
+
+with open("../../data/tmp/enwik8_length", 'wb') as f2:
+    pickle.dump(length, f2, pickle.HIGHEST_PROTOCOL)
+
+with open("../../data/tmp/enwik8_characters_read", 'wb') as f3:
+    pickle.dump(charcters_read, f3, pickle.HIGHEST_PROTOCOL)
+
+with open("../../data/tmp/enwik8_final_model", 'wb') as f4:
+    pickle.dump(final_model_root, f4, pickle.HIGHEST_PROTOCOL)
+
+with open("../../data/tmp/enwik8_first_node", 'wb') as f5:
+    pickle.dump(first_char, f5, pickle.HIGHEST_PROTOCOL)
