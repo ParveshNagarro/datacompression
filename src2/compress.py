@@ -44,6 +44,7 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
             c = f.readline()
             if newCount % 10000 == 0:
                 print("Compressing - " + str((newCount * 100) / total_number_of_lines))
+                print("--- %s seconds ---" % (time.time() - start_time))
             newCount = newCount + 1
             if not c:
                 print("End of file. writing whatever is left")
@@ -119,3 +120,5 @@ print("--- %s seconds ---" % (time.time() - start_time))
 with open("../tmp/enwik8_first_word", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(first_word, f, pickle.HIGHEST_PROTOCOL)
+
+print("--- %s seconds ---" % (time.time() - start_time))

@@ -149,7 +149,8 @@ current_word = None
 with open(enwik, "r", encoding="utf-8") as f:
     while True:
         c = f.readline()
-        if newCount % 10000 == 0:
+        if newCount % 200000 == 0:
+            print("--- %s seconds ---" % (time.time() - start_time))
             print("Compressing - " + str((newCount * 100) / NUMBER_OF_LINES))
         newCount = newCount + 1
         if not c:

@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1eb468f1-20eb-4756-b3b5-8718622031f0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src2/compress.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src2/decompress.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src2/model-contd.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src2/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src2/tmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/datacompression.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/datacompression.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src2/analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src2/compress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src2/compress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src2/decompress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src2/decompress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src2/model-contd.py" beforeDir="false" afterPath="$PROJECT_DIR$/src2/model-contd.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +19,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src2/compress.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8">
-              <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+            <state relative-caret-position="221">
+              <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -33,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src2/decompress.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
+            <state relative-caret-position="85">
+              <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -48,8 +43,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="34" lean-forward="true" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+            <state relative-caret-position="-16">
+              <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src2/analysis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src2/model-contd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="200" column="22" lean-forward="true" selection-start-line="200" selection-start-column="22" selection-end-line="200" selection-end-column="22" />
+            <state relative-caret-position="673">
+              <caret line="187" column="43" selection-start-line="187" selection-start-column="43" selection-end-line="187" selection-end-column="43" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -66,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src2/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-132">
-              <caret line="151" column="51" selection-start-line="151" selection-start-column="20" selection-end-line="151" selection-end-column="51" />
+            <state relative-caret-position="113">
+              <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -112,8 +119,10 @@
       <find>huffman_map_words</find>
       <find>final</find>
       <find>encoded_string</find>
-      <find>encode_the_node</find>
       <find>&gt;=</find>
+      <find>MIN_FREQ_TO_BE_A_WORD</find>
+      <find>encode_the</find>
+      <find>encode_the_node</find>
       <find>convert_freq_map_to_huffman_map</find>
     </findStrings>
   </component>
@@ -147,15 +156,16 @@
         <option value="$PROJECT_DIR$/src1/decompress.py" />
         <option value="$PROJECT_DIR$/data/enwik9" />
         <option value="$PROJECT_DIR$/src1/model.py" />
-        <option value="$PROJECT_DIR$/src2/model-contd.py" />
-        <option value="$PROJECT_DIR$/src2/compress.py" />
-        <option value="$PROJECT_DIR$/src2/decompress.py" />
         <option value="$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py" />
         <option value="$PROJECT_DIR$/src2/model.py" />
+        <option value="$PROJECT_DIR$/src2/decompress.py" />
+        <option value="$PROJECT_DIR$/src2/model-contd.py" />
+        <option value="$PROJECT_DIR$/src2/analysis.py" />
+        <option value="$PROJECT_DIR$/src2/compress.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
     <option name="width" value="1619" />
@@ -222,7 +232,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.decompress (1)">
-    <configuration name="ReadAndWriteCharByChar" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="analysis" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="datacompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -234,7 +244,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src2/analysis.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -331,9 +341,9 @@
       <list>
         <item itemvalue="Python.decompress (1)" />
         <item itemvalue="Python.compress" />
+        <item itemvalue="Python.analysis" />
         <item itemvalue="Python.model-contd" />
         <item itemvalue="Python.model" />
-        <item itemvalue="Python.ReadAndWriteCharByChar" />
       </list>
     </recent_temporary>
   </component>
@@ -355,14 +365,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1294" height="694" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49386504" weight="0.24719101" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49386504" visible="true" weight="0.24661893" />
       <window_info id="Structure" order="1" sideWeight="0.506135" side_tool="true" weight="0.24741448" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.08896797" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4972156" weight="0.065836295" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4972156" weight="0.60854095" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4972156" visible="true" weight="0.3024911" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4972156" weight="0.4039146" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -375,13 +386,13 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49386504" weight="0.24719101" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49386504" weight="0.24661893" />
       <window_info id="Structure" order="1" sideWeight="0.506135" side_tool="true" weight="0.24741448" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.08896797" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4972156" weight="0.16548042" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4972156" visible="true" weight="0.37900355" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4972156" visible="true" weight="0.37188613" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4972156" weight="0.60854095" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -419,23 +430,38 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src2/model-contd.py</url>
-          <line>201</line>
+          <line>202</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src2/decompress.py</url>
-          <line>76</line>
+          <line>78</line>
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src2/decompress.py</url>
-          <line>82</line>
+          <line>84</line>
           <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src2/decompress.py</url>
-          <line>49</line>
+          <line>51</line>
           <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src2/model.py</url>
+          <line>151</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src2/model.py</url>
+          <line>145</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src2/analysis.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -443,12 +469,22 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
+        <expression-string>len(final_map)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>final_map[&quot;.&quot;][&quot;3&quot;]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
     </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>len(final_map)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>final_map[&quot;3&quot;]</expression-string>
         <language-id>Python</language-id>
@@ -617,27 +653,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py">
+    <entry file="file://$PROJECT_DIR$/src2/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="34" lean-forward="true" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src2/decompress.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
+        <state relative-caret-position="113">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src2/compress.py">
+    <entry file="file://$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        <state relative-caret-position="-16">
+          <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src2/analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -646,18 +682,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src2/model-contd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="200" column="22" lean-forward="true" selection-start-line="200" selection-start-column="22" selection-end-line="200" selection-end-column="22" />
+        <state relative-caret-position="673">
+          <caret line="187" column="43" selection-start-line="187" selection-start-column="43" selection-end-line="187" selection-end-column="43" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src2/model.py">
+    <entry file="file://$PROJECT_DIR$/src2/compress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-132">
-          <caret line="151" column="51" selection-start-line="151" selection-start-column="20" selection-end-line="151" selection-end-column="51" />
+        <state relative-caret-position="221">
+          <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src2/decompress.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

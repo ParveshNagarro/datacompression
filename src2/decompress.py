@@ -1,4 +1,5 @@
 import io
+import time
 import pickle
 
 #ENWIK_FILENAME = "../data/test.txt"
@@ -6,6 +7,7 @@ ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 TOTAL_COUNT = 469800763
 
+start_time = time.time()
 
 class Node:
     character: str
@@ -148,3 +150,5 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
         if len(output_final) > 0:
             f0.write(output_final)
+
+print("--- %s seconds ---" % (time.time() - start_time))
