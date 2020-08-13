@@ -202,15 +202,23 @@ with open(enwik, "r", encoding="utf-8") as f:
 final_huffman_map = {}
 for key,value in final_map.items():
     if len(value) > 0:
-        final_map[key] = convert_freq_map_to_huffman_map(value)
+        final_huffman_map[key] = convert_freq_map_to_huffman_map(value)
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 
+count_single = 0
+for k_111,v_111 in final_map.items():
+    if len(v_111) == 1:
+        count_single = count_single + 1
+
+print("count single " + str(count_single))
+
+
 with open("../tmp/enwik8_new_strucure_huffman_encoded", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(final_huffman_map, f, pickle.HIGHEST_PROTOCOL)
 
 
 print("--- %s seconds ---" % (time.time() - start_time))

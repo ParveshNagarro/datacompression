@@ -99,7 +99,9 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     first_word = new_word
                     current_word = first_word
                 else:
-                    encoded_contents = encoded_contents + final_map[current_word][new_word]
+                    if (len(final_map[current_word])) > 1:
+                        encoded_contents = encoded_contents + final_map[current_word][new_word]
+
                     current_word = new_word
 
 

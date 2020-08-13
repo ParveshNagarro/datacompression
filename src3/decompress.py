@@ -76,11 +76,12 @@ def convert_huffman_map_to_tree(huffman_map_input):
 
 
 
-final_map = {}
+final_map_encoded= {}
 with open("../tmp/enwik8_new_strucure_huffman_encoded", 'rb') as f:
-    final_map = pickle.load(f)
+    final_map_encoded= pickle.load(f)
 
-for key,value in final_map.items():
+final_map = {}
+for key,value in final_map_encoded.items():
     print("converting the final map to sub tree of the items")
     final_map[key] = convert_huffman_map_to_tree(value)[0]
 
@@ -132,8 +133,13 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                 if current_node is None:
                     current_node = final_map[current_word]
 
-                if character == "1":
+                while len(current_node.children) == 1:
+                    current_node = current_node.children[0]
+                    output_final = output_final + current_node.character
+                    current_word = current_node.character
+                    current_node = final_map[current_word]
 
+                if character == "1":
                     current_node = current_node.children[1]
                 else:
                     current_node = current_node.children[0]
@@ -143,6 +149,9 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     output_final = output_final + current_node.character
                     current_word = current_node.character
                     current_node = None
+
+                    # here keep updating directly if there is only one child
+
                     if len(output_final) > 8000:
                         tmp_output_final = output_final[:8]
                         output_final = output_final[8:]
