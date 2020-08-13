@@ -5,6 +5,8 @@ import sys
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
+MIN_FREQ_TO_BE_A_WORD = 2
+
 
 
 # Back up the reference to the exceptionhook
@@ -217,9 +219,31 @@ with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 
-with open("../tmp/enwik8_new_strucure_huffman_encoded", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_huffman_map, f, pickle.HIGHEST_PROTOCOL)
+huffman_map = {}
+huffman_map_words = {}
+for key, value in final_map.items():
+    if len(key) > 1:
+        total_freq = 0
+        for k,v in value.items():
+            total_freq = total_freq + v
+        if total_freq >= MIN_FREQ_TO_BE_A_WORD:
+            huffman_map_words[key] = 1
+        else:
+            for character_t in k:
+                huffman_map[character_t] = 1
+    else:
+        huffman_map[key] = 1
 
+    for k,v in value.items():
+        if v >= MIN_FREQ_TO_BE_A_WORD:
+            huffman_map_words[key + k] = 1
+
+with open("../tmp/enwik8_dict_huffman", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(huffman_map, f, pickle.HIGHEST_PROTOCOL)
+
+with open("../tmp/enwik8_dict_words_huffman", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(huffman_map_words, f, pickle.HIGHEST_PROTOCOL)
 
 print("--- %s seconds ---" % (time.time() - start_time))
