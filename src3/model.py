@@ -1,0 +1,177 @@
+import io
+import time
+import pickle
+import re
+
+#ENWIK_FILENAME = "../data/test.txt"
+ENWIK_FILENAME = "../data/enwik9"
+NUMBER_OF_LINES =  13147026
+MIN_FREQ_TO_BE_A_WORD = 2
+
+
+class Node:
+    character: str
+    encoded_string: str
+    frequency: int
+    children: []
+    followers:{}
+
+    def __init__(self, character: str, frequency: int):
+        self.character = character
+        self.frequency = frequency
+        self.children = []
+        self.encoded_string = ""
+
+
+def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName) :
+    print("Converting the final dict into a list of nodes")
+
+    word_nodes_list = []
+    for key, value in final_word_nodes_dict.items():
+        new_node = Node(key, value)
+        word_nodes_list.append(new_node)
+
+    word_nodes_list.sort(key=lambda x: x.frequency, reverse=False)
+
+    tmp_words_nodes_list = []
+    for word in word_nodes_list:
+        tmp_words_nodes_list.append(word)
+
+    tmp_words_nodes_list.sort(key=lambda x: x.frequency, reverse=True)
+
+    with open(fileName, "w", encoding="utf8") as f:
+        for node_tmp_1 in tmp_words_nodes_list:
+            f.write(node_tmp_1.character + " - " + str(node_tmp_1.frequency) + "\n")
+
+    word_huffman_tree = []
+    for value in word_nodes_list:
+        word_huffman_tree.append(value)
+
+    print("Iterating and merging the nodes until only one remains")
+    while len(word_huffman_tree) > 1:
+        huffman_iteration(word_huffman_tree)
+
+    encode_the_node(word_huffman_tree[0])
+
+    result = {}
+    for node_tmp in tmp_words_nodes_list:
+        result[node_tmp.character] = node_tmp.encoded_string
+
+    return result
+
+
+def huffman_iteration(huffman_tree_to_iterate):
+    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
+    node1 = huffman_tree_to_iterate.pop(0)
+    node2 = huffman_tree_to_iterate.pop(0)
+    print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
+        node1.frequency + node2.frequency))
+    new_node = Node(node1.character + node2.character, node1.frequency + node2.frequency)
+    new_node.children.append(node1)
+    new_node.children.append(node2)
+    huffman_tree_to_iterate.append(new_node)
+    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
+
+
+def encode_the_node(node):
+    print("The current node to encode is " + str(node.frequency) + "-" + node.character)
+    if node.children is not None and 0 < len(node.children):
+        print("Encoding the node " + str(node.frequency) + "-" + node.character)
+        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
+        node.children[0].encoded_string = node.encoded_string + "0"
+        encode_the_node(node.children[0])
+        if len(node.children) > 1:
+            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
+            node.children[1].encoded_string = node.encoded_string + "1"
+            encode_the_node(node.children[1])
+    else:
+        print("Nothing to encode in this node as there are either no children")
+
+
+def print_a_node(node):
+    string_to_print = str(node.frequency) + "-" + node.character + "-" + node.encoded_string
+    if node.children is not None and 0 < len(node.children):
+        string_to_print += "-> \n\t"
+        string_to_print += print_a_node(node.children[0]) + " , "
+        if len(node.children) > 1:
+            string_to_print += print_a_node(node.children[1])
+    return string_to_print
+
+
+def print_a_list(nodes_list_to_print):
+    print("printing a list")
+    for node_to_print in nodes_list_to_print:
+        print(print_a_node(node_to_print))
+
+
+# the program starts here
+
+print("Here goes nothing!!!")
+total_number_of_lines = NUMBER_OF_LINES
+enwik: str = ENWIK_FILENAME
+print("Reading the file " + enwik)
+
+
+start_time = time.time()
+
+count = 0
+words_freq_dict = {}
+line_count = 0
+
+
+print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
+final_words_freq_dict = {}
+for key, value in words_freq_dict.items():
+    if value >= MIN_FREQ_TO_BE_A_WORD:
+        final_words_freq_dict[key] = value
+
+huffman_map_words = {}
+
+with open("../tmp/enwik8_dict_words_huffman", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(huffman_map_words, f, pickle.HIGHEST_PROTOCOL)
+
+print("creating the characters huffman tree now")
+
+count = 0
+nodes_dict = {}
+with open(enwik, "r", encoding="utf-8") as f:
+    print("The current approach is a little bit better so reading only one character at a time.")
+    while True:
+        letter = f.readline(1)
+        count = count + 1
+        if count % 1000000 == 0:
+            print("------" + letter + "---" + str(count))
+        if not letter:
+            print("End of file")
+            break
+        if letter in nodes_dict:
+            nodes_dict[letter] = nodes_dict[letter] + 1
+        else:
+            nodes_dict[letter] = 1
+
+print("total number of lines =  " + str(count))
+
+print("Subtracting the frequencies that are being used by the words  ")
+for key, value in final_words_freq_dict.items():
+    word_string:str = key
+    word_freq:int = value
+    for letter_part_of_word in word_string:
+        nodes_dict[letter_part_of_word] = nodes_dict[letter_part_of_word] - word_freq
+
+
+print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
+final_nodes_dict = {}
+for key, value in nodes_dict.items():
+    if value > 0:
+        final_nodes_dict[key] = value
+
+huffman_map = convert_freq_map_to_huffman_map(final_nodes_dict, "../tmp/frequency_distro_chars")
+
+with open("../tmp/enwik8_dict_huffman", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(huffman_map, f, pickle.HIGHEST_PROTOCOL)
+
+print("--- %s seconds ---" % (time.time() - start_time))
