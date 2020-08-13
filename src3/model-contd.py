@@ -123,6 +123,19 @@ def print_a_list(nodes_list_to_print):
         print(print_a_node(node_to_print))
 
 
+def find_all_indexes(input_str, search_str):
+    l1 = []
+    length = len(input_str)
+    index = 0
+    while index < length:
+        i = input_str.find(search_str, index)
+        if i == -1:
+            return l1
+        l1.append(i)
+        index = i + 1
+    return l1
+
+
 start_time = time.time()
 
 huffman_map_words = {}
@@ -158,24 +171,13 @@ with open(enwik, "r", encoding="utf-8") as f:
 
             break
 
-        line_all_words = {}
-        words_in_line = re.findall(r'\w+', c)
-        for word in words_in_line:
-            if word in huffman_map_words:
-                line_all_words[word] = huffman_map_words[word]
-
         line_words_pos_dict = {}
-        for key, value in line_all_words.items():
-            cursor = 0
-            index:int = c.find(key, cursor)
-            while index != -1:
-                if index in line_words_pos_dict.keys():
-                    if len(line_words_pos_dict[index]) < len(key):
-                        line_words_pos_dict[index] = key
-                else:
-                    line_words_pos_dict[index] = key
-                cursor = cursor + len(key)
-                index: int = c.find(key, cursor)
+
+        for key, value in huffman_map_words.items():
+            indices = find_all_indexes(c, key)
+
+            for m in indices:
+                line_words_pos_dict[m] = key
 
         iter_index = 0
         while iter_index < len(c):
