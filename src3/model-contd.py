@@ -175,6 +175,7 @@ with open(enwik, "r", encoding="utf-8") as f:
 
         line_words_pos_dict = {}
 
+#TODO- come up with some optimization for this
         for key, value in huffman_map_words.items():
             indices = find_all_indexes(c, key)
 
@@ -219,6 +220,7 @@ with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 
+#TODO - either come up with a solid analysis of combining the words or just use this for trial and error
 huffman_map = {}
 huffman_map_words = {}
 for key, value in final_map.items():
