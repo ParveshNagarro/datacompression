@@ -122,6 +122,7 @@ def print_a_list(nodes_list_to_print):
     for node_to_print in nodes_list_to_print:
         print(print_a_node(node_to_print))
 
+
 def find_all_indexes(input_str, search_str):
     l1 = []
     length = len(input_str)
@@ -167,6 +168,7 @@ with open(enwik, "r", encoding="utf-8") as f:
         newCount = newCount + 1
         if not c:
             print("End of file. writing whatever is left")
+
             break
 
         line_words_pos_dict = {}
@@ -176,7 +178,6 @@ with open(enwik, "r", encoding="utf-8") as f:
 
             for m in indices:
                 line_words_pos_dict[m] = key
-
 
         iter_index = 0
         while iter_index < len(c):
