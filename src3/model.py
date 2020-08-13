@@ -6,7 +6,7 @@ import re
 #ENWIK_FILENAME = "../data/test.txt"
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
-MIN_FREQ_TO_BE_A_WORD = 2
+MIN_FREQ_TO_BE_A_WORD = 500
 
 
 class Node:
@@ -119,6 +119,28 @@ start_time = time.time()
 count = 0
 words_freq_dict = {}
 line_count = 0
+with open(enwik, "r", encoding="utf-8") as f:
+    print("Creating a list of words... .")
+    while True:
+        line = f.readline()
+        count = count + 1
+        line_count = line_count + 1
+        if line_count % 10000 == 0:
+            print("Creating the words dict - " + str((line_count * 100) / total_number_of_lines))
+        if not line:
+            print("End of file")
+            break
+
+        words = re.findall(r'\w+', line)
+
+        for word in words:
+            if len(word) > 1:
+                if word in words_freq_dict:
+                    words_freq_dict[word] = words_freq_dict[word] + 1
+                else:
+                    words_freq_dict[word] = 1
+
+print("total number of lines =  " + str(count))
 
 
 print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
@@ -127,7 +149,7 @@ for key, value in words_freq_dict.items():
     if value >= MIN_FREQ_TO_BE_A_WORD:
         final_words_freq_dict[key] = value
 
-huffman_map_words = {}
+huffman_map_words = convert_freq_map_to_huffman_map(final_words_freq_dict, "../tmp/frequency_distro_words")
 
 with open("../tmp/enwik8_dict_words_huffman", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
