@@ -1,6 +1,6 @@
 ENWIK__OUTPUT_FILENAME = "../data/enwik9"
 ENWIK_FILENAME = "../data/enwik91"
-EXPECTED_CHAR_COUNT = 10
+EXPECTED_CHAR_COUNT = 10000000
 
 
 count  = 0

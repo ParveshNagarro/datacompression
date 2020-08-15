@@ -5,6 +5,9 @@ import sys
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
+MIN_FREQ_TO_BE_A_WORD = 500
+MIN_FREQ_TO_BE_A_COMBINED_WORD = 1000
+DISPLAY_CONTROL = 200000
 
 
 # Back up the reference to the exceptionhook
@@ -138,81 +141,153 @@ def find_all_indexes(input_str, search_str):
 
 start_time = time.time()
 
+huffman_combined_words = {}
+with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
+    huffman_combined_words = pickle.load(f)
+
 huffman_map_words = {}
-with open("../tmp/enwik8_dict_words_huffman", 'rb') as f:
+with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
     huffman_map_words = pickle.load(f)
 
 huffman_map = {}
-with open("../tmp/enwik8_dict_huffman", 'rb') as f:
+with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
     huffman_map = pickle.load(f)
 
-encoded_contents = ""
 
 print("Reading the dicts is complete, now creating the new structure.")
 
-cutoff = 0
-
-enwik: str = ENWIK_FILENAME
-count = 100000000
-
 final_map = {}
+final_map_words = {}
+final_map_combined_words = {}
 
-newCount = 0
+count = 0
 current_word = None
-with open(enwik, "r", encoding="utf-8") as f:
+with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
     while True:
         c = f.readline()
-        if newCount % 200000 == 0:
+        if count % DISPLAY_CONTROL == 0:
             print("--- %s seconds ---" % (time.time() - start_time))
-            print("Compressing - " + str((newCount * 100) / NUMBER_OF_LINES))
-        newCount = newCount + 1
+            print("Compressing - " + str((count * 100) / NUMBER_OF_LINES))
+        count = count + 1
+
         if not c:
             print("End of file. writing whatever is left")
-
             break
 
+        line_all_words = {}
+        words_in_line = re.findall(r'\w+', c)
+        for word in words_in_line:
+            if word in huffman_map_words:
+                line_all_words[word] = huffman_map_words[word]
+
         line_words_pos_dict = {}
+        for key, value in line_all_words.items():
+            cursor = 0
+            index:int = c.find(key, cursor)
+            while index != -1:
+                if index in line_words_pos_dict.keys():
+                    if len(line_words_pos_dict[index]) < len(key):
+                        line_words_pos_dict[index] = key
+                else:
+                    line_words_pos_dict[index] = key
+                cursor = cursor + len(key)
+                index: int = c.find(key, cursor)
 
-        for key, value in huffman_map_words.items():
-            indices = find_all_indexes(c, key)
-
-            for m in indices:
-                line_words_pos_dict[m] = key
+        for key, value in huffman_combined_words .items():
+            cursor = 0
+            index:int = c.find(key, cursor)
+            while index != -1:
+                if index in line_words_pos_dict:
+                    if len(line_words_pos_dict[index]) < len(key):
+                        line_words_pos_dict[index] = key
+                else:
+                    line_words_pos_dict[index] = key
+                cursor = cursor + len(key)
+                index: int = c.find(key, cursor)
 
         iter_index = 0
         while iter_index < len(c):
             new_word = None
-            if iter_index in line_words_pos_dict.keys():
+            if iter_index in line_words_pos_dict:
                 new_word = line_words_pos_dict[iter_index]
                 iter_index = iter_index + len(line_words_pos_dict[iter_index])
             else:
                 new_word = c[iter_index]
                 iter_index = iter_index + 1
 
+
             if current_word is None:
                 current_word = new_word
-                final_map[new_word] = {}
+
+                map_to_use = final_map
+                if len(new_word) > 1:
+                    if new_word in huffman_combined_words:
+                        map_to_use = final_map_combined_words
+                    else:
+                        map_to_use = final_map_words
+                map_to_use[new_word] = {}
             else:
-                if new_word not in final_map:
-                    final_map[new_word] = {}
-                if new_word not in final_map[current_word]:
-                    final_map[current_word][new_word] = 1
+
+                map_to_use = final_map
+                if len(new_word) > 1:
+                    if new_word in huffman_combined_words:
+                        map_to_use = final_map_combined_words
+                    else:
+                        map_to_use = final_map_words
+                if new_word not in map_to_use:
+                    map_to_use[new_word] = {}
+
+                map_to_use = final_map
+                if len(current_word) > 1:
+                    if current_word in huffman_combined_words:
+                        map_to_use = final_map_combined_words
+                    else:
+                        map_to_use = final_map_words
+                if new_word not in map_to_use[current_word]:
+                    map_to_use[current_word][new_word] = 1
                 else:
-                    final_map[current_word][new_word] = final_map[current_word][new_word] + 1
+                    map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
+
                 current_word = new_word
 
-final_huffman_map = {}
-for key,value in final_map.items():
-    if len(value) > 0:
-        final_huffman_map[key] = convert_freq_map_to_huffman_map(value)
+for key, value in final_map_combined_words:
+    total_freq = 0
+    for k,v in value.items():
+        total_freq = total_freq + v
+    if total_freq < MIN_FREQ_TO_BE_A_COMBINED_WORD:
+        for character_t in key:
+            if character_t not in final_map:
+                final_map[character_t] = {}
+        del final_map_combined_words[key]
+    else:
+        for k, v in value.items():
+            if v > MIN_FREQ_TO_BE_A_COMBINED_WORD:
+                final_map_combined_words[key + k] = {}
+
+for key, value in final_map_words:
+    total_freq = 0
+    for k,v in value.items():
+        total_freq = total_freq + v
+    if total_freq < MIN_FREQ_TO_BE_A_WORD:
+        for character_t in key:
+            if character_t not in final_map:
+                final_map[character_t] = {}
+        del final_map_words[key]
+    else:
+        for k, v in value.items():
+            if v > MIN_FREQ_TO_BE_A_COMBINED_WORD:
+                final_map_combined_words[key + k] = {}
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 
-with open("../tmp/enwik8_new_strucure_huffman_encoded", 'wb') as f:
+with open("../tmp/enwik8_new_strucure_freq_distro_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_huffman_map, f, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
 
+with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
 
 print("--- %s seconds ---" % (time.time() - start_time))

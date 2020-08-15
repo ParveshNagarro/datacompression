@@ -6,6 +6,7 @@ import time
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 ENWIK_OUTPUT: str = "../tmp/enwik8_compressed"
+DISPLAY_CONTROL = 200000
 
 def find_all_indexes(input_str, search_str):
     l1 = []
@@ -25,17 +26,16 @@ first_word = None
 start_time = time.time()
 
 
+final_map_combined_words = {}
+with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f:
+    final_map_combined_words = pickle.load(f)
 
-huffman_map_words = {}
-with open("../tmp/enwik8_dict_words_huffman", 'rb') as f:
-    huffman_map_words = pickle.load(f)
-
-huffman_map = {}
-with open("../tmp/enwik8_dict_huffman", 'rb') as f:
-    huffman_map = pickle.load(f)
+final_map_words = {}
+with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'rb') as f:
+    final_map_words = pickle.load(f)
 
 final_map = {}
-with open("../tmp/enwik8_new_strucure_huffman_encoded", 'rb') as f:
+with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
 
 encoded_contents = ""
@@ -48,7 +48,6 @@ cutoff = 0
 first_word = None
 current_word = None
 
-
 newCount = 0
 total_number_of_lines = NUMBER_OF_LINES
 print("doing the compression")
@@ -56,7 +55,7 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
     with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         while True:
             c = f.readline()
-            if newCount % 10000 == 0:
+            if newCount % DISPLAY_CONTROL == 0:
                 print("Compressing - " + str((newCount * 100) / total_number_of_lines))
                 print("--- %s seconds ---" % (time.time() - start_time))
             newCount = newCount + 1
@@ -78,19 +77,42 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 fo.write(bytearray(bytes_array))
 
                 break
+            line_all_words = {}
+            words_in_line = re.findall(r'\w+', c)
+            for word in words_in_line:
+                if word in final_map_words:
+                    line_all_words[word] = final_map_words[word]
 
             line_words_pos_dict = {}
+            for key, value in line_all_words.items():
+                cursor = 0
+                index: int = c.find(key, cursor)
+                while index != -1:
+                    if index in line_words_pos_dict:
+                        if len(line_words_pos_dict[index]) < len(key):
+                            line_words_pos_dict[index] = key
+                    else:
+                        line_words_pos_dict[index] = key
+                    cursor = cursor + len(key)
+                    index: int = c.find(key, cursor)
 
-            for key, value in huffman_map_words.items():
-                indices = find_all_indexes(c, key)
+            for key, value in final_map_combined_words.items():
+                cursor = 0
+                index: int = c.find(key, cursor)
+                while index != -1:
+                    if index in line_words_pos_dict:
+                        if len(line_words_pos_dict[index]) < len(key):
+                            line_words_pos_dict[index] = key
+                    else:
+                        line_words_pos_dict[index] = key
+                    cursor = cursor + len(key)
+                    index: int = c.find(key, cursor)
 
-                for m in indices:
-                    line_words_pos_dict[m] = key
 
             iter_index = 0
             while iter_index < len(c):
                 new_word = None
-                if iter_index in line_words_pos_dict.keys():
+                if iter_index in line_words_pos_dict:
                     new_word = line_words_pos_dict[iter_index]
                     iter_index = iter_index + len(line_words_pos_dict[iter_index])
                 else:
@@ -101,8 +123,16 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     first_word = new_word
                     current_word = first_word
                 else:
-                    if (len(final_map[current_word])) > 1:
-                        encoded_contents = encoded_contents + final_map[current_word][new_word]
+
+                    map_to_use = final_map
+                    if len(current_word) > 1:
+                        if current_word in final_map_combined_words:
+                            map_to_use = final_map_combined_words
+                        else:
+                            map_to_use = final_map_words
+
+                    if (len(final_map[map_to_use])) > 1:
+                        encoded_contents = encoded_contents + map_to_use[current_word][new_word]
 
                     current_word = new_word
 

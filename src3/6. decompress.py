@@ -2,7 +2,6 @@ import io
 import time
 import pickle
 
-#ENWIK_FILENAME = "../data/test.txt"
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 TOTAL_COUNT = 469800763
@@ -75,13 +74,29 @@ def convert_huffman_map_to_tree(huffman_map_input):
     return result_huffman_tree
 
 
+final_map_combined_words = {}
+with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f:
+    final_map_combined_words = pickle.load(f)
 
-final_map_encoded= {}
-with open("../tmp/enwik8_new_strucure_huffman_encoded", 'rb') as f:
-    final_map_encoded= pickle.load(f)
+final_map_words = {}
+with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'rb') as f:
+    final_map_words = pickle.load(f)
 
 final_map = {}
-for key,value in final_map_encoded.items():
+with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
+    final_map = pickle.load(f)
+
+
+for key,value in final_map_combined_words.items():
+    print("converting the final map to sub tree of the items")
+    final_map_combined_words[key] = convert_huffman_map_to_tree(value)[0]
+
+for key,value in final_map_words.items():
+    print("converting the final map to sub tree of the items")
+    final_map_words[key] = convert_huffman_map_to_tree(value)[0]
+
+
+for key,value in final_map.items():
     print("converting the final map to sub tree of the items")
     final_map[key] = convert_huffman_map_to_tree(value)[0]
 
@@ -91,7 +106,7 @@ cutoff = 0
 with open("../tmp/enwik8_cutoff", 'rb') as f:
     cutoff_in = pickle.load(f)
 
-first_word = ""
+
 first_word = ""
 with open("../tmp/enwik8_first_word", 'rb') as f:
     first_word = pickle.load(f)
@@ -130,14 +145,31 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
 
             for character in tmp_decoding_string:
+
                 if current_node is None:
-                    current_node = final_map[current_word]
+
+                    map_to_use = final_map
+                    if len(current_word) > 1:
+                        if current_word in final_map_combined_words:
+                            map_to_use = final_map_combined_words
+                        else:
+                            map_to_use = final_map_words
+
+                    current_node = map_to_use[current_word]
 
                 while len(current_node.children) == 1:
                     current_node = current_node.children[0]
                     output_final = output_final + current_node.character
                     current_word = current_node.character
-                    current_node = final_map[current_word]
+
+                    map_to_use = final_map
+                    if len(current_word) > 1:
+                        if current_word in final_map_combined_words:
+                            map_to_use = final_map_combined_words
+                        else:
+                            map_to_use = final_map_words
+
+                    current_node = map_to_use[current_word]
 
                 if character == "1":
                     current_node = current_node.children[1]
@@ -152,7 +184,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                     # here keep updating directly if there is only one child
 
-                    if len(output_final) > 8000:
+                    if len(output_final) > 8:
                         tmp_output_final = output_final[:8]
                         output_final = output_final[8:]
                         f0.write(tmp_output_final)

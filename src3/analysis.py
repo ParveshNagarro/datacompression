@@ -11,17 +11,8 @@ first_word = None
 
 start_time = time.time()
 
-
-huffman_map_words = {}
-with open("../tmp/enwik8_dict_words_huffman", 'rb') as f:
-    huffman_map_words = pickle.load(f)
-
-huffman_map = {}
-with open("../tmp/enwik8_dict_huffman", 'rb') as f:
-    huffman_map = pickle.load(f)
-
 final_map = {}
-with open("../tmp/enwik8_new_strucure_huffman_encoded", 'rb') as f:
+with open("../tmp - Copy/enwik8_new_strucure_freq_distro", 'rb') as f:
     final_map = pickle.load(f)
 
 count = 0
