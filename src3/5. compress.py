@@ -6,7 +6,7 @@ import time
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 ENWIK_OUTPUT: str = "../tmp/enwik8_compressed"
-DISPLAY_CONTROL = 200000
+DISPLAY_CONTROL = 2000
 
 def find_all_indexes(input_str, search_str):
     l1 = []
@@ -29,6 +29,17 @@ start_time = time.time()
 final_map_combined_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f:
     final_map_combined_words = pickle.load(f)
+
+combined_words_helper = {}
+
+for key, value in final_map_combined_words.items():
+    words_in_line = re.findall(r'\w+', key)
+    for word in words_in_line:
+        if word in combined_words_helper:
+            combined_words_helper[word].append(key)
+        else:
+            combined_words_helper[word] = [key]
+
 
 final_map_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'rb') as f:
@@ -96,7 +107,14 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     cursor = cursor + len(key)
                     index: int = c.find(key, cursor)
 
-            for key, value in final_map_combined_words.items():
+            combined_words_helper_client = {}
+            for word in words_in_line:
+                if word in combined_words_helper:
+                    list_of_combined_word = combined_words_helper[word]
+                    for combined_word in list_of_combined_word:
+                        combined_words_helper_client[combined_word] = final_map_combined_words[combined_word]
+
+            for key, value in combined_words_helper_client.items():
                 cursor = 0
                 index: int = c.find(key, cursor)
                 while index != -1:
@@ -131,8 +149,12 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                         else:
                             map_to_use = final_map_words
 
-                    if (len(final_map[map_to_use])) > 1:
-                        encoded_contents = encoded_contents + map_to_use[current_word][new_word]
+                    if (len(map_to_use[current_word])) > 1:
+                        if new_word in map_to_use[current_word]:
+                            encoded_contents = encoded_contents + map_to_use[current_word][new_word]
+                        else:
+                            print("erro")
+
 
                     current_word = new_word
 

@@ -2,13 +2,13 @@ import pickle
 import re
 import time
 import sys
+import datetime
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 MIN_FREQ_TO_BE_A_WORD = 500
 MIN_FREQ_TO_BE_A_COMBINED_WORD = 1000
-DISPLAY_CONTROL = 200000
-
+DISPLAY_CONTROL = 2000
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
@@ -145,6 +145,16 @@ huffman_combined_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
     huffman_combined_words = pickle.load(f)
 
+combined_words_helper = {}
+
+for key, value in huffman_combined_words.items():
+    words_in_line = re.findall(r'\w+', key)
+    for word in words_in_line:
+        if word in combined_words_helper:
+            combined_words_helper[word].append(key)
+        else:
+            combined_words_helper[word] = [key]
+
 huffman_map_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
     huffman_map_words = pickle.load(f)
@@ -168,6 +178,8 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         if count % DISPLAY_CONTROL == 0:
             print("--- %s seconds ---" % (time.time() - start_time))
             print("Compressing - " + str((count * 100) / NUMBER_OF_LINES))
+            now = datetime.datetime.now()
+            print(now.strftime("%Y-%m-%d %H:%M:%S"))
         count = count + 1
 
         if not c:
@@ -193,7 +205,15 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                 cursor = cursor + len(key)
                 index: int = c.find(key, cursor)
 
-        for key, value in huffman_combined_words .items():
+        combined_words_helper_client = {}
+        for word in words_in_line:
+            if word in combined_words_helper:
+                combined_word = combined_words_helper[word]
+                list_of_combined_word = combined_words_helper[word]
+                for combined_word in list_of_combined_word:
+                    combined_words_helper_client[combined_word] = huffman_combined_words[combined_word]
+
+        for key, value in combined_words_helper_client .items():
             cursor = 0
             index:int = c.find(key, cursor)
             while index != -1:
