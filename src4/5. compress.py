@@ -44,13 +44,13 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict,current_word) :
         new_node = Node(key, value)
         word_nodes_list.append(new_node)
 
-    word_nodes_list.sort(key=lambda x: x.frequency, reverse=False)
+    word_nodes_list.sort(key=lambda x: (x.frequency, x.character), reverse=False)
 
     tmp_words_nodes_list = []
     for word in word_nodes_list:
         tmp_words_nodes_list.append(word)
 
-    tmp_words_nodes_list.sort(key=lambda x: x.frequency, reverse=True)
+    tmp_words_nodes_list.sort(key=lambda x: (x.frequency, x.character), reverse=True)
 
     word_huffman_tree = []
     for value in word_nodes_list:
@@ -78,7 +78,7 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict,current_word) :
 
 def huffman_iteration(huffman_tree_to_iterate):
     #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
-    huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
+    huffman_tree_to_iterate.sort(key=lambda x: (x.frequency, x.character), reverse=False)
     node1 = huffman_tree_to_iterate.pop(0)
     node2 = huffman_tree_to_iterate.pop(0)
     #print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
@@ -88,7 +88,7 @@ def huffman_iteration(huffman_tree_to_iterate):
     new_node.children.append(node2)
     huffman_tree_to_iterate.append(new_node)
     #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
-    huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
+    huffman_tree_to_iterate.sort(key=lambda x: (x.frequency, x.character), reverse=False)
 
 
 def encode_the_node(node):
