@@ -36,8 +36,8 @@ class Node:
         self.encoded_string = ""
 
 
-def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
-    print("Converting the final dict into a list of nodes")
+def convert_freq_map_to_huffman_map(final_word_nodes_dict,current_word) :
+    print("Converting the final dict into a list of nodes------" +  current_word + "-------" + str(len(final_word_nodes_dict)))
 
     word_nodes_list = []
     for key, value in final_word_nodes_dict.items():
@@ -52,15 +52,11 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
 
     tmp_words_nodes_list.sort(key=lambda x: x.frequency, reverse=True)
 
-    with open(fileName, "w", encoding="utf8") as f:
-        for node_tmp_1 in tmp_words_nodes_list:
-            f.write(node_tmp_1.character + " - " + str(node_tmp_1.frequency) + "\n")
-
     word_huffman_tree = []
     for value in word_nodes_list:
         word_huffman_tree.append(value)
 
-    print("Iterating and merging the nodes until only one remains")
+    #print("Iterating and merging the nodes until only one remains")
     if len(word_huffman_tree) > 1:
         while len(word_huffman_tree) > 1:
             huffman_iteration(word_huffman_tree)
@@ -81,33 +77,33 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
 
 
 def huffman_iteration(huffman_tree_to_iterate):
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
     node1 = huffman_tree_to_iterate.pop(0)
     node2 = huffman_tree_to_iterate.pop(0)
-    print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
-        node1.frequency + node2.frequency))
+    #print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
+        #node1.frequency + node2.frequency))
     new_node = Node(node1.character + node2.character, node1.frequency + node2.frequency)
     new_node.children.append(node1)
     new_node.children.append(node2)
     huffman_tree_to_iterate.append(new_node)
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
 
 
 def encode_the_node(node):
-    print("The current node to encode is " + str(node.frequency) + "-" + node.character)
+    #print("The current node to encode is " + str(node.frequency) + "-" + node.character)
     if node.children is not None and 0 < len(node.children):
-        print("Encoding the node " + str(node.frequency) + "-" + node.character)
-        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
+        #print("Encoding the node " + str(node.frequency) + "-" + node.character)
+        #print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
         node.children[0].encoded_string = node.encoded_string + "0"
         encode_the_node(node.children[0])
         if len(node.children) > 1:
-            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
+            #print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
             node.children[1].encoded_string = node.encoded_string + "1"
             encode_the_node(node.children[1])
-    else:
-        print("Nothing to encode in this node as there are either no children")
+#    else:
+#        print("Nothing to encode in this node as there are either no children")
 
 
 def print_a_node(node):
@@ -189,6 +185,8 @@ cutoff = 0
 first_word = None
 current_word = None
 
+map_containing_keys_to_delete = {}
+
 newCount = 0
 total_number_of_lines = NUMBER_OF_LINES
 print("doing the compression")
@@ -242,7 +240,8 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 if word in combined_words_helper:
                     list_of_combined_word = combined_words_helper[word]
                     for combined_word in list_of_combined_word:
-                        combined_words_helper_client[combined_word] = final_map_combined_words[combined_word]
+                        if combined_word in final_map_combined_words:
+                            combined_words_helper_client[combined_word] = final_map_combined_words[combined_word]
 
             for key, value in combined_words_helper_client.items():
                 cursor = 0
@@ -282,8 +281,6 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                             map_to_use = final_map_words
                             freq_map_to_use = final_frequency_map_words
 
-
-
                     if (len(map_to_use[current_word])) > 1:
                         encoded_contents = encoded_contents + map_to_use[current_word][new_word]
 
@@ -295,15 +292,20 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                         if len(freq_map_to_use[current_word]) > 0:
                             if len(freq_map_to_use[current_word]) < 10:
-                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word])
+                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
                             else:
-                                count_empty = 0
-                                for k, v in freq_map_to_use[current_word].items():
-                                    if v == 0:
-                                        count_empty = count_empty + 1
+                                if current_word in map_containing_keys_to_delete:
+                                    map_containing_keys_to_delete[current_word] = map_containing_keys_to_delete[current_word] + 1
+                                else:
+                                    map_containing_keys_to_delete[current_word] = 1
 
-                                if count_empty > 20:
-                                    map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word])
+                                if map_containing_keys_to_delete[current_word] >= 20:
+                                    del map_containing_keys_to_delete[current_word]
+                                    map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
+                        else:
+                            del map_to_use[current_word]
+                            del freq_map_to_use[current_word]
+                            print("fun fun fun fun-----" + str(len(map_to_use)))
 
                     current_word = new_word
 

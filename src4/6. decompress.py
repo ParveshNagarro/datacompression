@@ -28,7 +28,7 @@ class Node:
 sys._excepthook = sys.excepthook
 
 def my_exception_hook(exctype, value, traceback):
-    # Print the error and traceback
+    # Print the  r and traceback
     print(exctype, value, traceback)
     # Call the normal Exception hook after
     sys._excepthook(exctype, value, traceback)
@@ -39,8 +39,8 @@ sys.excepthook = my_exception_hook
 
 
 
-def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
-    print("Converting the final dict into a list of nodes")
+def convert_freq_map_to_huffman_map(final_word_nodes_dict, current_word) :
+    print("Converting the final dict into a list of nodes ---------------" + current_word + "---------" + str(len(final_word_nodes_dict)))
 
     word_nodes_list = []
     for key, value in final_word_nodes_dict.items():
@@ -54,10 +54,6 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
         tmp_words_nodes_list.append(word)
 
     tmp_words_nodes_list.sort(key=lambda x: x.frequency, reverse=True)
-
-    with open(fileName, "w", encoding="utf8") as f:
-        for node_tmp_1 in tmp_words_nodes_list:
-            f.write(node_tmp_1.character + " - " + str(node_tmp_1.frequency) + "\n")
 
     word_huffman_tree = []
     for value in word_nodes_list:
@@ -232,6 +228,7 @@ first_word = ""
 with open("../tmp/enwik8_first_word", 'rb') as f:
     first_word = pickle.load(f)
 
+map_containing_keys_to_delete = {}
 
 current_word = first_word
 output_final = first_word
@@ -299,15 +296,22 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                         if len(freq_map_to_use[current_word]) > 0:
                             if len(freq_map_to_use[current_word]) < 10:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word]))
+                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
                             else:
-                                count_empty = 0
-                                for k, v in freq_map_to_use[current_word].items():
-                                    if v == 0:
-                                        count_empty = count_empty + 1
+                                if current_word in map_containing_keys_to_delete:
+                                    map_containing_keys_to_delete[current_word] = map_containing_keys_to_delete[current_word] + 1
+                                else:
+                                    map_containing_keys_to_delete[current_word] = 1
 
-                                if count_empty > 20:
-                                    map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word]))
+                                if map_containing_keys_to_delete[current_word] >= 20:
+                                    del map_containing_keys_to_delete[current_word]
+                                    map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
+
+                        else:
+                            del map_to_use[current_word]
+                            del freq_map_to_use[current_word]
+                            print("fun fun fun fun-----" + str(len(map_to_use)))
+
 
                     current_word = current_node.character
 
@@ -346,15 +350,22 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                         if len(freq_map_to_use[current_word]) > 0:
                             if len(freq_map_to_use[current_word]) < 10:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word]))
+                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
                             else:
-                                count_empty = 0
-                                for k, v in freq_map_to_use[current_word].items():
-                                    if v == 0:
-                                        count_empty = count_empty + 1
+                                if current_word in map_containing_keys_to_delete:
+                                    map_containing_keys_to_delete[current_word] = map_containing_keys_to_delete[current_word] + 1
+                                else:
+                                    map_containing_keys_to_delete[current_word] = 1
 
-                                if count_empty > 20:
-                                    map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word]))
+                                if map_containing_keys_to_delete[current_word] >= 20:
+                                    del map_containing_keys_to_delete[current_word]
+                                    map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
+
+                        else:
+                            del map_to_use[current_word]
+                            del freq_map_to_use[current_word]
+                            print("fun fun fun fun-----" + str(len(map_to_use)))
+
 
                     current_word = current_node.character
                     current_node = None
