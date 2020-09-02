@@ -144,15 +144,21 @@ with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f
     final_map_combined_words = pickle.load(f)
 
 combined_words_helper = {}
+space_started_combined_words = {}
 
 for key, value in final_map_combined_words.items():
-    words_in_line = re.findall(r'\w+', key)
-    for word in words_in_line:
-        if word in combined_words_helper:
-            combined_words_helper[word].append(key)
+    if key.isspace():
+        space_started_combined_words[key] = key
+    else:
+        words_in_line = re.findall(r'\w+', key)
+        if len(words_in_line) == 0:
+            combined_words_helper[key.strip()] = [key.strip()]
         else:
-            combined_words_helper[word] = [key]
-
+            for word in words_in_line:
+                if word in combined_words_helper:
+                    combined_words_helper[word].append(key)
+                else:
+                    combined_words_helper[word] = [key]
 
 final_map_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'rb') as f:
@@ -163,19 +169,10 @@ with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
 
 
-final_frequency_map_combined_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
-    final_frequency_map_combined_words = pickle.load(f)
-
-final_frequency_map_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
-    final_frequency_map_words = pickle.load(f)
-
-final_frequency_map = {}
-with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
-    final_frequency_map = pickle.load(f)
 
 encoded_contents = ""
+
+total_usage = {}
 
 print("Reading the dicts is complete, it's time to write the file back.")
 
@@ -184,8 +181,6 @@ cutoff = 0
 
 first_word = None
 current_word = None
-
-map_containing_keys_to_delete = {}
 
 newCount = 0
 total_number_of_lines = NUMBER_OF_LINES
@@ -243,6 +238,9 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                         if combined_word in final_map_combined_words:
                             combined_words_helper_client[combined_word] = final_map_combined_words[combined_word]
 
+            for k, v in space_started_combined_words.items():
+                combined_words_helper_client[k] = final_map_combined_words[k]
+
             for key, value in combined_words_helper_client.items():
                 cursor = 0
                 index: int = c.find(key, cursor)
@@ -272,40 +270,19 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 else:
 
                     map_to_use = final_map
-                    freq_map_to_use = final_frequency_map
                     if len(current_word) > 1:
                         if current_word in final_map_combined_words:
                             map_to_use = final_map_combined_words
-                            freq_map_to_use = final_frequency_map_combined_words
                         else:
                             map_to_use = final_map_words
-                            freq_map_to_use = final_frequency_map_words
 
                     if (len(map_to_use[current_word])) > 1:
                         encoded_contents = encoded_contents + map_to_use[current_word][new_word]
-
-                    freq_map_to_use[current_word][new_word] = freq_map_to_use[current_word][new_word] - 1
-
-                    if freq_map_to_use[current_word][new_word] == 0:
-                        del map_to_use[current_word][new_word]
-                        del freq_map_to_use[current_word][new_word]
-
-                        if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) < 10:
-                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
-                            else:
-                                if current_word in map_containing_keys_to_delete:
-                                    map_containing_keys_to_delete[current_word] = map_containing_keys_to_delete[current_word] + 1
-                                else:
-                                    map_containing_keys_to_delete[current_word] = 1
-
-                                if map_containing_keys_to_delete[current_word] >= 20:
-                                    del map_containing_keys_to_delete[current_word]
-                                    map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
+                        key = "\"" + current_word + "-" + new_word + "\""
+                        if key in total_usage:
+                            total_usage[key] = total_usage[key] + 1
                         else:
-                            del map_to_use[current_word]
-                            del freq_map_to_use[current_word]
-                            print("fun fun fun fun-----" + str(len(map_to_use)))
+                            total_usage[key] = 1
 
                     current_word = new_word
 
@@ -330,15 +307,6 @@ with open("../tmp/enwik8_first_word", 'wb') as f:
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
-
-with open("../tmp1/enwik8_new_strucure_freq_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp1/enwik8_new_strucure_freq_distro_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map_words, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp1/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
+with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f0:
+    for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
+        f0.write(k + "-" + str(v) + "\n")

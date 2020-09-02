@@ -60,7 +60,7 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
     for value in word_nodes_list:
         word_huffman_tree.append(value)
 
-    print("Iterating and merging the nodes until only one remains")
+    #print("Iterating and merging the nodes until only one remains")
     if len(word_huffman_tree) > 1:
         while len(word_huffman_tree) > 1:
             huffman_iteration(word_huffman_tree)
@@ -81,12 +81,12 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
 
 
 def huffman_iteration(huffman_tree_to_iterate):
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
     node1 = huffman_tree_to_iterate.pop(0)
     node2 = huffman_tree_to_iterate.pop(0)
-    print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
-        node1.frequency + node2.frequency))
+    ##print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
+      #  node1.frequency + node2.frequency))
     new_node = Node(node1.character + node2.character, node1.frequency + node2.frequency)
     new_node.children.append(node1)
     new_node.children.append(node2)
@@ -140,20 +140,29 @@ def find_all_indexes(input_str, search_str):
 
 
 start_time = time.time()
-
+total_usage = {}
 huffman_combined_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
     huffman_combined_words = pickle.load(f)
 
 combined_words_helper = {}
+space_started_combined_words = {}
+
 
 for key, value in huffman_combined_words.items():
-    words_in_line = re.findall(r'\w+', key)
-    for word in words_in_line:
-        if word in combined_words_helper:
-            combined_words_helper[word].append(key)
+    if key.isspace():
+        space_started_combined_words[key] = key
+    else:
+        words_in_line = re.findall(r'\w+', key)
+        if len(words_in_line) == 0:
+            combined_words_helper[key.strip()] = [key.strip()]
         else:
-            combined_words_helper[word] = [key]
+            for word in words_in_line:
+                if word in combined_words_helper:
+                    combined_words_helper[word].append(key)
+                else:
+                    combined_words_helper[word] = [key]
+
 
 huffman_map_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
@@ -208,10 +217,12 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         combined_words_helper_client = {}
         for word in words_in_line:
             if word in combined_words_helper:
-                combined_word = combined_words_helper[word]
                 list_of_combined_word = combined_words_helper[word]
                 for combined_word in list_of_combined_word:
                     combined_words_helper_client[combined_word] = huffman_combined_words[combined_word]
+
+        for k, v in space_started_combined_words.items():
+            combined_words_helper_client[k] = huffman_combined_words[k]
 
         for key, value in combined_words_helper_client .items():
             cursor = 0
@@ -267,7 +278,11 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                     map_to_use[current_word][new_word] = 1
                 else:
                     map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
-
+                key = "\"" + current_word + "-" + new_word + "\""
+                if key in total_usage:
+                    total_usage[key] = total_usage[key] + 1
+                else:
+                    total_usage[key] = 1
                 current_word = new_word
 
 
@@ -309,3 +324,6 @@ with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'wb') as f
 
 
 print("--- %s seconds ---" % (time.time() - start_time))
+with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f0:
+    for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
+        f0.write(k + "-" + str(v) + "\n")

@@ -141,20 +141,27 @@ def find_all_indexes(input_str, search_str):
 
 
 start_time = time.time()
-
+total_usage = {}
 huffman_combined_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
     huffman_combined_words = pickle.load(f)
 
 combined_words_helper = {}
+space_started_combined_words = {}
 
 for key, value in huffman_combined_words.items():
-    words_in_line = re.findall(r'\w+', key)
-    for word in words_in_line:
-        if word in combined_words_helper:
-            combined_words_helper[word].append(key)
+    if key.isspace():
+        space_started_combined_words[key] = key
+    else:
+        words_in_line = re.findall(r'\w+', key)
+        if len(words_in_line) == 0:
+            combined_words_helper[key.strip()] = [key.strip()]
         else:
-            combined_words_helper[word] = [key]
+            for word in words_in_line:
+                if word in combined_words_helper:
+                    combined_words_helper[word].append(key)
+                else:
+                    combined_words_helper[word] = [key]
 
 huffman_map_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
@@ -210,12 +217,14 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         combined_words_helper_client = {}
         for word in words_in_line:
             if word in combined_words_helper:
-                combined_word = combined_words_helper[word]
                 list_of_combined_word = combined_words_helper[word]
                 for combined_word in list_of_combined_word:
                     combined_words_helper_client[combined_word] = huffman_combined_words[combined_word]
 
-        for key, value in combined_words_helper_client .items():
+        for k, v in space_started_combined_words.items():
+            combined_words_helper_client[k] = huffman_combined_words[k]
+
+        for key, value in combined_words_helper_client.items():
             cursor = 0
             index:int = c.find(key, cursor)
             while index != -1:
@@ -270,6 +279,11 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                 else:
                     map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
 
+                key = "\"" + current_word + "-" + new_word + "\""
+                if key in total_usage:
+                    total_usage[key] = total_usage[key] + 1
+                else:
+                    total_usage[key] = 1
                 current_word = new_word
 
 keys_to_delete = {}
@@ -315,6 +329,12 @@ for key, value in final_map_words.items():
 for k,v in keys_to_delete.items():
     del final_map_words[k]
 
+for key, value in final_map.items():
+    for k, v in value.items():
+        if v > MIN_FREQ_TO_BE_A_COMBINED_WORD:
+            final_map_combined_words[key + k] = {}
+
+
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
@@ -328,3 +348,7 @@ with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
     pickle.dump(final_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
 
 print("--- %s seconds ---" % (time.time() - start_time))
+
+with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f0:
+    for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
+        f0.write(k + "-" + str(v) + "\n")

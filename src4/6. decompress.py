@@ -189,21 +189,6 @@ with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
 
 
-
-final_frequency_map_combined_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
-    final_frequency_map_combined_words = pickle.load(f)
-
-final_frequency_map_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
-    final_frequency_map_words = pickle.load(f)
-
-final_frequency_map = {}
-with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
-    final_frequency_map = pickle.load(f)
-
-
-
 for key,value in final_map_combined_words.items():
     print("converting the final map to sub tree of the items")
     final_map_combined_words[key] = convert_huffman_map_to_tree(value)[0]
@@ -227,8 +212,6 @@ with open("../tmp/enwik8_cutoff", 'rb') as f:
 first_word = ""
 with open("../tmp/enwik8_first_word", 'rb') as f:
     first_word = pickle.load(f)
-
-map_containing_keys_to_delete = {}
 
 current_word = first_word
 output_final = first_word
@@ -279,39 +262,12 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     current_node = current_node.children[0]
                     output_final = output_final + current_node.character
 
-                    freq_map_to_use = final_frequency_map
                     map_to_use = final_map
                     if len(current_word) > 1:
                         if current_word in final_map_combined_words:
-                            freq_map_to_use =  final_frequency_map_combined_words
                             map_to_use = final_map_combined_words
                         else:
-                            freq_map_to_use = final_frequency_map_words
                             map_to_use = final_map_words
-
-                    freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
-                    if freq_map_to_use[current_word][current_node.character] == 0:
-                        del map_to_use[current_word][current_node.character]
-                        del freq_map_to_use[current_word][current_node.character]
-
-                        if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) < 10:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
-                            else:
-                                if current_word in map_containing_keys_to_delete:
-                                    map_containing_keys_to_delete[current_word] = map_containing_keys_to_delete[current_word] + 1
-                                else:
-                                    map_containing_keys_to_delete[current_word] = 1
-
-                                if map_containing_keys_to_delete[current_word] >= 20:
-                                    del map_containing_keys_to_delete[current_word]
-                                    map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
-
-                        else:
-                            del map_to_use[current_word]
-                            del freq_map_to_use[current_word]
-                            print("fun fun fun fun-----" + str(len(map_to_use)))
-
 
                     current_word = current_node.character
 
@@ -333,39 +289,12 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                 if len(current_node.children) == 0:
                     output_final = output_final + current_node.character
 
-                    freq_map_to_use = final_frequency_map
                     map_to_use = final_map
                     if len(current_word) > 1:
                         if current_word in final_map_combined_words:
-                            freq_map_to_use =  final_frequency_map_combined_words
                             map_to_use = final_map_combined_words
                         else:
-                            freq_map_to_use = final_frequency_map_words
                             map_to_use = final_map_words
-
-                    freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
-                    if freq_map_to_use[current_word][current_node.character] == 0:
-                        del map_to_use[current_word][current_node.character]
-                        del freq_map_to_use[current_word][current_node.character]
-
-                        if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) < 10:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
-                            else:
-                                if current_word in map_containing_keys_to_delete:
-                                    map_containing_keys_to_delete[current_word] = map_containing_keys_to_delete[current_word] + 1
-                                else:
-                                    map_containing_keys_to_delete[current_word] = 1
-
-                                if map_containing_keys_to_delete[current_word] >= 20:
-                                    del map_containing_keys_to_delete[current_word]
-                                    map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))
-
-                        else:
-                            del map_to_use[current_word]
-                            del freq_map_to_use[current_word]
-                            print("fun fun fun fun-----" + str(len(map_to_use)))
-
 
                     current_word = current_node.character
                     current_node = None
@@ -381,16 +310,3 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
             f0.write(output_final)
 
 print("--- %s seconds ---" % (time.time() - start_time))
-
-
-with open("../tmp2/enwik8_new_strucure_freq_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp2/enwik8_new_strucure_freq_distro_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map_words, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp2/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
