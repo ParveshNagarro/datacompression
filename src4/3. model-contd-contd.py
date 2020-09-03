@@ -155,7 +155,7 @@ for key, value in huffman_combined_words.items():
     else:
         words_in_line = re.findall(r'\w+', key)
         if len(words_in_line) == 0:
-            combined_words_helper[key.strip()] = [key.strip()]
+            space_started_combined_words[key] = [key]
         else:
             for word in words_in_line:
                 if word in combined_words_helper:
