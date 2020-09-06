@@ -5,9 +5,9 @@ import sys
 import datetime
 
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  13147026
-MIN_FREQ_TO_BE_A_WORD = 500
-MIN_FREQ_TO_BE_A_COMBINED_WORD = 1000
+NUMBER_OF_LINES =  1314702
+MIN_FREQ_TO_BE_A_WORD = 50
+MIN_FREQ_TO_BE_A_COMBINED_WORD = 100
 DISPLAY_CONTROL = 2000
 
 # Back up the reference to the exceptionhook
@@ -285,6 +285,14 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                     total_usage[key] = 1
                 current_word = new_word
 
+map_to_use = final_map
+if len(current_word) > 1:
+    map_to_use = final_map_words
+    if current_word in huffman_combined_words:
+        map_to_use =  final_map_combined_words
+
+new_word = "<<<----EOF---------------EOF---------------->>>"
+map_to_use[current_word][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.

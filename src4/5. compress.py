@@ -5,9 +5,9 @@ import time
 import sys
 
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  13147026
+NUMBER_OF_LINES =  1314702
 ENWIK_OUTPUT: str = "../tmp/enwik8_compressed"
-DISPLAY_CONTROL = 2000
+DISPLAY_CONTROL = 4000
 
 
 # Back up the reference to the exceptionhook
@@ -169,6 +169,18 @@ with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
 
 
+final_frequency_map_combined_words = {}
+with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
+    final_frequency_map_combined_words = pickle.load(f)
+
+final_frequency_map_words = {}
+with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
+    final_frequency_map_words = pickle.load(f)
+
+final_frequency_map = {}
+with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
+    final_frequency_map = pickle.load(f)
+
 
 encoded_contents = ""
 
@@ -182,6 +194,8 @@ cutoff = 0
 first_word = None
 current_word = None
 
+map_containing_keys_to_delete = {}
+
 newCount = 0
 total_number_of_lines = NUMBER_OF_LINES
 print("doing the compression")
@@ -193,6 +207,10 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 print("Compressing - " + str((newCount * 100) / total_number_of_lines))
                 print("--- %s seconds ---" % (time.time() - start_time))
             newCount = newCount + 1
+
+            if newCount == 1113399:
+                print("nfkrjen")
+
             if not c:
                 print("End of file. writing whatever is left")
                 bytes_array = []
@@ -239,7 +257,8 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                             combined_words_helper_client[combined_word] = final_map_combined_words[combined_word]
 
             for k, v in space_started_combined_words.items():
-                combined_words_helper_client[k] = final_map_combined_words[k]
+                if k in final_map_combined_words:
+                    combined_words_helper_client[k] = final_map_combined_words[k]
 
             for key, value in combined_words_helper_client.items():
                 cursor = 0
@@ -270,11 +289,14 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 else:
 
                     map_to_use = final_map
+                    freq_map_to_use = final_frequency_map
                     if len(current_word) > 1:
                         if current_word in final_map_combined_words:
                             map_to_use = final_map_combined_words
+                            freq_map_to_use = final_frequency_map_combined_words
                         else:
                             map_to_use = final_map_words
+                            freq_map_to_use = final_frequency_map_words
 
                     if (len(map_to_use[current_word])) > 1:
                         encoded_contents = encoded_contents + map_to_use[current_word][new_word]
@@ -283,6 +305,22 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                             total_usage[key] = total_usage[key] + 1
                         else:
                             total_usage[key] = 1
+
+                    freq_map_to_use[current_word][new_word] = freq_map_to_use[current_word][new_word] - 1
+
+                    if freq_map_to_use[current_word][new_word] == 0:
+                        del map_to_use[current_word][new_word]
+                        del freq_map_to_use[current_word][new_word]
+
+                        if len(freq_map_to_use[current_word]) > 0:
+                            if len(freq_map_to_use[current_word]) <= 10:
+                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
+                            elif len(freq_map_to_use[current_word]) % 5 == 0 and len(freq_map_to_use[current_word]) <= 300:
+                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
+                        else:
+                            del map_to_use[current_word]
+                            del freq_map_to_use[current_word]
+                            print("fun fun fun fun-----" + str(len(map_to_use)))
 
                     current_word = new_word
 
@@ -310,3 +348,16 @@ print("--- %s seconds ---" % (time.time() - start_time))
 with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f0:
     for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
         f0.write(k + "-" + str(v) + "\n")
+
+
+with open("../tmp1/enwik8_new_strucure_freq_distro", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_frequency_map, f, pickle.HIGHEST_PROTOCOL)
+
+with open("../tmp1/enwik8_new_strucure_freq_distro_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_frequency_map_words, f, pickle.HIGHEST_PROTOCOL)
+
+with open("../tmp1/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_frequency_map_combined_words, f, pickle.HIGHEST_PROTOCOL)

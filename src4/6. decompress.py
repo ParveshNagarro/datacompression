@@ -4,8 +4,8 @@ import pickle
 import sys
 
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  13147026
-TOTAL_COUNT = 469800763
+NUMBER_OF_LINES =  1314702
+TOTAL_COUNT = 46980076
 
 start_time = time.time()
 
@@ -59,7 +59,7 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, current_word) :
     for value in word_nodes_list:
         word_huffman_tree.append(value)
 
-    print("Iterating and merging the nodes until only one remains")
+    #print("Iterating and merging the nodes until only one remains")
     if len(word_huffman_tree) > 1:
         while len(word_huffman_tree) > 1:
             huffman_iteration(word_huffman_tree)
@@ -80,33 +80,33 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, current_word) :
 
 
 def huffman_iteration(huffman_tree_to_iterate):
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: (x.frequency, x.character), reverse=False)
     node1 = huffman_tree_to_iterate.pop(0)
     node2 = huffman_tree_to_iterate.pop(0)
-    print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
-        node1.frequency + node2.frequency))
+    #print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
+   #     node1.frequency + node2.frequency))
     new_node = Node(node1.character + node2.character, node1.frequency + node2.frequency)
     new_node.children.append(node1)
     new_node.children.append(node2)
     huffman_tree_to_iterate.append(new_node)
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+   # print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: (x.frequency, x.character), reverse=False)
 
 
 def encode_the_node(node):
-    print("The current node to encode is " + str(node.frequency) + "-" + node.character)
+    #print("The current node to encode is " + str(node.frequency) + "-" + node.character)
     if node.children is not None and 0 < len(node.children):
-        print("Encoding the node " + str(node.frequency) + "-" + node.character)
-        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
+        #print("Encoding the node " + str(node.frequency) + "-" + node.character)
+    #    print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
         node.children[0].encoded_string = node.encoded_string + "0"
         encode_the_node(node.children[0])
         if len(node.children) > 1:
-            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
+        #    print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
             node.children[1].encoded_string = node.encoded_string + "1"
             encode_the_node(node.children[1])
-    else:
-        print("Nothing to encode in this node as there are either no children")
+ #   else:
+    #    print("Nothing to encode in this node as there are either no children")
 
 
 def print_a_node(node):
@@ -120,24 +120,24 @@ def print_a_node(node):
 
 
 def print_a_list(nodes_list_to_print):
-    print("printing a list")
+  #  print("printing a list")
     for node_to_print in nodes_list_to_print:
         print(print_a_node(node_to_print))
 
 
 def encode_the_node(node):
-    print("The current node to encode is " + str(node.frequency) + "-" + node.character)
+    #print("The current node to encode is " + str(node.frequency) + "-" + node.character)
     if node.children is not None and 0 < len(node.children):
-        print("Encoding the node " + str(node.frequency) + "-" + node.character)
-        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
+        #print("Encoding the node " + str(node.frequency) + "-" + node.character)
+        #print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
         node.children[0].encoded_string = node.encoded_string + "0"
         encode_the_node(node.children[0])
         if len(node.children) > 1:
-            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
+           # print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
             node.children[1].encoded_string = node.encoded_string + "1"
             encode_the_node(node.children[1])
-    else:
-        print("Nothing to encode in this node as there are either no children")
+    #else:
+     #   print("Nothing to encode in this node as there are either no children")
 
 
 def convert_huffman_map_to_tree(huffman_map_input):
@@ -176,6 +176,7 @@ def convert_huffman_map_to_tree(huffman_map_input):
     return result_huffman_tree
 
 
+
 final_map_combined_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f:
     final_map_combined_words = pickle.load(f)
@@ -190,123 +191,27 @@ with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
 
 
 for key,value in final_map_combined_words.items():
-    print("converting the final map to sub tree of the items")
+    print("1.converting the final map to sub tree of the items" + key)
     final_map_combined_words[key] = convert_huffman_map_to_tree(value)[0]
 
 for key,value in final_map_words.items():
-    print("converting the final map to sub tree of the items")
+    print("2.converting the final map to sub tree of the items" + key)
     final_map_words[key] = convert_huffman_map_to_tree(value)[0]
 
 
 for key,value in final_map.items():
-    print("converting the final map to sub tree of the items")
+    print("3.converting the final map to sub tree of the items" + key)
     final_map[key] = convert_huffman_map_to_tree(value)[0]
 
-
-cutoff_in = 0
-cutoff = 0
-with open("../tmp/enwik8_cutoff", 'rb') as f:
-    cutoff_in = pickle.load(f)
-
-
-first_word = ""
-with open("../tmp/enwik8_first_word", 'rb') as f:
-    first_word = pickle.load(f)
-
-current_word = first_word
-output_final = first_word
-current_node = None
-decoded_string = ""
-
-newCount = 0
-
-debugCount = 0
-with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
-    with open("../tmp/enwik8_compressed", "rb") as f:
-        byte = f.read(1)
-        while byte != b"":
-            # Do stuff with byte.
-            newCount = newCount + 1
-            if newCount % 100000 == 0:
-                print("percentage of file read" + str((newCount * 100) / TOTAL_COUNT))
-
-            byte_temp = byte
-            byte = f.read(1)
-            decoded_string = "{0:b}".format(ord(byte_temp))
-
-            cutoff = 8 - len(decoded_string)
-            if byte == b"":
-                cutoff = cutoff - cutoff_in
-                if cutoff < 0:
-                    cutoff = 0
-
-            decoded_string = ("0" * cutoff) + decoded_string
-
-            tmp_decoding_string = decoded_string
-
-
-            for character in tmp_decoding_string:
-
-                if current_node is None:
-
-                    map_to_use = final_map
-                    if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-
-                    current_node = map_to_use[current_word]
-
-                while len(current_node.children) == 1:
-                    current_node = current_node.children[0]
-                    output_final = output_final + current_node.character
-
-                    map_to_use = final_map
-                    if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-
-                    current_word = current_node.character
-
-                    map_to_use = final_map
-                    if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-
-                    current_node = map_to_use[current_word]
-
-                if character == "1":
-                    current_node = current_node.children[1]
-                else:
-                    current_node = current_node.children[0]
-
-
-                if len(current_node.children) == 0:
-                    output_final = output_final + current_node.character
-
-                    map_to_use = final_map
-                    if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-
-                    current_word = current_node.character
-                    current_node = None
-
-                    # here keep updating directly if there is only one child
-
-                    if len(output_final) > 8:
-                        tmp_output_final = output_final[:8]
-                        output_final = output_final[8:]
-                        f0.write(tmp_output_final)
-
-        if len(output_final) > 0:
-            f0.write(output_final)
-
-print("--- %s seconds ---" % (time.time() - start_time))
+print("writing first one")
+with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words_1", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
+print("writing second one")
+with open("../tmp/enwik8_new_strucure_encoded_distro_words_1", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
+print("writing third one")
+with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
