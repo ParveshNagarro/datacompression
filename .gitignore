@@ -1,4 +1,6 @@
 tmp/*
+tmp1/*
+tmp2/*
 venv/
 data/*
 tmp - Copy/*

@@ -127,19 +127,6 @@ def print_a_list(nodes_list_to_print):
         print(print_a_node(node_to_print))
 
 
-def find_all_indexes(input_str, search_str):
-    l1 = []
-    length = len(input_str)
-    index = 0
-    while index < length:
-        i = input_str.find(search_str, index)
-        if i == -1:
-            return l1
-        l1.append(i)
-        index = i + 1
-    return l1
-
-
 start_time = time.time()
 total_usage = {}
 huffman_combined_words = {}
@@ -310,7 +297,7 @@ for key, value in final_map_combined_words.items():
         keys_to_delete[key] = {}
     else:
         for k, v in value.items():
-            if v > MIN_FREQ_TO_BE_A_COMBINED_WORD:
+            if v >= MIN_FREQ_TO_BE_A_COMBINED_WORD:
                 keys_to_add[key + k] = {}
 
 for k, v in keys_to_delete.items():
@@ -333,7 +320,7 @@ for key, value in final_map_words.items():
         keys_to_delete[key] = {}
     else:
         for k, v in value.items():
-            if v > MIN_FREQ_TO_BE_A_COMBINED_WORD:
+            if v >= MIN_FREQ_TO_BE_A_COMBINED_WORD:
                 final_map_combined_words[key + k] = {}
 
 for k,v in keys_to_delete.items():

@@ -98,16 +98,16 @@ def huffman_iteration(huffman_tree_to_iterate):
 def encode_the_node(node):
     print("The current node to encode is " + str(node.frequency) + "-" + node.character)
     if node.children is not None and 0 < len(node.children):
-        print("Encoding the node " + str(node.frequency) + "-" + node.character)
-        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
+#        print("Encoding the node " + str(node.frequency) + "-" + node.character)
+#        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
         node.children[0].encoded_string = node.encoded_string + "0"
         encode_the_node(node.children[0])
         if len(node.children) > 1:
-            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
+#            print("Now encoding the second child of the node + " + str(node.frequency) + "-" + node.character)
             node.children[1].encoded_string = node.encoded_string + "1"
             encode_the_node(node.children[1])
-    else:
-        print("Nothing to encode in this node as there are either no children")
+#    else:
+#        print("Nothing to encode in this node as there are either no children")
 
 
 def print_a_node(node):
@@ -155,7 +155,7 @@ for key, value in huffman_combined_words.items():
     else:
         words_in_line = re.findall(r'\w+', key)
         if len(words_in_line) == 0:
-            combined_words_helper[key.strip()] = [key.strip()]
+            space_started_combined_words[key] = [key]
         else:
             for word in words_in_line:
                 if word in combined_words_helper:
@@ -224,7 +224,7 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         for k, v in space_started_combined_words.items():
             combined_words_helper_client[k] = huffman_combined_words[k]
 
-        for key, value in combined_words_helper_client .items():
+        for key, value in combined_words_helper_client.items():
             cursor = 0
             index:int = c.find(key, cursor)
             while index != -1:

@@ -14,7 +14,6 @@ class Node:
     encoded_string: str
     frequency: int
     children: []
-    followers:{}
 
     def __init__(self, character: str, frequency: int):
         self.character = character

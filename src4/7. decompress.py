@@ -212,8 +212,6 @@ first_word = ""
 with open("../tmp/enwik8_first_word", 'rb') as f:
     first_word = pickle.load(f)
 
-map_containing_keys_to_delete = {}
-
 
 current_word = first_word
 output_final = first_word
@@ -223,7 +221,6 @@ decoded_string = ""
 
 newCount = 0
 
-debugCount = 0
 with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
     with open("../tmp/enwik8_compressed", "rb") as f:
         byte = f.read(1)
@@ -278,9 +275,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                         del freq_map_to_use[current_word][current_node.character]
 
                         if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) <= 50:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
-                            elif len(freq_map_to_use[current_word]) % 5 == 0 and len(freq_map_to_use[current_word]) <= 300:
+                            if len(freq_map_to_use[current_word]) <= 10:
                                 map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
 
                         else:
@@ -323,9 +318,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                         del freq_map_to_use[current_word][current_node.character]
 
                         if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) <= 50:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
-                            elif len(freq_map_to_use[current_word]) %5 == 0 and len(freq_map_to_use[current_word]) <= 300:
+                            if len(freq_map_to_use[current_word]) <= 10:
                                 map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
                         else:
                             del map_to_use[current_word]
@@ -342,7 +335,6 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                         tmp_output_final = output_final[:8]
                         output_final = output_final[8:]
                         f0.write(tmp_output_final)
-
         print("->->->->->->->--the last word-->->-->->->->->")
 
         if current_node is None:
@@ -378,9 +370,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                 del freq_map_to_use[current_word][current_node.character]
 
                 if len(freq_map_to_use[current_word]) > 0:
-                    if len(freq_map_to_use[current_word]) <= 50:
-                        map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
-                    elif len(freq_map_to_use[current_word]) %5 == 0 and len(freq_map_to_use[current_word]) <= 300:
+                    if len(freq_map_to_use[current_word]) <= 10:
                         map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
                 else:
                     del map_to_use[current_word]

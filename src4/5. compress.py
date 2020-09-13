@@ -152,7 +152,7 @@ for key, value in final_map_combined_words.items():
     else:
         words_in_line = re.findall(r'\w+', key)
         if len(words_in_line) == 0:
-            combined_words_helper[key.strip()] = [key.strip()]
+            space_started_combined_words[key] = [key]
         else:
             for word in words_in_line:
                 if word in combined_words_helper:
@@ -194,8 +194,6 @@ cutoff = 0
 first_word = None
 current_word = None
 
-map_containing_keys_to_delete = {}
-
 newCount = 0
 total_number_of_lines = NUMBER_OF_LINES
 print("doing the compression")
@@ -208,8 +206,6 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 print("--- %s seconds ---" % (time.time() - start_time))
             newCount = newCount + 1
 
-            if newCount == 1113399:
-                print("nfkrjen")
 
             if not c:
                 print("End of file. writing whatever is left")
@@ -314,8 +310,6 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                         if len(freq_map_to_use[current_word]) > 0:
                             if len(freq_map_to_use[current_word]) <= 10:
-                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
-                            elif len(freq_map_to_use[current_word]) % 5 == 0 and len(freq_map_to_use[current_word]) <= 300:
                                 map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
                         else:
                             del map_to_use[current_word]
