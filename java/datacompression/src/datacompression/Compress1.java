@@ -30,7 +30,6 @@ public class Compress1 {
 		try {
 			current = new java.io.File( "." ).getCanonicalPath();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
         System.out.println("Current dir:"+current);

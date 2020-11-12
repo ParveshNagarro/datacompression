@@ -129,28 +129,111 @@ def print_a_list(nodes_list_to_print):
 start_time = time.time()
 
 huffman_map_words = {}
-with open("../tmppy/enwik8_dict_words_huffman", 'rb') as f:
+with open("../tmp/enwik8_dict_words_huffman", 'rb') as f:
     huffman_map_words = pickle.load(f)
 
-d_keys_list = sorted(list(huffman_map_words.keys()))
-
-
-with open("../tmppy/words_list", "w", encoding="utf-8") as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    for s in d_keys_list:
-        f.write(s + "\n")
-
 huffman_map = {}
-with open("../tmppy/enwik8_dict_huffman", 'rb') as f:
+with open("../tmp/enwik8_dict_huffman", 'rb') as f:
     huffman_map = pickle.load(f)
 
-d_keys_list = sorted(list(huffman_map.keys()))
-
-with open("../tmppy/chars_list", "w", encoding="utf-8") as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    for s in d_keys_list:
-        f.write(s+"\n")
-
 print("Reading the dicts is complete, now creating the new structure.")
+
+final_map = {}
+final_map_words = {}
+
+count = 0
+current_word = None
+with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
+    while True:
+        c = f.readline()
+        if count % DISPLAY_CONTROL == 0:
+            print("--- %s seconds ---" % (time.time() - start_time))
+            print("Compressing - " + str((count * 100) / NUMBER_OF_LINES))
+        count = count + 1
+        if not c:
+            print("End of file. writing whatever is left")
+            break
+
+        line_all_words = {}
+        words_in_line = re.findall(r'\w+', c)
+        for word in words_in_line:
+            if word in huffman_map_words:
+                line_all_words[word] = huffman_map_words[word]
+
+        line_words_pos_dict = {}
+        for key, value in line_all_words.items():
+            cursor = 0
+            index:int = c.find(key, cursor)
+            while index != -1:
+                if index in line_words_pos_dict:
+                    if len(line_words_pos_dict[index]) < len(key):
+                        line_words_pos_dict[index] = key
+                else:
+                    line_words_pos_dict[index] = key
+                cursor = cursor + len(key)
+                index: int = c.find(key, cursor)
+
+        iter_index = 0
+        while iter_index < len(c):
+            new_word = None
+            if iter_index in line_words_pos_dict.keys():
+                new_word = line_words_pos_dict[iter_index]
+                iter_index = iter_index + len(line_words_pos_dict[iter_index])
+            else:
+                new_word = c[iter_index]
+                iter_index = iter_index + 1
+
+            if current_word is None:
+                current_word = new_word
+
+                map_to_use = final_map
+                if len(new_word) > 1:
+                    map_to_use = final_map_words
+                if new_word not in map_to_use:
+                    map_to_use[new_word] = {}
+            else:
+
+                map_to_use = final_map
+                if len(new_word) > 1:
+                    map_to_use = final_map_words
+                if new_word not in map_to_use:
+                    map_to_use[new_word] = {}
+
+                map_to_use = final_map
+                if len(current_word) > 1:
+                    map_to_use = final_map_words
+                if new_word not in map_to_use[current_word]:
+                    map_to_use[current_word][new_word] = 1
+                else:
+                    map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
+                current_word = new_word
+
+
+map_to_use = final_map
+if len(current_word) > 1:
+    map_to_use = final_map_words
+
+new_word = "<<<----EOF---------------EOF---------------->>>"
+map_to_use[current_word][new_word]=1
+
+with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
+
+with open("../tmp/enwik8_new_strucure_freq_distro_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
+
+
+combined_words = {}
+
+for key, value in final_map_words.items():
+    for k,v in value.items():
+        if v >= MIN_FREQ_TO_BE_A_COMBINED_WORD:
+            combined_words[key + k] = {}
+
+with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(combined_words, f, pickle.HIGHEST_PROTOCOL)
 
 print("--- %s seconds ---" % (time.time() - start_time))

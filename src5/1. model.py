@@ -5,7 +5,8 @@ import re
 
 #ENWIK_FILENAME = "../data/test.txt"
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  13147026
+NUMBER_OF_LINES =  1314702
+MIN_FREQ_TO_BE_A_WORD = 50
 
 
 class Node:
@@ -104,15 +105,6 @@ def print_a_list(nodes_list_to_print):
         print(print_a_node(node_to_print))
 
 
-
-
-
-
-
-
-
-
-
 # the program starts here
 
 print("Here goes nothing!!!")
@@ -153,7 +145,7 @@ print("total number of lines =  " + str(count))
 print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
 final_words_freq_dict = {}
 for key, value in words_freq_dict.items():
-    if value >= 500:
+    if value >= MIN_FREQ_TO_BE_A_WORD:
         final_words_freq_dict[key] = value
 
 huffman_map_words = convert_freq_map_to_huffman_map(final_words_freq_dict, "../tmp/frequency_distro_words")

@@ -2,14 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1eb468f1-20eb-4756-b3b5-8718622031f0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src4/g.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src4/work1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/datacompression.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/datacompression.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src4/1. model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/1. model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src4/3. model-contd-contd.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/3. model-contd-contd.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src4/4. model-contd-contd-contd.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/4. model-contd-contd-contd.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src4/5. compress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/5. compress.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src4/7. decompress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/7. decompress.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src4/analysis17.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/analysis17.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/java/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java/.recommenders/caches/identified-project-coordinates.json" beforeDir="false" afterPath="$PROJECT_DIR$/java/.recommenders/caches/identified-project-coordinates.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java/datacompression/src/datacompression/Compress1.java" beforeDir="false" afterPath="$PROJECT_DIR$/java/datacompression/src/datacompression/Compress1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src1/decompress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src1/decompress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src1/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src1/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src4/g.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/g.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src4/work.py" beforeDir="false" afterPath="$PROJECT_DIR$/src4/work.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,86 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src4/1. model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2499">
-              <caret line="150" column="51" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="51" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src4/2. model-contd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3995">
-              <caret line="238" column="56" selection-start-line="238" selection-start-column="56" selection-end-line="238" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src4/3. model-contd-contd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2465">
-              <caret line="149" column="21" selection-start-line="149" selection-start-column="21" selection-end-line="149" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src4/4. model-contd-contd-contd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5508">
-              <caret line="328" column="67" selection-end-line="337" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src4/5. compress.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-68">
-              <caret line="199" column="37" selection-start-line="199" selection-start-column="37" selection-end-line="199" selection-end-column="37" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src4/6. decompress.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1149">
-              <caret line="205" column="26" selection-start-line="205" selection-start-column="26" selection-end-line="205" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src4/7. decompress.py">
+        <entry file="file://$PROJECT_DIR$/src4/work1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="477">
-              <caret line="386" column="29" selection-start-line="386" selection-start-column="29" selection-end-line="386" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
             </state>
           </provider>
         </entry>
@@ -114,9 +41,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>the c</find>
-      <find>enwik8_new_strucure_freq_distro_combined_words_1</find>
-      <find>Converting the final dict into a list of nodes</find>
       <find>output_final</find>
       <find>convertin</find>
       <find>converting</find>
@@ -144,6 +68,9 @@
       <find>current_node</find>
       <find>debugCount</find>
       <find>character_huff</find>
+      <find>frequency_distro_words</find>
+      <find>MBS_1935566</find>
+      <find>convert_freq_map_to_huffman_map</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -152,7 +79,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/compression/practice/ReadAndWriteCharByChar.py" />
         <option value="$PROJECT_DIR$/src/version1/__init__.py" />
         <option value="$PROJECT_DIR$/src/main.py" />
         <option value="$PROJECT_DIR$/src/version1/Constants.py" />
@@ -165,10 +91,7 @@
         <option value="$PROJECT_DIR$/src1/ReadAndWriteCharByChar.py" />
         <option value="$PROJECT_DIR$/src/compress.py" />
         <option value="$PROJECT_DIR$/src/decompress.py" />
-        <option value="$PROJECT_DIR$/src1/compress.py" />
-        <option value="$PROJECT_DIR$/src1/decompress.py" />
         <option value="$PROJECT_DIR$/data/enwik9" />
-        <option value="$PROJECT_DIR$/src1/model.py" />
         <option value="$PROJECT_DIR$/src2/ReadAndWriteCharByChar.py" />
         <option value="$PROJECT_DIR$/src2/decompress.py" />
         <option value="$PROJECT_DIR$/src2/model-contd.py" />
@@ -190,19 +113,23 @@
         <option value="$PROJECT_DIR$/src3/5. compress.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/src3/1. model.py" />
-        <option value="$PROJECT_DIR$/src4/work.py" />
         <option value="$PROJECT_DIR$/src3/analysis.py" />
         <option value="$PROJECT_DIR$/src4/analysis1.py" />
         <option value="$PROJECT_DIR$/src4/analysis.py" />
         <option value="$PROJECT_DIR$/src4/6. decompress.py" />
         <option value="$PROJECT_DIR$/src4/analysis17.py" />
         <option value="$PROJECT_DIR$/src4/2. model-contd.py" />
-        <option value="$PROJECT_DIR$/src4/g.py" />
         <option value="$PROJECT_DIR$/src4/1. model.py" />
         <option value="$PROJECT_DIR$/src4/3. model-contd-contd.py" />
         <option value="$PROJECT_DIR$/src4/4. model-contd-contd-contd.py" />
         <option value="$PROJECT_DIR$/src4/5. compress.py" />
         <option value="$PROJECT_DIR$/src4/7. decompress.py" />
+        <option value="$PROJECT_DIR$/src4/g.py" />
+        <option value="$PROJECT_DIR$/src1/decompress.py" />
+        <option value="$PROJECT_DIR$/src4/work.py" />
+        <option value="$PROJECT_DIR$/src1/model.py" />
+        <option value="$PROJECT_DIR$/src1/compress.py" />
+        <option value="$PROJECT_DIR$/src4/work1.py" />
       </list>
     </option>
   </component>
@@ -234,7 +161,17 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Default Changelist'; set:Default Changelist; class com.intellij.packageDependencies.ChangeListScope">
+          <expand>
+            <path>
+              <item name="datacompression" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -267,8 +204,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.7. decompress">
-    <configuration name="4. model-contd-contd-contd" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.work1">
+    <configuration name="1. model" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="datacompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -280,49 +217,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/4. model-contd-contd-contd.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="5. compress" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="datacompression" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src4" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/5. compress.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="6. decompress" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="datacompression" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src4" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/6. decompress.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/1. model.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -352,7 +247,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="analysis17" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="g" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="datacompression" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -364,7 +259,49 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/analysis17.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/g.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="work" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="datacompression" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src4" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/work.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="work1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="datacompression" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src4" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src4/work1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -375,11 +312,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.work1" />
+        <item itemvalue="Python.work" />
+        <item itemvalue="Python.g" />
+        <item itemvalue="Python.1. model" />
         <item itemvalue="Python.7. decompress" />
-        <item itemvalue="Python.6. decompress" />
-        <item itemvalue="Python.5. compress" />
-        <item itemvalue="Python.4. model-contd-contd-contd" />
-        <item itemvalue="Python.analysis17" />
       </list>
     </recent_temporary>
   </component>
@@ -409,15 +346,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1294" height="694" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4884393" weight="0.19013524" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4884393" visible="true" weight="0.2214144" />
       <window_info id="Structure" order="1" sideWeight="0.5115607" side_tool="true" weight="0.24343675" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.0878187" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5823389" weight="0.24021353" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6340493" weight="0.37010676" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5823389" weight="0.5311615" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6340493" weight="0.46175638" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3291815" />
@@ -430,17 +368,17 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4884393" weight="0.19013524" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4884393" visible="true" weight="0.19013524" />
       <window_info id="Structure" order="1" sideWeight="0.5115607" side_tool="true" weight="0.24343675" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.0878187" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5823389" weight="0.24021353" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5823389" visible="true" weight="0.48576513" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6340493" weight="0.37010676" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3291815" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="7" sideWeight="0.86634845" visible="true" weight="0.06227758" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.86634845" weight="0.06227758" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3291815" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.13365155" side_tool="true" weight="0.7188612" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.3291815" />
@@ -592,6 +530,31 @@
           <line>152</line>
           <option name="timeStamp" value="119" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src4/g.py</url>
+          <line>155</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src4/work1.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src4/work1.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="122" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src4/work1.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="123" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src4/work1.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -662,7 +625,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main.py" />
     <entry file="file://$PROJECT_DIR$/src/Node.py" />
     <entry file="file://$PROJECT_DIR$/src/Constants.py" />
     <entry file="file://$PROJECT_DIR$/src/findnumberoflines.py" />
@@ -709,36 +671,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="60" selection-start-column="60" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src1/compress.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-986">
-          <caret line="77" column="30" lean-forward="true" selection-start-line="77" selection-start-column="30" selection-end-line="77" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src1/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src1/decompress.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -933,13 +865,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src4/work.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="35" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src4/ReadAndWriteCharByChar.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -960,9 +885,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src4/analysis.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src4/analysis17.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -973,30 +895,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src4/analysis.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src4/g.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+        <state relative-caret-position="2397">
+          <caret line="144" column="32" selection-start-line="144" selection-start-column="32" selection-end-line="144" selection-end-column="32" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src4/1. model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2499">
-          <caret line="150" column="51" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src4/2. model-contd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3995">
-          <caret line="238" column="56" selection-start-line="238" selection-start-column="56" selection-end-line="238" selection-end-column="56" />
+        <state relative-caret-position="3757">
+          <caret line="224" column="28" selection-end-line="238" selection-end-column="56" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
@@ -1023,20 +938,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src4/6. decompress.py">
+    <entry file="file://$PROJECT_DIR$/src4/5. compress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1149">
-          <caret line="205" column="26" selection-start-line="205" selection-start-column="26" selection-end-line="205" selection-end-column="26" />
+        <state relative-caret-position="3315">
+          <caret line="199" column="37" selection-start-line="199" selection-start-column="37" selection-end-line="199" selection-end-column="37" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src4/5. compress.py">
+    <entry file="file://$PROJECT_DIR$/src4/6. decompress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-68">
-          <caret line="199" column="37" selection-start-line="199" selection-start-column="37" selection-end-line="199" selection-end-column="37" />
+        <state relative-caret-position="3434">
+          <caret line="205" column="26" selection-start-line="205" selection-start-column="26" selection-end-line="205" selection-end-column="26" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -1045,11 +960,68 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src4/7. decompress.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="477">
-          <caret line="386" column="29" selection-start-line="386" selection-start-column="29" selection-end-line="386" selection-end-column="29" />
+        <state relative-caret-position="3740">
+          <caret line="223" selection-start-line="223" selection-end-line="223" selection-end-column="77" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src4/1. model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="119" column="14" selection-start-line="119" selection-start-column="14" selection-end-line="119" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src4/work.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="84" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src1/compress.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="104" column="56" lean-forward="true" selection-start-line="104" selection-start-column="56" selection-end-line="104" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src1/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="9" selection-start-line="9" selection-end-line="20" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src1/decompress.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="140" column="46" selection-start-line="140" selection-start-column="46" selection-end-line="140" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src4/work1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
