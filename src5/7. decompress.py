@@ -4,8 +4,8 @@ import pickle
 import sys
 
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  1314702
-TOTAL_COUNT = 46980076
+NUMBER_OF_LINES =  13147026
+TOTAL_COUNT = 469800763
 
 start_time = time.time()
 
@@ -227,7 +227,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
         while byte != b"":
             # Do stuff with byte.
             newCount = newCount + 1
-            if newCount % 4000 == 0:
+            if newCount % 20000 == 0:
                 print("percentage of file read" + str((newCount * 100) / TOTAL_COUNT))
 
             byte_temp = byte

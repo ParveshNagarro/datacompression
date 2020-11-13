@@ -5,8 +5,8 @@ import re
 
 #ENWIK_FILENAME = "../data/test.txt"
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  1314702
-MIN_FREQ_TO_BE_A_WORD = 50
+NUMBER_OF_LINES =  13147026
+MIN_FREQ_TO_BE_A_WORD = 500
 
 
 class Node:

@@ -4,8 +4,8 @@ import pickle
 import sys
 
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  1314702
-TOTAL_COUNT = 46980076
+NUMBER_OF_LINES =  13147026
+TOTAL_COUNT = 469800763
 
 start_time = time.time()
 

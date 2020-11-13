@@ -5,7 +5,7 @@ import time
 import sys
 
 ENWIK_FILENAME = "../data/enwik9"
-NUMBER_OF_LINES =  1314702
+NUMBER_OF_LINES =  13147026
 ENWIK_OUTPUT: str = "../tmp/enwik8_compressed"
 DISPLAY_CONTROL = 4000
 
