@@ -63,7 +63,7 @@ def create_trie_for_huffman_map(huffman_map):
 
 
 def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
-    print("Converting the final dict into a list of nodes")
+    print("Converting the final dict into a list of nodes" + str(len(final_word_nodes_dict)))
 
     word_nodes_list = []
     for key, value in final_word_nodes_dict.items():
@@ -117,12 +117,12 @@ def huffman_iteration(huffman_tree_to_iterate):
     new_node.children.append(node1)
     new_node.children.append(node2)
     huffman_tree_to_iterate.append(new_node)
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
 
 
 def encode_the_node(node):
-    print("The current node to encode is " + str(node.frequency) + "-" + node.character)
+    #print("The current node to encode is " + str(node.frequency) + "-" + node.character)
     if node.children is not None and 0 < len(node.children):
 #        print("Encoding the node " + str(node.frequency) + "-" + node.character)
 #        print("Now encoding the first child of the node + " + str(node.frequency) + "-" + node.character)
@@ -166,138 +166,42 @@ def find_all_indexes(input_str, search_str):
 
 
 start_time = time.time()
-total_usage = {}
-huffman_combined_words = {}
+
+final_map_combined_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
-    huffman_combined_words = pickle.load(f)
+    final_map_combined_words = pickle.load(f)
 
 
-huffman_map_words = {}
+final_map_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
-    huffman_map_words = pickle.load(f)
-
-trie_root = create_trie_for_huffman_map(huffman_map_words)
-combined_words_trie_root = create_trie_for_huffman_map(huffman_combined_words)
-
-print("Reading the dicts is complete, now creating the new structure.")
+    final_map_words = pickle.load(f)
 
 final_map = {}
-final_map_words = {}
-final_map_combined_words = {}
+with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
+    final_map = pickle.load(f)
 
-count = 0
-current_word = None
-with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
-    while True:
-        c = f.readline()
-        if count % DISPLAY_CONTROL == 0:
-            print("--- %s seconds ---" % (time.time() - start_time))
-            print("Compressing - " + str((count * 100) / NUMBER_OF_LINES))
-            now = datetime.datetime.now()
-            print(now.strftime("%Y-%m-%d %H:%M:%S"))
-        count = count + 1
 
-        if not c:
-            print("End of file. writing whatever is left")
-            break
+for key,value in final_map.items():
+    if len(value) > 0:
+        final_map[key] = convert_freq_map_to_huffman_map(value)
 
-        iter_index = 0
-        while iter_index < len(c):
+for key,value in final_map_words.items():
+    if len(value) > 0:
+        final_map_words[key] = convert_freq_map_to_huffman_map(value)
 
-            terminal_node_index = None
+for key,value in final_map_combined_words.items():
+    if len(value) > 0:
+        final_map_combined_words[key] = convert_freq_map_to_huffman_map(value)
 
-            # first looking in the combined words trie
-            current_trie_node = combined_words_trie_root
-            # this will the be the second value in the substring operator[iter_index:end_iter_index]
-            current_iter_index = iter_index
-            while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
-                current_trie_node = current_trie_node.children[c[current_iter_index]]
-                current_iter_index = current_iter_index + 1
-                if current_trie_node.is_terminal:
-                    terminal_node_index = current_iter_index
-
-            # did not find the word in the combined words, not looking in the normal words
-            if terminal_node_index is None:
-                current_trie_node = trie_root
-                current_iter_index = iter_index
-                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
-                    current_trie_node = current_trie_node.children[c[current_iter_index]]
-                    current_iter_index = current_iter_index + 1
-                    if current_trie_node.is_terminal:
-                        terminal_node_index = current_iter_index
-
-            # this will the be the second value in the substring operator[iter_index:end_iter_index]
-            end_iter_index = iter_index
-            # did not find anything, just using single length string i.e. a character.
-            if terminal_node_index is None:
-                end_iter_index = end_iter_index + 1
-            else:
-                end_iter_index = terminal_node_index
-
-            new_word = c[iter_index:end_iter_index]
-            iter_index = iter_index + len(new_word)
-
-            if current_word is None:
-                current_word = new_word
-
-                map_to_use = final_map
-                if len(new_word) > 1:
-                    if new_word in huffman_combined_words:
-                        map_to_use = final_map_combined_words
-                    else:
-                        map_to_use = final_map_words
-                map_to_use[new_word] = {}
-            else:
-
-                map_to_use = final_map
-                if len(new_word) > 1:
-                    if new_word in huffman_combined_words:
-                        map_to_use = final_map_combined_words
-                    else:
-                        map_to_use = final_map_words
-                if new_word not in map_to_use:
-                    map_to_use[new_word] = {}
-
-                map_to_use = final_map
-                if len(current_word) > 1:
-                    if current_word in huffman_combined_words:
-                        map_to_use = final_map_combined_words
-                    else:
-                        map_to_use = final_map_words
-                if new_word not in map_to_use[current_word]:
-                    map_to_use[current_word][new_word] = 1
-                else:
-                    map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
-                key = "\"" + current_word + "-" + new_word + "\""
-                if key in total_usage:
-                    total_usage[key] = total_usage[key] + 1
-                else:
-                    total_usage[key] = 1
-                current_word = new_word
-
-map_to_use = final_map
-if len(current_word) > 1:
-    map_to_use = final_map_words
-    if current_word in huffman_combined_words:
-        map_to_use =  final_map_combined_words
-
-new_word = "<<<----EOF---------------EOF---------------->>>"
-map_to_use[current_word][new_word]=1
-
-with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
+with open("../tmp/enwik8_new_strucure_encoded_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 
-with open("../tmp/enwik8_new_strucure_freq_distro_words", 'wb') as f:
+with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
 
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
+with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
-
-
 print("--- %s seconds ---" % (time.time() - start_time))
-with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f0:
-    for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
-        f0.write(k + "-" + str(v) + "\n")

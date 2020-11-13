@@ -106,7 +106,6 @@ def print_a_list(nodes_list_to_print):
 
 
 # the program starts here
-
 print("Here goes nothing!!!")
 total_number_of_lines = NUMBER_OF_LINES
 enwik: str = ENWIK_FILENAME
@@ -153,46 +152,3 @@ huffman_map_words = convert_freq_map_to_huffman_map(final_words_freq_dict, "../t
 with open("../tmp/enwik8_dict_words_huffman", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(huffman_map_words, f, pickle.HIGHEST_PROTOCOL)
-
-print("creating the characters huffman tree now")
-
-count = 0
-nodes_dict = {}
-with open(enwik, "r", encoding="utf-8") as f:
-    print("The current approach is a little bit better so reading only one character at a time.")
-    while True:
-        letter = f.readline(1)
-        count = count + 1
-        if count % 1000000 == 0:
-            print("------" + letter + "---" + str(count))
-        if not letter:
-            print("End of file")
-            break
-        if letter in nodes_dict:
-            nodes_dict[letter] = nodes_dict[letter] + 1
-        else:
-            nodes_dict[letter] = 1
-
-print("total number of lines =  " + str(count))
-
-print("Subtracting the frequencies that are being used by the words  ")
-for key, value in final_words_freq_dict.items():
-    word_string:str = key
-    word_freq:int = value
-    for letter_part_of_word in word_string:
-        nodes_dict[letter_part_of_word] = nodes_dict[letter_part_of_word] - word_freq
-
-
-print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
-final_nodes_dict = {}
-for key, value in nodes_dict.items():
-    if value > 0:
-        final_nodes_dict[key] = value
-
-huffman_map = convert_freq_map_to_huffman_map(final_nodes_dict, "../tmp/frequency_distro_chars")
-
-with open("../tmp/enwik8_dict_huffman", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(huffman_map, f, pickle.HIGHEST_PROTOCOL)
-
-print("--- %s seconds ---" % (time.time() - start_time))

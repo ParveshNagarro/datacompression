@@ -36,8 +36,34 @@ class Node:
         self.encoded_string = ""
 
 
+class TrieNode:
+    character:str
+    children:{}
+    is_terminal:bool
+
+    def __init__(self, character: str, is_terminal: bool):
+        self.character = character
+        self.is_terminal = is_terminal
+        self.children = {}
+
+
+def create_trie_for_huffman_map(huffman_map):
+    root:TrieNode = TrieNode("root", False)
+    for key, value in huffman_map.items():
+        current_trie_node:TrieNode = root
+        for char_key in key:
+            if char_key in current_trie_node.children:
+                current_trie_node = current_trie_node.children[char_key]
+            else:
+                new_trie_node = TrieNode(char_key, False)
+                current_trie_node.children[char_key] = new_trie_node
+                current_trie_node = new_trie_node
+        current_trie_node.is_terminal = True
+    return root
+
+  
 def convert_freq_map_to_huffman_map(final_word_nodes_dict,current_word) :
-    print("Converting the final dict into a list of nodes------" +  current_word + "-------" + str(len(final_word_nodes_dict)))
+    #print("Converting the final dict into a list of nodes------" +  current_word + "-------" + str(len(final_word_nodes_dict)))
 
     word_nodes_list = []
     for key, value in final_word_nodes_dict.items():
@@ -143,22 +169,6 @@ final_map_combined_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f:
     final_map_combined_words = pickle.load(f)
 
-combined_words_helper = {}
-space_started_combined_words = {}
-
-for key, value in final_map_combined_words.items():
-    if key.isspace():
-        space_started_combined_words[key] = key
-    else:
-        words_in_line = re.findall(r'\w+', key)
-        if len(words_in_line) == 0:
-            space_started_combined_words[key] = [key]
-        else:
-            for word in words_in_line:
-                if word in combined_words_helper:
-                    combined_words_helper[word].append(key)
-                else:
-                    combined_words_helper[word] = [key]
 
 final_map_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'rb') as f:
@@ -194,6 +204,9 @@ cutoff = 0
 first_word = None
 current_word = None
 
+trie_root = create_trie_for_huffman_map(final_map_words)
+combined_words_trie_root = create_trie_for_huffman_map(final_map_combined_words)
+
 newCount = 0
 total_number_of_lines = NUMBER_OF_LINES
 print("doing the compression")
@@ -225,59 +238,41 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 fo.write(bytearray(bytes_array))
 
                 break
-            line_all_words = {}
-            words_in_line = re.findall(r'\w+', c)
-            for word in words_in_line:
-                if word in final_map_words:
-                    line_all_words[word] = final_map_words[word]
-
-            line_words_pos_dict = {}
-            for key, value in line_all_words.items():
-                cursor = 0
-                index: int = c.find(key, cursor)
-                while index != -1:
-                    if index in line_words_pos_dict:
-                        if len(line_words_pos_dict[index]) < len(key):
-                            line_words_pos_dict[index] = key
-                    else:
-                        line_words_pos_dict[index] = key
-                    cursor = cursor + len(key)
-                    index: int = c.find(key, cursor)
-
-            combined_words_helper_client = {}
-            for word in words_in_line:
-                if word in combined_words_helper:
-                    list_of_combined_word = combined_words_helper[word]
-                    for combined_word in list_of_combined_word:
-                        if combined_word in final_map_combined_words:
-                            combined_words_helper_client[combined_word] = final_map_combined_words[combined_word]
-
-            for k, v in space_started_combined_words.items():
-                if k in final_map_combined_words:
-                    combined_words_helper_client[k] = final_map_combined_words[k]
-
-            for key, value in combined_words_helper_client.items():
-                cursor = 0
-                index: int = c.find(key, cursor)
-                while index != -1:
-                    if index in line_words_pos_dict:
-                        if len(line_words_pos_dict[index]) < len(key):
-                            line_words_pos_dict[index] = key
-                    else:
-                        line_words_pos_dict[index] = key
-                    cursor = cursor + len(key)
-                    index: int = c.find(key, cursor)
-
 
             iter_index = 0
             while iter_index < len(c):
-                new_word = None
-                if iter_index in line_words_pos_dict:
-                    new_word = line_words_pos_dict[iter_index]
-                    iter_index = iter_index + len(line_words_pos_dict[iter_index])
+                terminal_node_index = None
+
+                # first looking in the combined words trie
+                current_trie_node = combined_words_trie_root
+                # this will the be the second value in the substring operator[iter_index:end_iter_index]
+                current_iter_index = iter_index
+                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                    current_trie_node = current_trie_node.children[c[current_iter_index]]
+                    current_iter_index = current_iter_index + 1
+                    if current_trie_node.is_terminal:
+                        terminal_node_index = current_iter_index
+
+                # did not find the word in the combined words, not looking in the normal words
+                if terminal_node_index is None:
+                    current_trie_node = trie_root
+                    current_iter_index = iter_index
+                    while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                        current_trie_node = current_trie_node.children[c[current_iter_index]]
+                        current_iter_index = current_iter_index + 1
+                        if current_trie_node.is_terminal:
+                            terminal_node_index = current_iter_index
+
+                # this will the be the second value in the substring operator[iter_index:end_iter_index]
+                end_iter_index = iter_index
+                # did not find anything, just using single length string i.e. a character.
+                if terminal_node_index is None:
+                    end_iter_index = end_iter_index + 1
                 else:
-                    new_word = c[iter_index]
-                    iter_index = iter_index + 1
+                    end_iter_index = terminal_node_index
+
+                new_word = c[iter_index:end_iter_index]
+                iter_index = iter_index + len(new_word)
 
                 if first_word is None:
                     first_word = new_word

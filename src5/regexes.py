@@ -1,26 +1,19 @@
-import re
+import  pickle
+
+MIN_FREQ_TO_BE_A_COMBINED_WORD = 100
+
+final_map_words = {}
+with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
+    final_map_words = pickle.load(f)
 
 
-def find_all_indexes(input_str, search_str):
-    l1 = []
-    length = len(input_str)
-    index = 0
-    while index < length:
-        i = input_str.find(search_str, index)
-        if i == -1:
-            return l1
-        l1.append(i)
-        index = i + 1
-    return l1
+combined_words = {}
 
-pattern = ". "
-string = "This is the plan. This is going to work as per the schedule. This works!!!"
+for key, value in final_map_words.items():
+    for k,v in value.items():
+        if v >= MIN_FREQ_TO_BE_A_COMBINED_WORD:
+            combined_words[key + k] = {}
 
-pos_map = {}
-
-indices = find_all_indexes(string, pattern)
-
-for m in indices:
-    pos_map[m] = pattern
-
-print(pos_map)
+with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(combined_words, f, pickle.HIGHEST_PROTOCOL)
