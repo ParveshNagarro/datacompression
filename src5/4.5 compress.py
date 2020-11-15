@@ -3,6 +3,8 @@ import re
 import time
 import sys
 import datetime
+import concurrent
+import concurrent.futures
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
@@ -107,7 +109,7 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
 
 
 def huffman_iteration(huffman_tree_to_iterate):
-    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
     node1 = huffman_tree_to_iterate.pop(0)
     node2 = huffman_tree_to_iterate.pop(0)
@@ -165,6 +167,10 @@ def find_all_indexes(input_str, search_str):
     return l1
 
 
+def convert_key_val_to_huffman_map(map, key, value):
+    if len(value) > 0:
+        map[key] = convert_freq_map_to_huffman_map(value)
+
 start_time = time.time()
 
 final_map_combined_words = {}
@@ -180,28 +186,49 @@ final_map = {}
 with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
     final_map = pickle.load(f)
 
+final_map_1 = {}
+executor = concurrent.futures.ThreadPoolExecutor(20)
+futures = [executor.submit(convert_key_val_to_huffman_map, final_map_1, key, value) for key, value in final_map.items()]
+concurrent.futures.wait(futures)
 
-for key,value in final_map.items():
-    if len(value) > 0:
-        final_map[key] = convert_freq_map_to_huffman_map(value)
+final_map_words_1 = {}
+executor = concurrent.futures.ThreadPoolExecutor(20)
+futures = [executor.submit(convert_key_val_to_huffman_map, final_map_words_1, key, value) for key, value in final_map_words.items()]
+concurrent.futures.wait(futures)
 
-for key,value in final_map_words.items():
-    if len(value) > 0:
-        final_map_words[key] = convert_freq_map_to_huffman_map(value)
+final_map_combined_words_1 = {}
+executor = concurrent.futures.ThreadPoolExecutor(20)
+futures = [executor.submit(convert_key_val_to_huffman_map, final_map_combined_words_1, key, value) for key, value in final_map_combined_words.items()]
+concurrent.futures.wait(futures)
 
-for key,value in final_map_combined_words.items():
-    if len(value) > 0:
-        final_map_combined_words[key] = convert_freq_map_to_huffman_map(value)
+
+
+#final_map_1 = {}
+#for key, value in final_map.items():
+#    convert_key_val_to_huffman_map(final_map_1, key, value)
+
+
+#final_map_words_1 = {}
+#for key, value in final_map_words.items():
+#    convert_key_val_to_huffman_map(final_map_words_1, key, value)
+
+
+#final_map_combined_words_1 = {}
+#for key, value in final_map_combined_words.items():
+#    convert_key_val_to_huffman_map(final_map_combined_words_1, key, value)
+
+
+
 
 with open("../tmp/enwik8_new_strucure_encoded_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
 
 with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
 
 with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_combined_words, f, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(final_map_combined_words_1, f, pickle.HIGHEST_PROTOCOL)
 print("--- %s seconds ---" % (time.time() - start_time))
