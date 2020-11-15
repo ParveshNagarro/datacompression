@@ -80,10 +80,6 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
 
     tmp_words_nodes_list.sort(key=lambda x: x.frequency, reverse=True)
 
-    with open(fileName, "w", encoding="utf8") as f:
-        for node_tmp_1 in tmp_words_nodes_list:
-            f.write(node_tmp_1.character + " - " + str(node_tmp_1.frequency) + "\n")
-
     word_huffman_tree = []
     for value in word_nodes_list:
         word_huffman_tree.append(value)
