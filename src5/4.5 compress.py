@@ -64,7 +64,7 @@ def create_trie_for_huffman_map(huffman_map):
 
 
 
-def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
+def convert_freq_map_to_huffman_map(final_word_nodes_dict) :
     print("Converting the final dict into a list of nodes" + str(len(final_word_nodes_dict)))
 
     word_nodes_list = []
@@ -72,21 +72,17 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
         new_node = Node(key, value)
         word_nodes_list.append(new_node)
 
-    word_nodes_list.sort(key=lambda x: x.frequency, reverse=False)
-
-    tmp_words_nodes_list = []
-    for word in word_nodes_list:
-        tmp_words_nodes_list.append(word)
-
-    tmp_words_nodes_list.sort(key=lambda x: x.frequency, reverse=True)
-
     word_huffman_tree = []
     for value in word_nodes_list:
         word_huffman_tree.append(value)
 
     #print("Iterating and merging the nodes until only one remains")
     if len(word_huffman_tree) > 1:
+        iter_count = 0
         while len(word_huffman_tree) > 1:
+            iter_count = iter_count + 1
+            if iter_count % 1000 == 0:
+                print(" current number of nodes " + str(len(word_huffman_tree)))
             huffman_iteration(word_huffman_tree)
     else:
         if len(word_huffman_tree) == 1:
@@ -98,25 +94,25 @@ def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
     encode_the_node(word_huffman_tree[0])
 
     result = {}
-    for node_tmp in tmp_words_nodes_list:
+    for node_tmp in word_nodes_list:
         result[node_tmp.character] = node_tmp.encoded_string
 
     return result
 
 
 def huffman_iteration(huffman_tree_to_iterate):
-    print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
+    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
     huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
     node1 = huffman_tree_to_iterate.pop(0)
     node2 = huffman_tree_to_iterate.pop(0)
+
     ##print("Creating a new node with characters " + node1.character + node2.character + "  and string " + str(
       #  node1.frequency + node2.frequency))
     new_node = Node(node1.character + node2.character, node1.frequency + node2.frequency)
     new_node.children.append(node1)
     new_node.children.append(node2)
     huffman_tree_to_iterate.append(new_node)
-    #print("Sorting the nodes in the tree. Right now there are " + str(len(huffman_tree_to_iterate)) + " nodes.")
-    huffman_tree_to_iterate.sort(key=lambda x: x.frequency, reverse=False)
+
 
 
 def encode_the_node(node):
@@ -163,66 +159,55 @@ def find_all_indexes(input_str, search_str):
     return l1
 
 
-def convert_key_val_to_huffman_map(map, key, value):
+def convert_key_val_to_huffman_map(map, key, value,name):
     if len(value) > 0:
         map[key] = convert_freq_map_to_huffman_map(value)
+    print(name + " Current map size --- " + str(len(map)))
 
 start_time = time.time()
 
-final_map_combined_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
-    final_map_combined_words = pickle.load(f)
+
+final_map = {}
+with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
+    final_map = pickle.load(f)
+
+
+final_map_1 = {}
+for key, value in sorted(final_map.items(), key=lambda item: len(item[1]), reverse=True):
+    convert_key_val_to_huffman_map(final_map_1, key, value, "characters map")
+
+with open("../tmp/enwik8_new_strucure_encoded_distro", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
+
+
+
+
 
 
 final_map_words = {}
 with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
     final_map_words = pickle.load(f)
 
-final_map = {}
-with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
-    final_map = pickle.load(f)
-
-final_map_1 = {}
-executor = concurrent.futures.ThreadPoolExecutor(20)
-futures = [executor.submit(convert_key_val_to_huffman_map, final_map_1, key, value) for key, value in final_map.items()]
-concurrent.futures.wait(futures)
-
 final_map_words_1 = {}
-executor = concurrent.futures.ThreadPoolExecutor(20)
-futures = [executor.submit(convert_key_val_to_huffman_map, final_map_words_1, key, value) for key, value in final_map_words.items()]
-concurrent.futures.wait(futures)
-
-final_map_combined_words_1 = {}
-executor = concurrent.futures.ThreadPoolExecutor(20)
-futures = [executor.submit(convert_key_val_to_huffman_map, final_map_combined_words_1, key, value) for key, value in final_map_combined_words.items()]
-concurrent.futures.wait(futures)
-
-
-
-#final_map_1 = {}
-#for key, value in final_map.items():
-#    convert_key_val_to_huffman_map(final_map_1, key, value)
-
-
-#final_map_words_1 = {}
-#for key, value in final_map_words.items():
-#    convert_key_val_to_huffman_map(final_map_words_1, key, value)
-
-
-#final_map_combined_words_1 = {}
-#for key, value in final_map_combined_words.items():
-#    convert_key_val_to_huffman_map(final_map_combined_words_1, key, value)
-
-
-
-
-with open("../tmp/enwik8_new_strucure_encoded_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
+for key, value in sorted(final_map_words.items(), key=lambda item: len(item[1]), reverse=True):
+    convert_key_val_to_huffman_map(final_map_words_1, key, value, "words map")
 
 with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
+
+
+
+
+
+final_map_combined_words = {}
+with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
+    final_map_combined_words = pickle.load(f)
+
+final_map_combined_words_1 = {}
+for key, value in sorted(final_map_combined_words.items(), key=lambda item: len(item[1]), reverse=True):
+    convert_key_val_to_huffman_map(final_map_combined_words_1, key, value,"combined words map")
 
 with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.

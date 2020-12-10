@@ -178,68 +178,54 @@ def convert_huffman_map_to_tree(huffman_map_input):
     return result_huffman_tree
 
 
+def convert_key_value_final_map_to_tree(huffman_map_input, key, value, string_to_print, name):
+    print(string_to_print + key)
+    huffman_map_input[key] = convert_huffman_map_to_tree(value)[0]
+    print(name + " Current map size --- " + str(len(huffman_map_input)))
+
+
+
 
 final_map_combined_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'rb') as f:
     final_map_combined_words = pickle.load(f)
 
+final_map_combined_words_1 = {}
+for key,value in sorted(final_map_combined_words.items(), key=lambda item: len(item[1]), reverse=True):
+    convert_key_value_final_map_to_tree(final_map_combined_words_1, key, value, "1.converting the final map to sub tree of the items", "combined words map")
+print("writing first one")
+with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words_1", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_combined_words_1, f, pickle.HIGHEST_PROTOCOL)
+
+
+
+
 final_map_words = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'rb') as f:
     final_map_words = pickle.load(f)
+
+final_map_words_1 = {}
+for key,value in sorted(final_map_words.items(), key=lambda item: len(item[1]), reverse=True):
+    convert_key_value_final_map_to_tree(final_map_words_1, key, value,
+                                        "2.converting the final map to sub tree of the items", "words map")
+print("writing second one")
+with open("../tmp/enwik8_new_strucure_encoded_distro_words_1", 'wb') as f:
+    # Pickle the 'data' dictionary using the highest protocol available.
+    pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
+
+
+
+
 
 final_map = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
 
-def convert_key_value_final_map_to_tree(huffman_map_input, key, value, string_to_print):
-    print(string_to_print + key)
-    huffman_map_input[key] = convert_huffman_map_to_tree(value)[0]
-
-
-final_map_combined_words_1 = {}
-executor = concurrent.futures.ThreadPoolExecutor(20)
-futures = [executor.submit(convert_key_value_final_map_to_tree, final_map_combined_words_1, key, value, "1.converting the final map to sub tree of the items") for key, value in final_map_combined_words.items()]
-concurrent.futures.wait(futures)
-
-
-
-final_map_words_1 = {}
-executor = concurrent.futures.ThreadPoolExecutor(20)
-futures = [executor.submit(convert_key_value_final_map_to_tree, final_map_words_1, key, value, "2.converting the final map to sub tree of the items") for key, value in final_map_words.items()]
-concurrent.futures.wait(futures)
-
-
 final_map_1 = {}
-executor = concurrent.futures.ThreadPoolExecutor(20)
-futures = [executor.submit(convert_key_value_final_map_to_tree, final_map_1, key, value, "3.converting the final map to sub tree of the items") for key, value in final_map.items()]
-concurrent.futures.wait(futures)
-
-
-
-
-#final_map_combined_words_1 = {}
-#for key,value in final_map_combined_words.items():
-#    convert_key_value_final_map_to_tree(final_map_combined_words_1, key, value, "1.converting the final map to sub tree of the items")
-
-#final_map_words_1 = {}
-#for key,value in final_map_words.items():
-#    convert_key_value_final_map_to_tree(final_map_words_1, key, value,
-#                                        "2.converting the final map to sub tree of the items")
-
-#final_map_1 = {}
-#for key,value in final_map.items():
-#    convert_key_value_final_map_to_tree(final_map_1, key, value,
-#                                        "3.converting the final map to sub tree of the items")
-
-
-print("writing first one")
-with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words_1", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_combined_words_1, f, pickle.HIGHEST_PROTOCOL)
-print("writing second one")
-with open("../tmp/enwik8_new_strucure_encoded_distro_words_1", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
+for key,value in sorted(final_map.items(), key=lambda item: len(item[1]), reverse=True):
+    convert_key_value_final_map_to_tree(final_map_1, key, value,
+                                        "3.converting the final map to sub tree of the items", "characters map")
 print("writing third one")
 with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.

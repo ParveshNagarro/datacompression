@@ -37,11 +37,11 @@ print("Number of combined words in combined words map : " + str(len(final_map_co
 
 print("!!! Writing the keys from the combined words file !!!")
 with open("../tmp/analysis/keys/combined_words.txt", "w", encoding="utf-8", newline='\n') as f0:
-    for key, value in final_map_combined_words.items():
+    for key, value in sorted(final_map_combined_words.items(), key=lambda item: len(item[1]), reverse=True):
         total_freq = 0
         for k, v in value.items():
             total_freq = total_freq + v
-        f0.write("\"" + key + "\"" + "-" + str(total_freq) + "\n")
+        f0.write("\"" + key + "\"" + "-" + str(len(value)) + "\n")
 
 
 
@@ -58,7 +58,7 @@ with open("../tmp/analysis/keys/words.txt", "w", encoding="utf-8", newline='\n')
         total_freq = 0
         for k, v in value.items():
             total_freq = total_freq + v
-        f0.write("\"" + key + "\"" + "-" + str(total_freq) + "\n")
+        f0.write("\"" + key + "\"" + "-" + str(len(value)) + "\n")
 
 
 print("!!! Reading the characters file !!!")
@@ -74,4 +74,4 @@ with open("../tmp/analysis/keys/characters.txt", "w", encoding="utf-8", newline=
         total_freq = 0
         for k, v in value.items():
             total_freq = total_freq + v
-        f0.write("\"" + key + "\"" + "-" + str(total_freq) + "\n")
+        f0.write("\"" + key + "\"" + "-" + str(len(value)) + "\n")

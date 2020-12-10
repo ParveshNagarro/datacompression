@@ -167,49 +167,29 @@ def convert_key_val_to_huffman_map(map, key, value,name):
 start_time = time.time()
 
 
-final_map = {}
-with open("../tmp/analysis/enwik8_new_strucure_freq_distro", 'rb') as f:
-    final_map = pickle.load(f)
-
-
-final_map_1 = {}
-for key, value in sorted(final_map.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_val_to_huffman_map(final_map_1, key, value, "characters map")
-
-with open("../tmp/analysis/enwik8_new_strucure_encoded_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
-
-
-
-
-
-
-final_map_words = {}
-with open("../tmp/analysis/enwik8_new_strucure_freq_distro_words", 'rb') as f:
-    final_map_words = pickle.load(f)
-
-final_map_words_1 = {}
-for key, value in sorted(final_map_words.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_val_to_huffman_map(final_map_words_1, key, value, "words map")
-
-with open("../tmp/analysis/enwik8_new_strucure_encoded_distro_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
-
-
-
-
 
 final_map_combined_words = {}
 with open("../tmp/analysis/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
     final_map_combined_words = pickle.load(f)
 
 final_map_combined_words_1 = {}
-for key, value in sorted(final_map_combined_words.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_val_to_huffman_map(final_map_combined_words_1, key, value,"combined words map")
+first_kay = None
+first_value = None
 
-with open("../tmp/analysis/enwik8_new_strucure_encoded_distro_combined_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_combined_words_1, f, pickle.HIGHEST_PROTOCOL)
+count= 0
+for key, value in sorted(final_map_combined_words.items(), key=lambda item: len(item[1]), reverse=True):
+    if count == 100:
+        first_kay = key
+        first_value = value
+        break
+    count = count + 1
+
+
+
+with open("../tmp/analysis/enwik8_total_usage.txt", "w", encoding="utf-8", newline='\n') as f0:
+    f0.write(first_kay + "\n")
+    for k, v in sorted(first_value.items(), key=lambda item: item[1], reverse=True):
+        f0.write(k + "-" + str(v) + "\n")
+
+
 print("--- %s seconds ---" % (time.time() - start_time))
