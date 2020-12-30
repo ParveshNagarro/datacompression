@@ -5,7 +5,7 @@ import sys
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
-TOTAL_COUNT = 469800763
+TOTAL_COUNT = 490783041
 
 start_time = time.time()
 
@@ -175,14 +175,8 @@ def convert_huffman_map_to_tree(huffman_map_input):
 
     return result_huffman_tree
 
-
-
-final_map_combined_words = {}
-with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words_1", 'rb') as f:
-    final_map_combined_words = pickle.load(f)
-
 final_map_words = {}
-with open("../tmp/enwik8_new_strucure_encoded_distro_words_1", 'rb') as f:
+with open("../tmp/enwik8_words_new_strucure_encoded_distro_1", 'rb') as f:
     final_map_words = pickle.load(f)
 
 final_map = {}
@@ -190,13 +184,10 @@ with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'rb') as f:
     final_map = pickle.load(f)
 
 
-final_frequency_map_combined_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
-    final_frequency_map_combined_words = pickle.load(f)
-
 final_frequency_map_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
+with open("../tmp/enwik8_words_new_strucure_freq_distro", 'rb') as f:
     final_frequency_map_words = pickle.load(f)
+
 
 final_frequency_map = {}
 with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
@@ -227,7 +218,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
         while byte != b"":
             # Do stuff with byte.
             newCount = newCount + 1
-            if newCount % 20000 == 0:
+            if newCount % 100000 == 0:
                 print("percentage of file read" + str((newCount * 100) / TOTAL_COUNT))
 
             byte_temp = byte
@@ -250,10 +241,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                 if current_node is None:
                     map_to_use = final_map
                     if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                        else:
-                            map_to_use = final_map_words
+                        map_to_use = final_map_words
                     current_node = map_to_use[current_word]
 
                 while len(current_node.children) == 1:
@@ -263,12 +251,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
                     if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                            freq_map_to_use =  final_frequency_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-                            freq_map_to_use = final_frequency_map_words
+                        map_to_use = final_map_words
+                        freq_map_to_use = final_frequency_map_words
 
                     freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
                     if freq_map_to_use[current_word][current_node.character] == 0:
@@ -287,11 +271,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                     map_to_use = final_map
                     if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-
+                        map_to_use = final_map_words
                     current_node = map_to_use[current_word]
 
                 if character == "1":
@@ -306,12 +286,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     freq_map_to_use = final_frequency_map
                     map_to_use = final_map
                     if len(current_word) > 1:
-                        if current_word in final_map_combined_words:
-                            map_to_use = final_map_combined_words
-                            freq_map_to_use =  final_frequency_map_combined_words
-                        else:
-                            map_to_use = final_map_words
-                            freq_map_to_use = final_frequency_map_words
+                        map_to_use = final_map_words
+                        freq_map_to_use = final_frequency_map_words
 
                     freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
                     if freq_map_to_use[current_word][current_node.character] == 0:
@@ -340,10 +316,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
         if current_node is None:
             map_to_use = final_map
             if len(current_word) > 1:
-                if current_word in final_map_combined_words:
-                    map_to_use = final_map_combined_words
-                else:
-                    map_to_use = final_map_words
+                map_to_use = final_map_words
             current_node = map_to_use[current_word]
 
         while current_node is not None and len(current_node.children) == 1:
@@ -357,12 +330,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
             map_to_use = final_map
             freq_map_to_use = final_frequency_map
             if len(current_word) > 1:
-                if current_word in final_map_combined_words:
-                    map_to_use = final_map_combined_words
-                    freq_map_to_use = final_frequency_map_combined_words
-                else:
-                    map_to_use = final_map_words
-                    freq_map_to_use = final_frequency_map_words
+                map_to_use = final_map_words
+                freq_map_to_use = final_frequency_map_words
 
             freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][
                                                                         current_node.character] - 1
@@ -381,11 +350,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
             map_to_use = final_map
             if len(current_word) > 1:
-                if current_word in final_map_combined_words:
-                    map_to_use = final_map_combined_words
-                else:
-                    map_to_use = final_map_words
-
+                map_to_use = final_map_words
             current_node = map_to_use[current_word]
 
         if len(output_final) > 0:
@@ -397,11 +362,3 @@ print("--- %s seconds ---" % (time.time() - start_time))
 with open("../tmp2/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_frequency_map, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp2/enwik8_new_strucure_freq_distro_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map_words, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp2/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_frequency_map_combined_words, f, pickle.HIGHEST_PROTOCOL)

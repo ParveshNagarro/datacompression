@@ -5,10 +5,9 @@ import sys
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
-MIN_FREQ_TO_BE_A_WORD = 500
-MIN_FREQ_TO_BE_A_COMBINED_WORD = 1000
-DISPLAY_CONTROL = 200000
+DISPLAY_CONTROL = 20000
 
+COMBINING_FREQ_CHARS = 10000000
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
@@ -34,19 +33,6 @@ class Node:
         self.frequency = frequency
         self.children = []
         self.encoded_string = ""
-
-
-class TrieNode:
-    character:str
-    children:{}
-    is_terminal:bool
-
-    def __init__(self, character: str, is_terminal: bool):
-        self.character = character
-        self.is_terminal = is_terminal
-        self.children = {}
-
-
 
 def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
     print("Converting the final dict into a list of nodes")
@@ -137,38 +123,13 @@ def print_a_list(nodes_list_to_print):
     for node_to_print in nodes_list_to_print:
         print(print_a_node(node_to_print))
 
-
-def create_trie_for_huffman_map(huffman_map):
-    root:TrieNode = TrieNode("root", False)
-    for key, value in huffman_map.items():
-        current_trie_node:TrieNode = root
-        for char_key in key:
-            if char_key in current_trie_node.children:
-                current_trie_node = current_trie_node.children[char_key]
-            else:
-                new_trie_node = TrieNode(char_key, False)
-                current_trie_node.children[char_key] = new_trie_node
-                current_trie_node = new_trie_node
-        current_trie_node.is_terminal = True
-    return root
-
-
 start_time = time.time()
 
-huffman_map_words = {}
-with open("../tmp/enwik8_dict_words_huffman", 'rb') as f:
-    huffman_map_words = pickle.load(f)
-
-
-trie_root = create_trie_for_huffman_map(huffman_map_words)
-
-print("Reading the dicts is complete, now creating the new structure.")
-
 final_map = {}
-final_map_words = {}
 
 count = 0
 current_word = None
+total_count = 0
 with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
     while True:
         c = f.readline()
@@ -183,81 +144,33 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         # iterating over the trie repeatedly
         iter_index = 0
         while iter_index < len(c):
-
-
-            # always start at the root
-            current_trie_node = trie_root
-            terminal_node_index = None
-            current_iter_index = iter_index
-            while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
-                current_trie_node = current_trie_node.children[c[current_iter_index]]
-                current_iter_index = current_iter_index + 1
-                if current_trie_node.is_terminal:
-                    terminal_node_index = current_iter_index
-
-
-            # this will the be the second value in the substring operator[iter_index:end_iter_index]
-            end_iter_index = iter_index
-            # did not find anything, just using single length string i.e. a character.
-            if terminal_node_index is None:
-                end_iter_index = end_iter_index + 1
-            else:
-                end_iter_index = terminal_node_index
-
-            new_word = c[iter_index:end_iter_index]
-            iter_index = iter_index + len(new_word)
+            total_count = total_count + 1
+            new_word = c[iter_index]
+            iter_index = iter_index + 1
 
             if current_word is None:
                 current_word = new_word
 
-                map_to_use = final_map
-                if len(new_word) > 1:
-                    map_to_use = final_map_words
-                if new_word not in map_to_use:
-                    map_to_use[new_word] = {}
+                if new_word not in final_map:
+                    final_map[new_word] = {}
             else:
 
-                map_to_use = final_map
-                if len(new_word) > 1:
-                    map_to_use = final_map_words
-                if new_word not in map_to_use:
-                    map_to_use[new_word] = {}
+                if new_word not in final_map:
+                    final_map[new_word] = {}
 
-                map_to_use = final_map
-                if len(current_word) > 1:
-                    map_to_use = final_map_words
-                if new_word not in map_to_use[current_word]:
-                    map_to_use[current_word][new_word] = 1
+                if new_word not in final_map[current_word]:
+                    final_map[current_word][new_word] = 1
                 else:
-                    map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
+                    final_map[current_word][new_word] = final_map[current_word][new_word] + 1
                 current_word = new_word
 
 
-map_to_use = final_map
-if len(current_word) > 1:
-    map_to_use = final_map_words
-
 new_word = "<<<----EOF---------------EOF---------------->>>"
-map_to_use[current_word][new_word]=1
+final_map[current_word][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
-
-with open("../tmp/enwik8_new_strucure_freq_distro_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
-
-
-combined_words = {}
-
-for key, value in final_map_words.items():
-    for k,v in value.items():
-        if v >= MIN_FREQ_TO_BE_A_COMBINED_WORD:
-            combined_words[key + k] = {}
-
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(combined_words, f, pickle.HIGHEST_PROTOCOL)
-
 print("--- %s seconds ---" % (time.time() - start_time))
+
+print("total count  " + str(total_count))

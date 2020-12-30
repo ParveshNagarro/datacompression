@@ -1,16 +1,10 @@
 import pickle
-import re
 import time
 import sys
-import datetime
-import concurrent
-import concurrent.futures
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
-MIN_FREQ_TO_BE_A_WORD = 500
-MIN_FREQ_TO_BE_A_COMBINED_WORD = 1000
-DISPLAY_CONTROL = 20000
+DISPLAY_CONTROL = 2000
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
@@ -36,33 +30,6 @@ class Node:
         self.frequency = frequency
         self.children = []
         self.encoded_string = ""
-
-class TrieNode:
-    character:str
-    children:{}
-    is_terminal:bool
-
-    def __init__(self, character: str, is_terminal: bool):
-        self.character = character
-        self.is_terminal = is_terminal
-        self.children = {}
-
-
-def create_trie_for_huffman_map(huffman_map):
-    root:TrieNode = TrieNode("root", False)
-    for key, value in huffman_map.items():
-        current_trie_node:TrieNode = root
-        for char_key in key:
-            if char_key in current_trie_node.children:
-                current_trie_node = current_trie_node.children[char_key]
-            else:
-                new_trie_node = TrieNode(char_key, False)
-                current_trie_node.children[char_key] = new_trie_node
-                current_trie_node = new_trie_node
-        current_trie_node.is_terminal = True
-    return root
-
-
 
 def convert_freq_map_to_huffman_map(final_word_nodes_dict) :
     print("Converting the final dict into a list of nodes" + str(len(final_word_nodes_dict)))
@@ -171,6 +138,13 @@ final_map = {}
 with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
     final_map = pickle.load(f)
 
+final_map_words = {}
+with open("../tmp/enwik8_words_new_strucure_freq_distro", 'rb') as f:
+    final_map_words = pickle.load(f)
+
+
+
+
 
 final_map_1 = {}
 for key, value in sorted(final_map.items(), key=lambda item: len(item[1]), reverse=True):
@@ -184,32 +158,10 @@ with open("../tmp/enwik8_new_strucure_encoded_distro", 'wb') as f:
 
 
 
-
-final_map_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_words", 'rb') as f:
-    final_map_words = pickle.load(f)
-
 final_map_words_1 = {}
 for key, value in sorted(final_map_words.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_val_to_huffman_map(final_map_words_1, key, value, "words map")
+    convert_key_val_to_huffman_map(final_map_words_1, key, value, "characters map")
 
-with open("../tmp/enwik8_new_strucure_encoded_distro_words", 'wb') as f:
+with open("../tmp/enwik8_words_new_strucure_encoded_distro", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
-
-
-
-
-
-final_map_combined_words = {}
-with open("../tmp/enwik8_new_strucure_freq_distro_combined_words", 'rb') as f:
-    final_map_combined_words = pickle.load(f)
-
-final_map_combined_words_1 = {}
-for key, value in sorted(final_map_combined_words.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_val_to_huffman_map(final_map_combined_words_1, key, value,"combined words map")
-
-with open("../tmp/enwik8_new_strucure_encoded_distro_combined_words", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_combined_words_1, f, pickle.HIGHEST_PROTOCOL)
-print("--- %s seconds ---" % (time.time() - start_time))
