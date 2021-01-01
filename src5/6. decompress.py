@@ -199,20 +199,3 @@ print("writing third one")
 with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
-
-
-
-
-final_map_words = {}
-with open("../tmp/enwik8_words_new_strucure_encoded_distro", 'rb') as f:
-    final_map_words = pickle.load(f)
-
-final_map_words_1 = {}
-for key,value in sorted(final_map_words.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_value_final_map_to_tree(final_map_words_1, key, value,
-                                        "3.converting the final map to sub tree of the items", "characters map")
-
-print("writing third one")
-with open("../tmp/enwik8_words_new_strucure_encoded_distro_1", 'wb') as f:
-    pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
-

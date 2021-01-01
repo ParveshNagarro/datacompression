@@ -151,11 +151,9 @@ def print_a_list(nodes_list_to_print):
         print(print_a_node(node_to_print))
 
 
-def populate_total_usage(a, b, total_usage_map, words_total_usage_map):
+def populate_total_usage(a, b, total_usage_map):
 
     map_to_use = total_usage_map
-    if len(a) > 1 or len(b) > 1:
-        map_to_use = words_total_usage_map
 
     key = "\"" + a + "-" + b + "\""
 
@@ -170,16 +168,7 @@ final_map = {}
 
 
 final_map = {}
-final_map_words = {}
-
-huffman_map_words = {}
-with open("../tmp/enwik8_words_new_strucure_freq_distro", 'rb') as f:
-    huffman_map_words = pickle.load(f)
-
-words_trie_root = create_trie_for_huffman_map(huffman_map_words)
-
 total_usage = {}
-words_total_usage = {}
 
 count = 0
 current_word = None
@@ -202,16 +191,6 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
 
             terminal_node_index = None
 
-            # first looking in the combined words trie
-            current_trie_node = words_trie_root
-            # this will the be the second value in the substring operator[iter_index:end_iter_index]
-            current_iter_index = iter_index
-            while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
-                current_trie_node = current_trie_node.children[c[current_iter_index]]
-                current_iter_index = current_iter_index + 1
-                if current_trie_node.is_terminal:
-                    terminal_node_index = current_iter_index
-
             # this will the be the second value in the substring operator[iter_index:end_iter_index]
             end_iter_index = iter_index
             # did not find anything, just using single length string i.e. a character.
@@ -228,53 +207,35 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                 current_word = new_word
 
                 map_to_use = final_map
-                if len(new_word) > 1:
-                    map_to_use = final_map_words
                 map_to_use[new_word] = {}
             else:
                 map_to_use = final_map
-                if len(new_word) > 1:
-                    map_to_use = final_map_words
 
                 if new_word not in map_to_use:
                     map_to_use[new_word] = {}
 
                 map_to_use = final_map
-                if len(current_word) > 1:
-                    map_to_use = final_map_words
 
                 if new_word not in map_to_use[current_word]:
                     map_to_use[current_word][new_word] = 1
                 else:
                     map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
 
-                populate_total_usage(current_word, new_word, total_usage, words_total_usage)
+                populate_total_usage(current_word, new_word, total_usage)
                 current_word = new_word
 
 
 new_word = "<<<----EOF---------------EOF---------------->>>"
 map_to_use = final_map
-if len(current_word) > 1:
-    map_to_use = final_map_words
 map_to_use[current_word][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 print("--- %s seconds ---" % (time.time() - start_time))
 
-with open("../tmp/enwik8_words_new_strucure_freq_distro", 'wb') as f:
-    pickle.dump(final_map_words, f, pickle.HIGHEST_PROTOCOL)
-print("--- %s seconds ---" % (time.time() - start_time))
-
 
 with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f0:
     for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
         f0.write(k + "-" + str(v) + "\n")
-
-
-with open("../tmp/enwik8_words_total_usage", "w", encoding="utf-8", newline='\n') as f0:
-    for k, v in sorted(words_total_usage.items(), key=lambda item: item[1], reverse=True):
-        f0.write(k + "-" + str(v) + "\n")
-
 
 print("total count  " + str(total_count))

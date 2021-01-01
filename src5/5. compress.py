@@ -159,11 +159,9 @@ def find_all_indexes(input_str, search_str):
 
 
 
-def populate_total_usage(a, b, total_usage_map, words_total_usage_map):
+def populate_total_usage(a, b, total_usage_map):
 
     map_to_use = total_usage_map
-    if len(a) > 1 or len(b) > 1:
-        map_to_use = words_total_usage_map
 
     key = "\"" + a + "-" + b + "\""
 
@@ -178,30 +176,19 @@ first_word = None
 start_time = time.time()
 
 
-final_map_words = {}
-with open("../tmp/enwik8_words_new_strucure_encoded_distro", 'rb') as f:
-    final_map_words = pickle.load(f)
-
 final_map = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
 
 
 
-final_frequency_map_words = {}
-with open("../tmp/enwik8_words_new_strucure_freq_distro", 'rb') as f:
-    final_frequency_map_words = pickle.load(f)
-
 final_frequency_map = {}
 with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
     final_frequency_map = pickle.load(f)
 
-words_trie_root = create_trie_for_huffman_map(final_map_words)
-
 encoded_contents = ""
 
 total_usage = {}
-words_total_usage = {}
 
 print("Reading the dicts is complete, it's time to write the file back.")
 
@@ -248,16 +235,6 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                 terminal_node_index = None
 
-                # first looking in the combined words trie
-                current_trie_node = words_trie_root
-                # this will the be the second value in the substring operator[iter_index:end_iter_index]
-                current_iter_index = iter_index
-                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
-                    current_trie_node = current_trie_node.children[c[current_iter_index]]
-                    current_iter_index = current_iter_index + 1
-                    if current_trie_node.is_terminal:
-                        terminal_node_index = current_iter_index
-
 
                 # this will the be the second value in the substring operator[iter_index:end_iter_index]
                 end_iter_index = iter_index
@@ -279,14 +256,10 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
 
-                    if len(current_word) > 1:
-                        map_to_use = final_map_words
-                        freq_map_to_use = final_frequency_map_words
-
                     if (len(map_to_use[current_word])) > 1:
                         encoded_contents = encoded_contents + map_to_use[current_word][new_word]
 
-                        populate_total_usage(current_word, new_word, total_usage, words_total_usage)
+                        populate_total_usage(current_word, new_word, total_usage)
 
                     freq_map_to_use[current_word][new_word] = freq_map_to_use[current_word][new_word] - 1
 
@@ -330,7 +303,3 @@ with open("../tmp/enwik8_total_usage", "w", encoding="utf-8", newline='\n') as f
     for k, v in sorted(total_usage.items(), key=lambda item: item[1], reverse=True):
         f0.write(k + "-" + str(v) + "\n")
 
-
-with open("../tmp/enwik8_words_total_usage", "w", encoding="utf-8", newline='\n') as f0:
-    for k, v in sorted(words_total_usage.items(), key=lambda item: item[1], reverse=True):
-        f0.write(k + "-" + str(v) + "\n")

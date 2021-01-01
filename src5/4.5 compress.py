@@ -138,14 +138,6 @@ final_map = {}
 with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
     final_map = pickle.load(f)
 
-final_map_words = {}
-with open("../tmp/enwik8_words_new_strucure_freq_distro", 'rb') as f:
-    final_map_words = pickle.load(f)
-
-
-
-
-
 final_map_1 = {}
 for key, value in sorted(final_map.items(), key=lambda item: len(item[1]), reverse=True):
     convert_key_val_to_huffman_map(final_map_1, key, value, "characters map")
@@ -155,13 +147,3 @@ with open("../tmp/enwik8_new_strucure_encoded_distro", 'wb') as f:
     pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
 
 
-
-
-
-final_map_words_1 = {}
-for key, value in sorted(final_map_words.items(), key=lambda item: len(item[1]), reverse=True):
-    convert_key_val_to_huffman_map(final_map_words_1, key, value, "characters map")
-
-with open("../tmp/enwik8_words_new_strucure_encoded_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
-    pickle.dump(final_map_words_1, f, pickle.HIGHEST_PROTOCOL)
