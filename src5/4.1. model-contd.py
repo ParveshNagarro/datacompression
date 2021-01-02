@@ -204,6 +204,10 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
 
 
             if current_word is None:
+                total_count = total_count + 1
+                new_word = new_word + c[iter_index]
+                iter_index = iter_index + 1
+
                 current_word = new_word
 
                 map_to_use = final_map
@@ -211,8 +215,9 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
             else:
                 map_to_use = final_map
 
-                if new_word not in map_to_use:
-                    map_to_use[new_word] = {}
+                key_to_use = current_word[1:] + new_word
+                if key_to_use not in map_to_use:
+                    map_to_use[key_to_use] = {}
 
                 map_to_use = final_map
 
@@ -222,7 +227,7 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                     map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
 
                 populate_total_usage(current_word, new_word, total_usage)
-                current_word = new_word
+                current_word = key_to_use
 
 
 new_word = "<<<----EOF---------------EOF---------------->>>"

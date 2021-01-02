@@ -149,20 +149,24 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
             iter_index = iter_index + 1
 
             if current_word is None:
-                current_word = new_word
+                total_count = total_count + 1
+                new_word = new_word + c[iter_index]
+                iter_index = iter_index + 1
 
+                current_word = new_word
                 if new_word not in final_map:
                     final_map[new_word] = {}
             else:
 
-                if new_word not in final_map:
-                    final_map[new_word] = {}
+                key_to_use = current_word[1:] + new_word
+                if key_to_use not in final_map:
+                    final_map[key_to_use] = {}
 
                 if new_word not in final_map[current_word]:
                     final_map[current_word][new_word] = 1
                 else:
                     final_map[current_word][new_word] = final_map[current_word][new_word] + 1
-                current_word = new_word
+                current_word = key_to_use
 
 
 new_word = "<<<----EOF---------------EOF---------------->>>"

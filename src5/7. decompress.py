@@ -254,7 +254,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                             del freq_map_to_use[current_word]
                             print("fun fun fun fun-----" + str(len(map_to_use)))
 
-                    current_word = current_node.character
+                    key_to_use = current_word[1:] + current_node.character
+                    current_word = key_to_use
 
                     map_to_use = final_map
                     current_node = map_to_use[current_word]
@@ -283,8 +284,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                             del freq_map_to_use[current_word]
                             print("fun fun fun fun-----" + str(len(map_to_use)))
 
-
-                    current_word = current_node.character
+                    key_to_use = current_word[1:] + current_node.character
+                    current_word = key_to_use
                     current_node = None
 
                     # here keep updating directly if there is only one child
@@ -323,7 +324,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     del freq_map_to_use[current_word]
                     print("fun fun fun fun-----" + str(len(map_to_use)))
 
-            current_word = current_node.character
+            key_to_use = current_word[1:] + current_node.character
+            current_word = key_to_use
 
             map_to_use = final_map
             current_node = map_to_use[current_word]

@@ -249,6 +249,11 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
 
                 if first_word is None:
+
+                    new_word = new_word + c[iter_index]
+                    iter_index = iter_index + 1
+
+
                     first_word = new_word
                     current_word = first_word
                 else:
@@ -275,7 +280,8 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                             del freq_map_to_use[current_word]
                             print("fun fun fun fun-----" + str(len(map_to_use)))
 
-                    current_word = new_word
+                    key_to_use = current_word[1:] + new_word
+                    current_word = key_to_use
 
 
             while len(encoded_contents) > 8:
