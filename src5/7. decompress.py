@@ -6,6 +6,8 @@ import sys
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 TOTAL_COUNT = 490783041
+UNIMPORTANT_CHARS = "專"
+
 
 start_time = time.time()
 
@@ -175,6 +177,15 @@ def convert_huffman_map_to_tree(huffman_map_input):
 
     return result_huffman_tree
 
+
+def get_new_char(character_read, important_characters_map):
+    new_char = character_read
+    if new_char not in important_characters_map:
+        new_char = UNIMPORTANT_CHARS
+    return new_char
+
+
+
 final_map = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'rb') as f:
     final_map = pickle.load(f)
@@ -195,6 +206,12 @@ first_word = ""
 with open("../tmp/enwik8_first_word", 'rb') as f:
     first_word = pickle.load(f)
 
+
+unimportant_chars_decoded_map = {}
+with open("../tmp/unimportant_chars_decoded_map", 'rb') as f:
+    unimportant_chars_decoded_map = pickle.load(f)
+
+length_of_unimportant_ones = len(list(unimportant_chars_decoded_map.keys())[0])
 
 current_word = first_word
 output_final = first_word
@@ -224,11 +241,12 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     cutoff = 0
 
             decoded_string = ("0" * cutoff) + decoded_string
-
             tmp_decoding_string = decoded_string
 
+            while len(tmp_decoding_string > 0):
 
-            for character in tmp_decoding_string:
+                character = tmp_decoding_string[0]
+                tmp_decoding_string = tmp_decoding_string[1:]
 
                 if current_node is None:
                     map_to_use = final_map
@@ -236,7 +254,20 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                 while len(current_node.children) == 1:
                     current_node = current_node.children[0]
-                    output_final = output_final + current_node.character
+
+                    # this part is to read unimportant characters.,......
+                    character_to_append_to_output_final = current_node.character
+                    if character_to_append_to_output_final == UNIMPORTANT_CHARS:
+                        # the complicated logics to check the last character are not needed here as it would never be in the end
+                        while len(tmp_decoding_string) <= 13:
+                            byte = f.read(1)
+                            tmp_decoding_string = tmp_decoding_string + "{0:b}".format(ord(byte_temp))
+                        unimportant_character_key = tmp_decoding_string[:length_of_unimportant_ones]
+                        tmp_decoding_string = tmp_decoding_string[length_of_unimportant_ones:]
+
+                        character_to_append_to_output_final = unimportant_chars_decoded_map[unimportant_character_key]
+
+                    output_final = output_final + character_to_append_to_output_final
 
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
@@ -267,7 +298,21 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
 
                 if len(current_node.children) == 0:
-                    output_final = output_final + current_node.character
+
+                    # this part is to read unimportant characters.,......
+                    character_to_append_to_output_final = current_node.character
+                    if character_to_append_to_output_final == UNIMPORTANT_CHARS:
+                        # the complicated logics to check the last character are not needed here as it would never be in the end
+                        while len(tmp_decoding_string) <= 13:
+                            byte = f.read(1)
+                            tmp_decoding_string = tmp_decoding_string + "{0:b}".format(ord(byte_temp))
+                        unimportant_character_key = tmp_decoding_string[:length_of_unimportant_ones]
+                        tmp_decoding_string = tmp_decoding_string[length_of_unimportant_ones:]
+
+                        character_to_append_to_output_final = unimportant_chars_decoded_map[unimportant_character_key]
+
+                    output_final = output_final + character_to_append_to_output_final
+
 
                     freq_map_to_use = final_frequency_map
                     map_to_use = final_map
@@ -295,6 +340,26 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                         output_final = output_final[8:]
                         f0.write(tmp_output_final)
         print("->->->->->->->--the last word-->->-->->->->->")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         if current_node is None:
             map_to_use = final_map
@@ -337,5 +402,4 @@ print("--- %s seconds ---" % (time.time() - start_time))
 
 
 with open("../tmp2/enwik8_new_strucure_freq_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_frequency_map, f, pickle.HIGHEST_PROTOCOL)

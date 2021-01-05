@@ -6,6 +6,7 @@ import sys
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 DISPLAY_CONTROL = 20000
+UNIMPORTANT_CHARS = "專"
 
 COMBINING_FREQ_CHARS = 10000000
 
@@ -123,7 +124,20 @@ def print_a_list(nodes_list_to_print):
     for node_to_print in nodes_list_to_print:
         print(print_a_node(node_to_print))
 
+
+def get_new_char(character_read, important_characters_map):
+    new_char = character_read
+    if new_char not in important_characters_map:
+        new_char = UNIMPORTANT_CHARS
+    return new_char
+
+
 start_time = time.time()
+
+
+important_chars_map = {}
+with open("../tmp/important_chars", 'rb') as f:
+    important_chars_map = pickle.load(f)
 
 final_map = {}
 
@@ -145,12 +159,16 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         iter_index = 0
         while iter_index < len(c):
             total_count = total_count + 1
-            new_word = c[iter_index]
+            new_word = get_new_char(c[iter_index], important_chars_map)
             iter_index = iter_index + 1
 
             if current_word is None:
                 total_count = total_count + 1
-                new_word = new_word + c[iter_index]
+                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
+                iter_index = iter_index + 1
+
+                total_count = total_count + 1
+                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
                 iter_index = iter_index + 1
 
                 current_word = new_word
@@ -173,7 +191,6 @@ new_word = "<<<----EOF---------------EOF---------------->>>"
 final_map[current_word][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
-    # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
 print("--- %s seconds ---" % (time.time() - start_time))
 

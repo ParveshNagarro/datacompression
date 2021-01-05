@@ -1,13 +1,16 @@
-import io
+import math
 import time
 import pickle
 import sys
-import concurrent
-import concurrent.futures
 
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 TOTAL_COUNT = 469800763
+
+DISPLAY_CONTROL = 20000
+
+COMBINING_FREQ_CHARS = 10000000
+
 
 start_time = time.time()
 
@@ -199,3 +202,27 @@ print("writing third one")
 with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'wb') as f:
     # Pickle the 'data' dictionary using the highest protocol available.
     pickle.dump(final_map_1, f, pickle.HIGHEST_PROTOCOL)
+
+
+
+
+
+
+unimportant_chars_map = {}
+with open("../tmp/unimportant_chars", 'rb') as f:
+    unimportant_chars_map = pickle.load(f)
+
+length_of_code:int = math.ceil(math.log(len(unimportant_chars_map), 2))
+
+
+final_unimportant_decoded_map = {}
+index:int = 0
+for k, v in sorted(unimportant_chars_map.items(), key=lambda item: {item[1], item[0]}, reverse=True):
+    value:str = "{0:b}".format(index).zfill(length_of_code)
+    print(value)
+    final_unimportant_decoded_map[value] = k
+    index = index + 1
+
+
+with open("../tmp/unimportant_chars_decoded_map", 'wb') as f:
+    pickle.dump(final_unimportant_decoded_map, f, pickle.HIGHEST_PROTOCOL)

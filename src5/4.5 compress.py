@@ -6,6 +6,9 @@ ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 DISPLAY_CONTROL = 2000
 
+COMBINING_FREQ_CHARS = 10000000
+
+
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
 

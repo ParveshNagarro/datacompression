@@ -6,6 +6,8 @@ import sys
 ENWIK_FILENAME = "../data/enwik9"
 NUMBER_OF_LINES =  13147026
 DISPLAY_CONTROL = 20000
+UNIMPORTANT_CHARS = "專"
+
 
 COMBINING_FREQ_CHARS = 10000000
 
@@ -162,10 +164,22 @@ def populate_total_usage(a, b, total_usage_map):
     else:
         map_to_use[key] = 1
 
+
+
+def get_new_char(character_read, important_characters_map):
+    new_char = character_read
+    if new_char not in important_characters_map:
+        new_char = UNIMPORTANT_CHARS
+    return new_char
+
+
 start_time = time.time()
 
 final_map = {}
 
+important_chars_map = {}
+with open("../tmp/important_chars", 'rb') as f:
+    important_chars_map = pickle.load(f)
 
 final_map = {}
 total_usage = {}
@@ -200,12 +214,19 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
                 end_iter_index = terminal_node_index
 
             new_word = c[iter_index:end_iter_index]
+            if len(new_word) == 1:
+                new_word = get_new_char(new_word, important_chars_map)
             iter_index = iter_index + len(new_word)
 
 
             if current_word is None:
+
                 total_count = total_count + 1
-                new_word = new_word + c[iter_index]
+                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
+                iter_index = iter_index + 1
+
+                total_count = total_count + 1
+                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
                 iter_index = iter_index + 1
 
                 current_word = new_word

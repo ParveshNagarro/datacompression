@@ -8,6 +8,8 @@ ENWIK_OUTPUT: str = "../tmp/enwik8_compressed"
 DISPLAY_CONTROL = 4000
 
 
+UNIMPORTANT_CHARS = "專"
+
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
 
@@ -171,6 +173,13 @@ def populate_total_usage(a, b, total_usage_map):
         map_to_use[key] = 1
 
 
+def get_new_char(character_read, important_characters_map):
+    new_char = character_read
+    if new_char not in important_characters_map:
+        new_char = UNIMPORTANT_CHARS
+    return new_char
+
+
 first_word = None
 
 start_time = time.time()
@@ -186,6 +195,17 @@ final_frequency_map = {}
 with open("../tmp/enwik8_new_strucure_freq_distro", 'rb') as f:
     final_frequency_map = pickle.load(f)
 
+
+important_chars_map = {}
+with open("../tmp/important_chars", 'rb') as f:
+    important_chars_map = pickle.load(f)
+
+
+unimportant_chars_encoded_map = {}
+with open("../tmp/unimportant_chars_encoded_map", 'rb') as f:
+    unimportant_chars_encoded_map = pickle.load(f)
+
+
 encoded_contents = ""
 
 total_usage = {}
@@ -194,6 +214,8 @@ print("Reading the dicts is complete, it's time to write the file back.")
 
 print("The compressed version will be written to " + ENWIK_OUTPUT)
 cutoff = 0
+
+
 
 first_word = None
 current_word = None
@@ -245,14 +267,18 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     end_iter_index = terminal_node_index
 
                 new_word = c[iter_index:end_iter_index]
+                if len(new_word) == 1:
+                    new_word = get_new_char(new_word, important_chars_map)
                 iter_index = iter_index + len(new_word)
 
 
                 if first_word is None:
 
-                    new_word = new_word + c[iter_index]
+                    new_word = new_word + get_new_char(c[iter_index], important_chars_map)
                     iter_index = iter_index + 1
 
+                    new_word = new_word + get_new_char(c[iter_index], important_chars_map)
+                    iter_index = iter_index + 1
 
                     first_word = new_word
                     current_word = first_word
@@ -261,9 +287,11 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
 
-                    if (len(map_to_use[current_word])) > 1:
+                    if new_word == UNIMPORTANT_CHARS:
+                        encoded_contents = encoded_contents + map_to_use[current_word][new_word] + unimportant_chars_encoded_map[new_word]
+                        populate_total_usage(current_word, new_word, total_usage)
+                    elif (len(map_to_use[current_word])) > 1:
                         encoded_contents = encoded_contents + map_to_use[current_word][new_word]
-
                         populate_total_usage(current_word, new_word, total_usage)
 
                     freq_map_to_use[current_word][new_word] = freq_map_to_use[current_word][new_word] - 1
@@ -282,7 +310,6 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                     key_to_use = current_word[1:] + new_word
                     current_word = key_to_use
-
 
             while len(encoded_contents) > 8:
                 bytes_array = []
