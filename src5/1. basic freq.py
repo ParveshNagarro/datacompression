@@ -37,7 +37,7 @@ final_map = {}
 unfinal_map = {}
 
 for k, v in sorted(nodes_dict.items(), key=lambda item: item[1], reverse=True):
-    if v >= 100:
+    if v >= 71:
         final_map[k] = v
 
     else:

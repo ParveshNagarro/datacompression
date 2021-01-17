@@ -189,10 +189,10 @@ def convert_key_value_final_map_to_tree(huffman_map_input, key, value, string_to
 
 
 
-
 final_map = {}
 with open("../tmp/enwik8_new_strucure_encoded_distro", 'rb') as f:
     final_map = pickle.load(f)
+
 
 final_map_1 = {}
 for key,value in sorted(final_map.items(), key=lambda item: len(item[1]), reverse=True):
@@ -208,21 +208,18 @@ with open("../tmp/enwik8_new_strucure_encoded_distro_1", 'wb') as f:
 
 
 
-unimportant_chars_map = {}
-with open("../tmp/unimportant_chars", 'rb') as f:
-    unimportant_chars_map = pickle.load(f)
 
-length_of_code:int = math.ceil(math.log(len(unimportant_chars_map), 2))
+unimportant_chars_encoded_map = {}
+with open("../tmp/unimportant_chars_encoded_map", 'rb') as f:
+    unimportant_chars_encoded_map = pickle.load(f)
 
 
 final_unimportant_decoded_map = {}
-index:int = 0
-for k, v in sorted(unimportant_chars_map.items(), key=lambda item: {item[1], item[0]}, reverse=True):
-    value:str = "{0:b}".format(index).zfill(length_of_code)
-    print(value)
-    final_unimportant_decoded_map[value] = k
-    index = index + 1
+for k, v in unimportant_chars_encoded_map.items():
+    final_unimportant_decoded_map[v] = k
 
 
 with open("../tmp/unimportant_chars_decoded_map", 'wb') as f:
     pickle.dump(final_unimportant_decoded_map, f, pickle.HIGHEST_PROTOCOL)
+
+

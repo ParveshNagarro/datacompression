@@ -211,6 +211,9 @@ unimportant_chars_decoded_map = {}
 with open("../tmp/unimportant_chars_decoded_map", 'rb') as f:
     unimportant_chars_decoded_map = pickle.load(f)
 
+
+
+
 length_of_unimportant_ones = len(list(unimportant_chars_decoded_map.keys())[0])
 
 current_word = first_word
@@ -220,7 +223,7 @@ current_node = None
 decoded_string = ""
 
 newCount = 0
-
+donec = 0
 with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
     with open("../tmp/enwik8_compressed", "rb") as f:
         byte = f.read(1)
@@ -243,10 +246,7 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
             decoded_string = ("0" * cutoff) + decoded_string
             tmp_decoding_string = decoded_string
 
-            while len(tmp_decoding_string > 0):
-
-                character = tmp_decoding_string[0]
-                tmp_decoding_string = tmp_decoding_string[1:]
+            while len(tmp_decoding_string) > 0:
 
                 if current_node is None:
                     map_to_use = final_map
@@ -260,14 +260,21 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     if character_to_append_to_output_final == UNIMPORTANT_CHARS:
                         # the complicated logics to check the last character are not needed here as it would never be in the end
                         while len(tmp_decoding_string) <= 13:
+                            byte_temp = byte
                             byte = f.read(1)
-                            tmp_decoding_string = tmp_decoding_string + "{0:b}".format(ord(byte_temp))
+                            decoded_string = "{0:b}".format(ord(byte_temp))
+                            cutoff = 8 - len(decoded_string)
+                            decoded_string = ("0" * cutoff) + decoded_string
+
+                            tmp_decoding_string = tmp_decoding_string + decoded_string
                         unimportant_character_key = tmp_decoding_string[:length_of_unimportant_ones]
                         tmp_decoding_string = tmp_decoding_string[length_of_unimportant_ones:]
 
                         character_to_append_to_output_final = unimportant_chars_decoded_map[unimportant_character_key]
-
                     output_final = output_final + character_to_append_to_output_final
+                    donec = donec + 1
+                    if donec == 63240:
+                        print("wewewe")
 
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
@@ -291,6 +298,9 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     map_to_use = final_map
                     current_node = map_to_use[current_word]
 
+                character = tmp_decoding_string[0]
+                tmp_decoding_string = tmp_decoding_string[1:]
+
                 if character == "1":
                     current_node = current_node.children[1]
                 else:
@@ -304,20 +314,33 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                     if character_to_append_to_output_final == UNIMPORTANT_CHARS:
                         # the complicated logics to check the last character are not needed here as it would never be in the end
                         while len(tmp_decoding_string) <= 13:
+
+                            byte_temp = byte
                             byte = f.read(1)
-                            tmp_decoding_string = tmp_decoding_string + "{0:b}".format(ord(byte_temp))
+                            decoded_string = "{0:b}".format(ord(byte_temp))
+                            cutoff = 8 - len(decoded_string)
+                            decoded_string = ("0" * cutoff) + decoded_string
+
+                            tmp_decoding_string = tmp_decoding_string + decoded_string
+
                         unimportant_character_key = tmp_decoding_string[:length_of_unimportant_ones]
                         tmp_decoding_string = tmp_decoding_string[length_of_unimportant_ones:]
 
                         character_to_append_to_output_final = unimportant_chars_decoded_map[unimportant_character_key]
 
                     output_final = output_final + character_to_append_to_output_final
+                    donec = donec + 1
+                    if donec == 63240:
+                        print("wewewe")
 
 
                     freq_map_to_use = final_frequency_map
                     map_to_use = final_map
 
+                    if current_node.character not in freq_map_to_use[current_word]:
+                        print(output_final)
                     freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
+
                     if freq_map_to_use[current_word][current_node.character] == 0:
                         del freq_map_to_use[current_word][current_node.character]
 
@@ -343,24 +366,6 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if current_node is None:
             map_to_use = final_map
             current_node = map_to_use[current_word]
@@ -372,6 +377,9 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
                 break
 
             output_final = output_final + current_node.character
+            donec = donec + 1
+            if donec == 63240:
+                print("wewewe")
 
             map_to_use = final_map
             freq_map_to_use = final_frequency_map

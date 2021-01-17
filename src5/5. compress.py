@@ -233,6 +233,8 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 print("--- %s seconds ---" % (time.time() - start_time))
             newCount = newCount + 1
 
+
+
             if not c:
                 print("End of file. writing whatever is left")
                 bytes_array = []
@@ -252,9 +254,11 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                 break
 
+            if newCount == 450:
+                print("debug dbeug debug")
+
             iter_index = 0
             while iter_index < len(c):
-
                 terminal_node_index = None
 
 
@@ -266,18 +270,20 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                 else:
                     end_iter_index = terminal_node_index
 
-                new_word = c[iter_index:end_iter_index]
+                tmp_new_word = c[iter_index:end_iter_index]
+                new_word = tmp_new_word
                 if len(new_word) == 1:
                     new_word = get_new_char(new_word, important_chars_map)
                 iter_index = iter_index + len(new_word)
 
 
                 if first_word is None:
-
-                    new_word = new_word + get_new_char(c[iter_index], important_chars_map)
+                    tmp_new_word = c[iter_index]
+                    new_word = new_word + get_new_char(tmp_new_word, important_chars_map)
                     iter_index = iter_index + 1
 
-                    new_word = new_word + get_new_char(c[iter_index], important_chars_map)
+                    tmp_new_word = c[iter_index]
+                    new_word = new_word + get_new_char(tmp_new_word, important_chars_map)
                     iter_index = iter_index + 1
 
                     first_word = new_word
@@ -287,13 +293,22 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
 
-                    if new_word == UNIMPORTANT_CHARS:
-                        encoded_contents = encoded_contents + map_to_use[current_word][new_word] + unimportant_chars_encoded_map[new_word]
-                        populate_total_usage(current_word, new_word, total_usage)
-                    elif (len(map_to_use[current_word])) > 1:
-                        encoded_contents = encoded_contents + map_to_use[current_word][new_word]
+                    if (len(map_to_use[current_word])) > 1:
+                        if new_word == UNIMPORTANT_CHARS:
+                            encoded_contents = encoded_contents + map_to_use[current_word][new_word] + unimportant_chars_encoded_map[tmp_new_word]
+                            populate_total_usage(current_word, new_word, total_usage)
+                        else:
+                            encoded_contents = encoded_contents + map_to_use[current_word][new_word]
+                            populate_total_usage(current_word, new_word, total_usage)
+                    elif new_word == UNIMPORTANT_CHARS:
+                        encoded_contents = encoded_contents + unimportant_chars_encoded_map[tmp_new_word]
                         populate_total_usage(current_word, new_word, total_usage)
 
+
+
+
+                    if current_word == '\n= ' and new_word == '&':
+                        print("a")
                     freq_map_to_use[current_word][new_word] = freq_map_to_use[current_word][new_word] - 1
 
                     if freq_map_to_use[current_word][new_word] == 0:
