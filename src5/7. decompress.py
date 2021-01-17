@@ -216,7 +216,10 @@ with open("../tmp/unimportant_chars_decoded_map", 'rb') as f:
 
 length_of_unimportant_ones = len(list(unimportant_chars_decoded_map.keys())[0])
 
-current_word = first_word
+current_words = []
+current_words.append(first_word[:1])
+current_words.append(first_word[1:])
+
 output_final = first_word
 last_word_written = first_word
 current_node = None
@@ -250,7 +253,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                 if current_node is None:
                     map_to_use = final_map
-                    current_node = map_to_use[current_word]
+                    key_to_use = current_words[0] + current_words[1]
+                    current_node = map_to_use[key_to_use]
 
                 while len(current_node.children) == 1:
                     current_node = current_node.children[0]
@@ -278,25 +282,27 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
+                    key_to_use = current_words[0] + current_words[1]
 
-                    freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
-                    if freq_map_to_use[current_word][current_node.character] == 0:
-                        del freq_map_to_use[current_word][current_node.character]
+                    freq_map_to_use[key_to_use][current_node.character] = freq_map_to_use[key_to_use][current_node.character] - 1
+                    if freq_map_to_use[key_to_use][current_node.character] == 0:
+                        del freq_map_to_use[key_to_use][current_node.character]
 
-                        if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) <= 10:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
+                        if len(freq_map_to_use[key_to_use]) > 0:
+                            if len(freq_map_to_use[key_to_use]) <= 10:
+                                map_to_use[key_to_use] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[key_to_use], key_to_use))[0]
 
                         else:
-                            del map_to_use[current_word]
-                            del freq_map_to_use[current_word]
+                            del map_to_use[key_to_use]
+                            del freq_map_to_use[key_to_use]
                             print("fun fun fun fun-----" + str(len(map_to_use)))
 
-                    key_to_use = current_word[1:] + current_node.character
-                    current_word = key_to_use
+                    del current_words[0]
+                    current_words.append(current_node.character)
 
                     map_to_use = final_map
-                    current_node = map_to_use[current_word]
+                    key_to_use = current_words[0] + current_words[1]
+                    current_node = map_to_use[key_to_use]
 
                 character = tmp_decoding_string[0]
                 tmp_decoding_string = tmp_decoding_string[1:]
@@ -336,24 +342,23 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
                     freq_map_to_use = final_frequency_map
                     map_to_use = final_map
+                    key_to_use = current_words[0] + current_words[1]
 
-                    if current_node.character not in freq_map_to_use[current_word]:
-                        print(output_final)
-                    freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][current_node.character] - 1
+                    freq_map_to_use[key_to_use][current_node.character] = freq_map_to_use[key_to_use][current_node.character] - 1
 
-                    if freq_map_to_use[current_word][current_node.character] == 0:
-                        del freq_map_to_use[current_word][current_node.character]
+                    if freq_map_to_use[key_to_use][current_node.character] == 0:
+                        del freq_map_to_use[key_to_use][current_node.character]
 
-                        if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) <= 10:
-                                map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
+                        if len(freq_map_to_use[key_to_use]) > 0:
+                            if len(freq_map_to_use[key_to_use]) <= 10:
+                                map_to_use[key_to_use] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[key_to_use], key_to_use))[0]
                         else:
-                            del map_to_use[current_word]
-                            del freq_map_to_use[current_word]
+                            del map_to_use[key_to_use]
+                            del freq_map_to_use[key_to_use]
                             print("fun fun fun fun-----" + str(len(map_to_use)))
 
-                    key_to_use = current_word[1:] + current_node.character
-                    current_word = key_to_use
+                    del current_words[0]
+                    current_words.append(current_node.character)
                     current_node = None
 
                     # here keep updating directly if there is only one child
@@ -368,7 +373,8 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
         if current_node is None:
             map_to_use = final_map
-            current_node = map_to_use[current_word]
+            key_to_use = current_words[0] + current_words[1]
+            current_node = map_to_use[key_to_use]
 
         while current_node is not None and len(current_node.children) == 1:
             current_node = current_node.children[0]
@@ -383,25 +389,27 @@ with open("../tmp/enwik8_output", "w", encoding="utf-8", newline='\n') as f0:
 
             map_to_use = final_map
             freq_map_to_use = final_frequency_map
+            key_to_use = current_words[0] + current_words[1]
 
-            freq_map_to_use[current_word][current_node.character] = freq_map_to_use[current_word][
+            freq_map_to_use[key_to_use][current_node.character] = freq_map_to_use[key_to_use][
                                                                         current_node.character] - 1
-            if freq_map_to_use[current_word][current_node.character] == 0:
-                del freq_map_to_use[current_word][current_node.character]
+            if freq_map_to_use[key_to_use][current_node.character] == 0:
+                del freq_map_to_use[key_to_use][current_node.character]
 
-                if len(freq_map_to_use[current_word]) > 0:
-                    if len(freq_map_to_use[current_word]) <= 10:
-                        map_to_use[current_word] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word))[0]
+                if len(freq_map_to_use[key_to_use]) > 0:
+                    if len(freq_map_to_use[key_to_use]) <= 10:
+                        map_to_use[key_to_use] = convert_huffman_map_to_tree(convert_freq_map_to_huffman_map(freq_map_to_use[key_to_use], key_to_use))[0]
                 else:
-                    del map_to_use[current_word]
-                    del freq_map_to_use[current_word]
+                    del map_to_use[key_to_use]
+                    del freq_map_to_use[key_to_use]
                     print("fun fun fun fun-----" + str(len(map_to_use)))
 
-            key_to_use = current_word[1:] + current_node.character
-            current_word = key_to_use
+            del current_words[0]
+            current_words.append(current_node.character)
 
             map_to_use = final_map
-            current_node = map_to_use[current_word]
+            key_to_use = current_words[0] + current_words[1]
+            current_node = map_to_use[key_to_use]
 
         if len(output_final) > 0:
             f0.write(output_final)

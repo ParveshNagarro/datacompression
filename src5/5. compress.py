@@ -165,7 +165,7 @@ def populate_total_usage(a, b, total_usage_map):
 
     map_to_use = total_usage_map
 
-    key = "\"" + a + "-" + b + "\""
+    key = "\"" + a[0] + a[1] + "-" + b + "\""
 
     if key in map_to_use:
         map_to_use[key] = map_to_use[key] + 1
@@ -206,6 +206,13 @@ with open("../tmp/unimportant_chars_encoded_map", 'rb') as f:
     unimportant_chars_encoded_map = pickle.load(f)
 
 
+words_final_map = {}
+with open("../tmp/words_important_chars", 'rb') as f:
+    words_final_map = pickle.load(f)
+
+trie_root = create_trie_for_huffman_map(words_final_map)
+
+
 encoded_contents = ""
 
 total_usage = {}
@@ -218,7 +225,7 @@ cutoff = 0
 
 
 first_word = None
-current_word = None
+current_words = []
 
 
 newCount = 0
@@ -259,8 +266,14 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
             iter_index = 0
             while iter_index < len(c):
-                terminal_node_index = None
 
+                terminal_node_index = None
+                current_iter_index = iter_index
+                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                    current_trie_node = current_trie_node.children[c[current_iter_index]]
+                    current_iter_index = current_iter_index + 1
+                    if current_trie_node.is_terminal:
+                        terminal_node_index = current_iter_index
 
                 # this will the be the second value in the substring operator[iter_index:end_iter_index]
                 end_iter_index = iter_index
@@ -278,53 +291,69 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
 
                 if first_word is None:
-                    tmp_new_word = c[iter_index]
-                    new_word = new_word + get_new_char(tmp_new_word, important_chars_map)
-                    iter_index = iter_index + 1
+                    current_words.append(new_word)
 
-                    tmp_new_word = c[iter_index]
-                    new_word = new_word + get_new_char(tmp_new_word, important_chars_map)
-                    iter_index = iter_index + 1
 
-                    first_word = new_word
-                    current_word = first_word
+                    terminal_node_index = None
+                    current_iter_index = iter_index
+                    while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                        current_trie_node = current_trie_node.children[c[current_iter_index]]
+                        current_iter_index = current_iter_index + 1
+                        if current_trie_node.is_terminal:
+                            terminal_node_index = current_iter_index
+
+                    # this will the be the second value in the substring operator[iter_index:end_iter_index]
+                    end_iter_index = iter_index
+                    # did not find anything, just using single length string i.e. a character.
+                    if terminal_node_index is None:
+                        end_iter_index = end_iter_index + 1
+                    else:
+                        end_iter_index = terminal_node_index
+
+                    tmp_new_word = c[iter_index:end_iter_index]
+                    new_word = tmp_new_word
+                    if len(new_word) == 1:
+                        new_word = get_new_char(new_word, important_chars_map)
+                    iter_index = iter_index + len(new_word)
+
+                    current_words.append(new_word)
+                    first_word = current_words[0] + current_words[1]
                 else:
 
                     map_to_use = final_map
                     freq_map_to_use = final_frequency_map
+                    key_to_use = current_words[0] + current_words[1]
 
-                    if (len(map_to_use[current_word])) > 1:
+                    if (len(map_to_use[key_to_use])) > 1:
                         if new_word == UNIMPORTANT_CHARS:
-                            encoded_contents = encoded_contents + map_to_use[current_word][new_word] + unimportant_chars_encoded_map[tmp_new_word]
-                            populate_total_usage(current_word, new_word, total_usage)
+                            encoded_contents = encoded_contents + map_to_use[key_to_use][new_word] + unimportant_chars_encoded_map[tmp_new_word]
+                            populate_total_usage(current_words, new_word, total_usage)
                         else:
-                            encoded_contents = encoded_contents + map_to_use[current_word][new_word]
-                            populate_total_usage(current_word, new_word, total_usage)
+                            encoded_contents = encoded_contents + map_to_use[key_to_use][new_word]
+                            populate_total_usage(current_words, new_word, total_usage)
                     elif new_word == UNIMPORTANT_CHARS:
                         encoded_contents = encoded_contents + unimportant_chars_encoded_map[tmp_new_word]
-                        populate_total_usage(current_word, new_word, total_usage)
+                        populate_total_usage(current_words, new_word, total_usage)
 
 
 
 
-                    if current_word == '\n= ' and new_word == '&':
-                        print("a")
-                    freq_map_to_use[current_word][new_word] = freq_map_to_use[current_word][new_word] - 1
+                    freq_map_to_use[key_to_use][new_word] = freq_map_to_use[key_to_use][new_word] - 1
 
-                    if freq_map_to_use[current_word][new_word] == 0:
-                        del map_to_use[current_word][new_word]
-                        del freq_map_to_use[current_word][new_word]
+                    if freq_map_to_use[key_to_use][new_word] == 0:
+                        del map_to_use[key_to_use][new_word]
+                        del freq_map_to_use[key_to_use][new_word]
 
-                        if len(freq_map_to_use[current_word]) > 0:
-                            if len(freq_map_to_use[current_word]) <= 10:
-                                map_to_use[current_word] = convert_freq_map_to_huffman_map(freq_map_to_use[current_word], current_word)
+                        if len(freq_map_to_use[key_to_use]) > 0:
+                            if len(freq_map_to_use[key_to_use]) <= 10:
+                                map_to_use[key_to_use] = convert_freq_map_to_huffman_map(freq_map_to_use[key_to_use], key_to_use)
                         else:
-                            del map_to_use[current_word]
-                            del freq_map_to_use[current_word]
+                            del map_to_use[key_to_use]
+                            del freq_map_to_use[key_to_use]
                             print("fun fun fun fun-----" + str(len(map_to_use)))
 
-                    key_to_use = current_word[1:] + new_word
-                    current_word = key_to_use
+                    del current_words[0]
+                    current_words.append(new_word)
 
             while len(encoded_contents) > 8:
                 bytes_array = []

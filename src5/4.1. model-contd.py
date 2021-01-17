@@ -157,13 +157,12 @@ def populate_total_usage(a, b, total_usage_map):
 
     map_to_use = total_usage_map
 
-    key = "\"" + a + "-" + b + "\""
+    key = "\"" + a[0] + a[1] + "-" + b + "\""
 
     if key in map_to_use:
         map_to_use[key] = map_to_use[key] + 1
     else:
         map_to_use[key] = 1
-
 
 
 def get_new_char(character_read, important_characters_map):
@@ -181,11 +180,20 @@ important_chars_map = {}
 with open("../tmp/important_chars", 'rb') as f:
     important_chars_map = pickle.load(f)
 
+
+words_final_map = {}
+with open("../tmp/words_important_chars", 'rb') as f:
+    words_final_map = pickle.load(f)
+
+trie_root = create_trie_for_huffman_map(words_final_map)
+
+
+
 final_map = {}
 total_usage = {}
 
 count = 0
-current_word = None
+current_words = []
 total_count = 0
 with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
     while True:
@@ -204,6 +212,12 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
             total_count = total_count + 1
 
             terminal_node_index = None
+            current_iter_index = iter_index
+            while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                current_trie_node = current_trie_node.children[c[current_iter_index]]
+                current_iter_index = current_iter_index + 1
+                if current_trie_node.is_terminal:
+                    terminal_node_index = current_iter_index
 
             # this will the be the second value in the substring operator[iter_index:end_iter_index]
             end_iter_index = iter_index
@@ -219,41 +233,65 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
             iter_index = iter_index + len(new_word)
 
 
-            if current_word is None:
+            if len(current_words) == 0:
+
+                current_words.append(new_word)
 
                 total_count = total_count + 1
-                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
-                iter_index = iter_index + 1
+                terminal_node_index = None
+                current_iter_index = iter_index
+                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                    current_trie_node = current_trie_node.children[c[current_iter_index]]
+                    current_iter_index = current_iter_index + 1
+                    if current_trie_node.is_terminal:
+                        terminal_node_index = current_iter_index
 
-                total_count = total_count + 1
-                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
-                iter_index = iter_index + 1
+                # this will the be the second value in the substring operator[iter_index:end_iter_index]
+                end_iter_index = iter_index
+                # did not find anything, just using single length string i.e. a character.
+                if terminal_node_index is None:
+                    end_iter_index = end_iter_index + 1
+                else:
+                    end_iter_index = terminal_node_index
 
-                current_word = new_word
+                new_word = c[iter_index:end_iter_index]
+                if len(new_word) == 1:
+                    new_word = get_new_char(new_word, important_chars_map)
+                iter_index = iter_index + len(new_word)
+
+                current_words.append(new_word)
 
                 map_to_use = final_map
-                map_to_use[new_word] = {}
+                key_to_use = current_words[0] + current_words[1]
+                map_to_use[key_to_use] = {}
+
+
             else:
                 map_to_use = final_map
+                key_to_use = current_words[0] + current_words[1]
 
-                key_to_use = current_word[1:] + new_word
+                if new_word not in map_to_use[key_to_use]:
+                    map_to_use[key_to_use][new_word] = 1
+                else:
+                    map_to_use[key_to_use][new_word] = map_to_use[key_to_use][new_word] + 1
+
+
+                map_to_use = final_map
+                key_to_use = current_words[1] + new_word
+
                 if key_to_use not in map_to_use:
                     map_to_use[key_to_use] = {}
 
-                map_to_use = final_map
+                populate_total_usage(current_words, new_word, total_usage)
 
-                if new_word not in map_to_use[current_word]:
-                    map_to_use[current_word][new_word] = 1
-                else:
-                    map_to_use[current_word][new_word] = map_to_use[current_word][new_word] + 1
-
-                populate_total_usage(current_word, new_word, total_usage)
-                current_word = key_to_use
+                del current_words[0]
+                current_words.append(new_word)
 
 
 new_word = "<<<----EOF---------------EOF---------------->>>"
 map_to_use = final_map
-map_to_use[current_word][new_word]=1
+key_to_use = current_words[0] + current_words[1]
+map_to_use[key_to_use][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)

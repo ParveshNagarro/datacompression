@@ -35,6 +35,19 @@ class Node:
         self.children = []
         self.encoded_string = ""
 
+
+
+class TrieNode:
+    character:str
+    children:{}
+    is_terminal:bool
+
+    def __init__(self, character: str, is_terminal: bool):
+        self.character = character
+        self.is_terminal = is_terminal
+        self.children = {}
+
+
 def convert_freq_map_to_huffman_map(final_word_nodes_dict, fileName="tmp") :
     print("Converting the final dict into a list of nodes")
 
@@ -132,6 +145,22 @@ def get_new_char(character_read, important_characters_map):
     return new_char
 
 
+def create_trie_for_huffman_map(huffman_map):
+    root:TrieNode = TrieNode("root", False)
+    for key, value in huffman_map.items():
+        current_trie_node:TrieNode = root
+        for char_key in key:
+            if char_key in current_trie_node.children:
+                current_trie_node = current_trie_node.children[char_key]
+            else:
+                new_trie_node = TrieNode(char_key, False)
+                current_trie_node.children[char_key] = new_trie_node
+                current_trie_node = new_trie_node
+        current_trie_node.is_terminal = True
+    return root
+
+
+
 start_time = time.time()
 
 
@@ -139,10 +168,17 @@ important_chars_map = {}
 with open("../tmp/important_chars", 'rb') as f:
     important_chars_map = pickle.load(f)
 
+
+words_final_map = {}
+with open("../tmp/words_important_chars", 'rb') as f:
+    words_final_map = pickle.load(f)
+
+trie_root = create_trie_for_huffman_map(words_final_map)
+
 final_map = {}
 
 count = 0
-current_word = None
+current_words = []
 total_count = 0
 with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
     while True:
@@ -158,37 +194,84 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
         # iterating over the trie repeatedly
         iter_index = 0
         while iter_index < len(c):
+
             total_count = total_count + 1
-            new_word = get_new_char(c[iter_index], important_chars_map)
-            iter_index = iter_index + 1
 
-            if current_word is None:
+            terminal_node_index = None
+            current_iter_index = iter_index
+            while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                current_trie_node = current_trie_node.children[c[current_iter_index]]
+                current_iter_index = current_iter_index + 1
+                if current_trie_node.is_terminal:
+                    terminal_node_index = current_iter_index
+
+
+            # this will the be the second value in the substring operator[iter_index:end_iter_index]
+            end_iter_index = iter_index
+            # did not find anything, just using single length string i.e. a character.
+            if terminal_node_index is None:
+                end_iter_index = end_iter_index + 1
+            else:
+                end_iter_index = terminal_node_index
+
+            new_word = c[iter_index:end_iter_index]
+            if len(new_word) == 1:
+                new_word = get_new_char(new_word, important_chars_map)
+            iter_index = iter_index + len(new_word)
+
+
+            if len(current_words) == 0:
+                current_words.append(new_word)
+
+
                 total_count = total_count + 1
-                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
-                iter_index = iter_index + 1
+                terminal_node_index = None
+                current_iter_index = iter_index
+                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                    current_trie_node = current_trie_node.children[c[current_iter_index]]
+                    current_iter_index = current_iter_index + 1
+                    if current_trie_node.is_terminal:
+                        terminal_node_index = current_iter_index
 
-                total_count = total_count + 1
-                new_word = new_word + get_new_char(c[iter_index], important_chars_map)
-                iter_index = iter_index + 1
+                # this will the be the second value in the substring operator[iter_index:end_iter_index]
+                end_iter_index = iter_index
+                # did not find anything, just using single length string i.e. a character.
+                if terminal_node_index is None:
+                    end_iter_index = end_iter_index + 1
+                else:
+                    end_iter_index = terminal_node_index
 
-                current_word = new_word
-                if new_word not in final_map:
-                    final_map[new_word] = {}
+                new_word = c[iter_index:end_iter_index]
+                if len(new_word) == 1:
+                    new_word = get_new_char(new_word, important_chars_map)
+                iter_index = iter_index + len(new_word)
+
+                current_words.append(new_word)
+
+                map_to_use = final_map
+                key_to_use = current_words[0] + current_words[1]
+
+                if key_to_use not in map_to_use:
+                    map_to_use[key_to_use] = {}
             else:
 
-                key_to_use = current_word[1:] + new_word
+                key_to_use = current_words[0] + current_words[1]
+                if new_word not in final_map[key_to_use]:
+                    final_map[key_to_use][new_word] = 1
+                else:
+                    final_map[key_to_use][new_word] = final_map[key_to_use][new_word] + 1
+
+                key_to_use = current_words[1] + new_word
                 if key_to_use not in final_map:
                     final_map[key_to_use] = {}
 
-                if new_word not in final_map[current_word]:
-                    final_map[current_word][new_word] = 1
-                else:
-                    final_map[current_word][new_word] = final_map[current_word][new_word] + 1
-                current_word = key_to_use
+                del current_words[0]
+                current_words.append(new_word)
 
 
 new_word = "<<<----EOF---------------EOF---------------->>>"
-final_map[current_word][new_word]=1
+key_to_use = current_words[0] + current_words[1]
+final_map[key_to_use][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:
     pickle.dump(final_map, f, pickle.HIGHEST_PROTOCOL)
