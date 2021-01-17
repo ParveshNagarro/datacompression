@@ -157,7 +157,7 @@ def populate_total_usage(a, b, total_usage_map):
 
     map_to_use = total_usage_map
 
-    key = "\"" + a[0] + a[1] + "-" + b + "\""
+    key = "\"" + a[0] + a[1] + a[2] + "-" + b + "\""
 
     if key in map_to_use:
         map_to_use[key] = map_to_use[key] + 1
@@ -263,14 +263,41 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
 
                 current_words.append(new_word)
 
+
+                total_count = total_count + 1
+                terminal_node_index = None
+                current_iter_index = iter_index
+                current_trie_node = trie_root
+                while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
+                    current_trie_node = current_trie_node.children[c[current_iter_index]]
+                    current_iter_index = current_iter_index + 1
+                    if current_trie_node.is_terminal:
+                        terminal_node_index = current_iter_index
+
+                # this will the be the second value in the substring operator[iter_index:end_iter_index]
+                end_iter_index = iter_index
+                # did not find anything, just using single length string i.e. a character.
+                if terminal_node_index is None:
+                    end_iter_index = end_iter_index + 1
+                else:
+                    end_iter_index = terminal_node_index
+
+                new_word = c[iter_index:end_iter_index]
+                if len(new_word) == 1:
+                    new_word = get_new_char(new_word, important_chars_map)
+                iter_index = iter_index + len(new_word)
+
+                current_words.append(new_word)
+
+
                 map_to_use = final_map
-                key_to_use = current_words[0] + current_words[1]
+                key_to_use = current_words[0] + current_words[1] + current_words[2]
                 map_to_use[key_to_use] = {}
 
 
             else:
                 map_to_use = final_map
-                key_to_use = current_words[0] + current_words[1]
+                key_to_use = current_words[0] + current_words[1] + current_words[2]
 
                 if new_word not in map_to_use[key_to_use]:
                     map_to_use[key_to_use][new_word] = 1
@@ -279,7 +306,7 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
 
 
                 map_to_use = final_map
-                key_to_use = current_words[1] + new_word
+                key_to_use = current_words[1] + current_words[2] + new_word
 
                 if key_to_use not in map_to_use:
                     map_to_use[key_to_use] = {}
@@ -292,7 +319,7 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
 
 new_word = "<<<----EOF---------------EOF---------------->>>"
 map_to_use = final_map
-key_to_use = current_words[0] + current_words[1]
+key_to_use = current_words[0] + current_words[1] + current_words[2]
 map_to_use[key_to_use][new_word]=1
 
 with open("../tmp/enwik8_new_strucure_freq_distro", 'wb') as f:

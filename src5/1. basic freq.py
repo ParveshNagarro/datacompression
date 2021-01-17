@@ -34,11 +34,11 @@ with open(ENWIK_FILENAME, "r", encoding="utf-8") as f:
 
 
 print("Subtracting the frequencies that are being used by the words  ")
-#for key, value in words_final_map.items():
-#    word_string:str = key
-#    word_freq:int = value
-#    for letter_part_of_word in word_string:
-#        nodes_dict[letter_part_of_word] = nodes_dict[letter_part_of_word] - word_freq
+for key, value in words_final_map.items():
+    word_string:str = key
+    word_freq:int = value
+    for letter_part_of_word in word_string:
+        nodes_dict[letter_part_of_word] = nodes_dict[letter_part_of_word] - word_freq
 
 
 print("This is the words array.. only putting the words with frequency greater than 1 in the dict")
