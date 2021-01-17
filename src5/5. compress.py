@@ -269,6 +269,7 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                 terminal_node_index = None
                 current_iter_index = iter_index
+                current_trie_node = trie_root
                 while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
                     current_trie_node = current_trie_node.children[c[current_iter_index]]
                     current_iter_index = current_iter_index + 1
@@ -296,6 +297,7 @@ with open(ENWIK_OUTPUT, "w+b") as fo:
 
                     terminal_node_index = None
                     current_iter_index = iter_index
+                    current_trie_node = trie_root
                     while current_iter_index < len(c) and c[current_iter_index] in current_trie_node.children:
                         current_trie_node = current_trie_node.children[c[current_iter_index]]
                         current_iter_index = current_iter_index + 1
